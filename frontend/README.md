@@ -1,12 +1,21 @@
-# React + Vite
+# DLMS Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Live site: https://dlms-skjh.onrender.com
+API base (production): https://dlms-driving-license-management-system-2.onrender.com/api
 
-Currently, two official plugins are available:
+## Development
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- npm install
+- Create .env with:
+  - VITE_API_URL=http://localhost:5004/api
+  - VITE_API_DEBUG=true
+- npm run dev (http://localhost:5173)
 
-## Expanding the ESLint configuration
+## Build
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- npm run build (output in dist/)
+- To point a production build at your API, set VITE_API_URL during build/deploy
+
+## Notes
+
+- The app uses axios via src/config/api.js which reads VITE_API_URL and falls back to the production API base above if not set.
