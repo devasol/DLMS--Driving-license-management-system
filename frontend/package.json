@@ -52,6 +52,7 @@
     "eslint-plugin-react-refresh": "^0.4.3",
     "globals": "^13.20.0",
     "postcss": "^8.4.27",
+    "terser": "^5.43.1",
     "vite": "^4.4.5"
   }
 }
