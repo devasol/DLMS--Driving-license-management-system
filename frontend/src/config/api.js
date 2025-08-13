@@ -5,7 +5,9 @@ const DEBUG = import.meta.env.VITE_API_DEBUG === "true";
 
 // Create axios instance with default configuration
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5004/api",
+  baseURL:
+    import.meta.env.VITE_API_URL ||
+    "https://dlms-driving-license-management-system-3.onrender.com/api",
   timeout: 15000, // Increased timeout for better reliability
   headers: {
     "Content-Type": "application/json",

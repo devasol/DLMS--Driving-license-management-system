@@ -327,7 +327,10 @@ const SearchBar = () => {
     try {
       // Use the new search API endpoint
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/search`,
+        `${
+          import.meta.env.VITE_API_URL ||
+          "https://dlms-driving-license-management-system-3.onrender.com/api"
+        }/search`,
         {
           params: { q: term, limit: 15 },
         }
