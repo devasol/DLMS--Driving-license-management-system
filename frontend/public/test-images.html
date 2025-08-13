@@ -120,7 +120,7 @@
           // Test 1: Fetch news data
           addResult("📡 Fetching news data from API...");
           const response = await fetch(
-            "https://dlms-driving-license-management-system-3.onrender.com/api/news/published?limit=2"
+            "https://dlms-driving-license-management-system-2.onrender.com/api/news/published?limit=2"
           );
           const data = await response.json();
 
@@ -133,7 +133,7 @@
             // Test each news image
             data.news.forEach((news, index) => {
               if (news.featuredImage) {
-                const imageUrl = `https://dlms-driving-license-management-system-3.onrender.com${
+                const imageUrl = `https://dlms-driving-license-management-system-2.onrender.com${
                   news.featuredImage
                 }?t=${Date.now()}`;
                 addImageTest(

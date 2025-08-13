@@ -59,7 +59,7 @@ import AdminSidebar from "../Sidebar/AdminSidebar";
 // API base URL
 const API_BASE_URL =
   import.meta.env.VITE_API_URL ||
-  "https://dlms-driving-license-management-system-3.onrender.com/api";
+  "https://dlms-driving-license-management-system-2.onrender.com/api";
 
 const AdminApplications = () => {
   const [open, setOpen] = useState(true);

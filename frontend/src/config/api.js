@@ -7,7 +7,7 @@ const DEBUG = import.meta.env.VITE_API_DEBUG === "true";
 const api = axios.create({
   baseURL:
     import.meta.env.VITE_API_URL ||
-    "https://dlms-driving-license-management-system-3.onrender.com/api",
+    "https://dlms-driving-license-management-system-2.onrender.com/api",
   timeout: 15000, // Increased timeout for better reliability
   headers: {
     "Content-Type": "application/json",
