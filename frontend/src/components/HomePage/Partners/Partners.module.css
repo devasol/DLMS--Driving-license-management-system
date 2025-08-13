@@ -1,0 +1,226 @@
+/* Amazing Partners Section */
+.partnersContainer {
+  width: 100%;
+  max-width: 100vw;
+  text-align: center;
+  padding: 120px 20px;
+  background: var(--bg-primary);
+  position: relative;
+  transition: all var(--transition-normal);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+/* Amazing Background decoration */
+.partnersContainer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+      circle at 25% 25%,
+      rgba(78, 205, 196, 0.06) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 75% 75%,
+      rgba(102, 126, 234, 0.06) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 50% 10%,
+      rgba(240, 147, 251, 0.04) 0%,
+      transparent 50%
+    );
+  z-index: 0;
+  animation: backgroundPulse 16s ease-in-out infinite;
+}
+
+@keyframes backgroundPulse {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+.title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-family: var(--font-display);
+  font-weight: 700;
+  margin-bottom: 80px;
+  color: var(--text-primary);
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+  z-index: 1;
+  animation: titleGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+  0% {
+    filter: brightness(1) saturate(1);
+  }
+  100% {
+    filter: brightness(1.2) saturate(1.3);
+  }
+}
+
+.partnerLogos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  flex-wrap: wrap;
+  margin-top: 60px;
+  position: relative;
+  z-index: 1;
+}
+
+.partnerLogo:nth-child(1) {
+  width: 320px;
+}
+
+.partnerLogo:nth-child(2) {
+  width: 320px;
+}
+
+.partnerLogo {
+  width: 200px;
+  height: auto;
+  opacity: 0.85;
+  transition: all var(--transition-bounce);
+  filter: grayscale(0.2);
+  border-radius: var(--radius-xl);
+  padding: 25px;
+  background: var(--card-bg);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-color);
+  animation: partnerFloat 6s ease-in-out infinite;
+}
+
+@keyframes partnerFloat {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.partnerLogo:hover {
+  transform: translateY(-15px) scale(1.08);
+  opacity: 1;
+  filter: grayscale(0) brightness(1.05);
+  box-shadow: var(--shadow-glow);
+}
+
+/* Amazing Dark Mode Support */
+[data-theme="dark"] .title {
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-theme="dark"] .partnerLogo {
+  background: rgba(255, 255, 255, 0.95);
+  filter: brightness(1) contrast(1) saturate(1) grayscale(0);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: var(--shadow-lg);
+}
+
+[data-theme="dark"] .partnerLogo:hover {
+  filter: brightness(1.1) contrast(1.1) saturate(1.1) grayscale(0);
+  background: rgba(255, 255, 255, 1);
+  box-shadow: var(--shadow-glow);
+}
+
+/* Amazing Responsive Design */
+@media (max-width: 1200px) {
+  .partnersContainer {
+    padding: 100px 20px;
+  }
+
+  .title {
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    margin-bottom: 70px;
+  }
+
+  .partnerLogos {
+    gap: 40px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .partnersContainer {
+    padding: 80px 15px;
+  }
+
+  .partnerLogo {
+    width: 160px;
+  }
+
+  .partnerLogo:nth-child(1),
+  .partnerLogo:nth-child(2) {
+    width: 260px;
+  }
+}
+
+@media (max-width: 768px) {
+  .partnersContainer {
+    padding: 60px 15px;
+  }
+
+  .title {
+    font-size: clamp(1.8rem, 7vw, 2.8rem);
+    margin-bottom: 50px;
+  }
+
+  .partnerLogos {
+    gap: 30px;
+    margin-top: 40px;
+  }
+
+  .partnerLogo {
+    width: 140px;
+    padding: 20px;
+  }
+
+  .partnerLogo:nth-child(1),
+  .partnerLogo:nth-child(2) {
+    width: 220px;
+  }
+}
+
+@media (max-width: 480px) {
+  .partnersContainer {
+    padding: 50px 10px;
+  }
+
+  .title {
+    font-size: clamp(1.5rem, 8vw, 2.2rem);
+    margin-bottom: 40px;
+  }
+
+  .partnerLogos {
+    gap: 25px;
+  }
+
+  .partnerLogo {
+    width: 120px;
+    padding: 15px;
+  }
+
+  .partnerLogo:nth-child(1),
+  .partnerLogo:nth-child(2) {
+    width: 180px;
+  }
+}

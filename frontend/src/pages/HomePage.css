@@ -1,0 +1,31 @@
+/* AMAZING HOMEPAGE LAYOUT */
+.homepage-container {
+  width: 100%;
+  max-width: 100vw;
+  min-height: 100vh;
+  background: var(--bg-primary);
+  font-family: var(--font-body);
+  transition: all var(--transition-normal);
+  overflow-x: hidden;
+  /* Spacer so content doesn't sit under the fixed header (banner + header) */
+  padding-top: 144px; /* 56 (banner) + 80 (header) + small buffer */
+}
+
+/* Adjust spacer for smaller screens where the header is shorter */
+@media (max-width: 768px) {
+  .homepage-container {
+    padding-top: 120px; /* 56 (banner) + 60 (header) approx */
+  }
+}
+
+@media (max-width: 480px) {
+  .homepage-container {
+    padding-top: 104px; /* slightly smaller on very small screens */
+  }
+}
+
+/* Seamless section transitions with amazing spacing */
+.homepage-container > * {
+  margin-top: 0;
+  margin-bottom: 0;
+}

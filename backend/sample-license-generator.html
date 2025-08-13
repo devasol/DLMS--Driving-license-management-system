@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample License Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .license-card {
+            width: 400px;
+            height: 250px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border-radius: 15px;
+            padding: 20px;
+            color: white;
+            margin: 20px 0;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .license-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .country {
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        .title {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        .content {
+            display: flex;
+            gap: 15px;
+        }
+        .photo {
+            width: 60px;
+            height: 60px;
+            background-color: #ddd;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #666;
+            text-align: center;
+        }
+        .details {
+            flex: 1;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+        .license-number {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #ffd700;
+        }
+        .field {
+            margin: 3px 0;
+        }
+        .label {
+            font-weight: bold;
+            display: inline-block;
+            width: 60px;
+        }
+        .footer {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            font-size: 10px;
+            opacity: 0.8;
+        }
+        .expired {
+            background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%);
+        }
+        .valid {
+            background: linear-gradient(135deg, #006400 0%, #32CD32 100%);
+        }
+        .download-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+            font-size: 14px;
+        }
+        .download-btn:hover {
+            background-color: #45a049;
+        }
+        .instructions {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>Sample License Generator for Testing</h1>
+    
+    <div class="instructions">
+        <h3>Instructions:</h3>
+        <ol>
+            <li>Right-click on any license below and select "Save image as..." to download</li>
+            <li>Use these sample licenses to test the file upload feature in the renewal system</li>
+            <li>The expired licenses are perfect for testing renewal applications</li>
+            <li>You can also take a screenshot of these licenses to create image files</li>
+        </ol>
+    </div>
+
+    <!-- Expired License 1 - John Smith -->
+    <div class="license-card expired" id="license1">
+        <div class="header">
+            <div class="country">ETHIOPIA</div>
+            <div class="title">DRIVING LICENSE</div>
+        </div>
+        <div class="content">
+            <div class="photo">PHOTO</div>
+            <div class="details">
+                <div class="license-number">ETH-2018-000001</div>
+                <div class="field"><span class="label">Name:</span> JOHN SMITH</div>
+                <div class="field"><span class="label">Class:</span> B</div>
+                <div class="field"><span class="label">DOB:</span> 15/03/1985</div>
+                <div class="field"><span class="label">Issue:</span> 15/06/2018</div>
+                <div class="field"><span class="label">Expiry:</span> 15/06/2023</div>
+                <div class="field"><span class="label">NIC:</span> 123456789V</div>
+            </div>
+        </div>
+        <div class="footer">EXPIRED</div>
+    </div>
+    <button class="download-btn" onclick="downloadLicense('license1', 'john_smith_expired_license.png')">Download John's License</button>
+
+    <!-- Expired License 2 - Sarah Johnson -->
+    <div class="license-card expired" id="license2">
+        <div class="header">
+            <div class="country">ETHIOPIA</div>
+            <div class="title">DRIVING LICENSE</div>
+        </div>
+        <div class="content">
+            <div class="photo">PHOTO</div>
+            <div class="details">
+                <div class="license-number">ETH-2017-000002</div>
+                <div class="field"><span class="label">Name:</span> SARAH JOHNSON</div>
+                <div class="field"><span class="label">Class:</span> B</div>
+                <div class="field"><span class="label">DOB:</span> 22/08/1990</div>
+                <div class="field"><span class="label">Issue:</span> 20/09/2017</div>
+                <div class="field"><span class="label">Expiry:</span> 20/09/2022</div>
+                <div class="field"><span class="label">NIC:</span> 987654321V</div>
+            </div>
+        </div>
+        <div class="footer">EXPIRED</div>
+    </div>
+    <button class="download-btn" onclick="downloadLicense('license2', 'sarah_johnson_expired_license.png')">Download Sarah's License</button>
+
+    <!-- Expired License 3 - Emily Davis -->
+    <div class="license-card expired" id="license3">
+        <div class="header">
+            <div class="country">ETHIOPIA</div>
+            <div class="title">DRIVING LICENSE</div>
+        </div>
+        <div class="content">
+            <div class="photo">PHOTO</div>
+            <div class="details">
+                <div class="license-number">ETH-2016-000003</div>
+                <div class="field"><span class="label">Name:</span> EMILY DAVIS</div>
+                <div class="field"><span class="label">Class:</span> B</div>
+                <div class="field"><span class="label">DOB:</span> 10/12/1988</div>
+                <div class="field"><span class="label">Issue:</span> 05/12/2016</div>
+                <div class="field"><span class="label">Expiry:</span> 05/12/2021</div>
+                <div class="field"><span class="label">NIC:</span> 789123456V</div>
+            </div>
+        </div>
+        <div class="footer">EXPIRED</div>
+    </div>
+    <button class="download-btn" onclick="downloadLicense('license3', 'emily_davis_expired_license.png')">Download Emily's License</button>
+
+    <!-- Valid License - Michael Brown -->
+    <div class="license-card valid" id="license4">
+        <div class="header">
+            <div class="country">ETHIOPIA</div>
+            <div class="title">DRIVING LICENSE</div>
+        </div>
+        <div class="content">
+            <div class="photo">PHOTO</div>
+            <div class="details">
+                <div class="license-number">ETH-2022-000004</div>
+                <div class="field"><span class="label">Name:</span> MICHAEL BROWN</div>
+                <div class="field"><span class="label">Class:</span> A</div>
+                <div class="field"><span class="label">DOB:</span> 18/05/1987</div>
+                <div class="field"><span class="label">Issue:</span> 10/03/2022</div>
+                <div class="field"><span class="label">Expiry:</span> 28/02/2025</div>
+                <div class="field"><span class="label">NIC:</span> 456789123V</div>
+            </div>
+        </div>
+        <div class="footer">VALID</div>
+    </div>
+    <button class="download-btn" onclick="downloadLicense('license4', 'michael_brown_valid_license.png')">Download Michael's License</button>
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script>
+        function downloadLicense(elementId, filename) {
+            const element = document.getElementById(elementId);
+            html2canvas(element, {
+                backgroundColor: null,
+                scale: 2
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = filename;
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>

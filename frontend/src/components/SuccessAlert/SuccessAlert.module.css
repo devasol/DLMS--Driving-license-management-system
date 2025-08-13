@@ -1,0 +1,163 @@
+/* Container for the alert box */
+.alertContainer {
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  width: 100%;
+  max-width: 400px;
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Main alert box styling */
+.alertBox {
+  background-color: #28a745;
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Icon style */
+.alertIcon {
+  font-size: 24px;
+  margin-right: 15px;
+}
+
+/* Alert message styling */
+.alertMessage {
+  flex: 1;
+  font-size: 16px;
+}
+
+/* Close button styling */
+.closeBtn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Close button hover effect */
+.closeBtn:hover {
+  opacity: 0.7;
+}
+
+/* Animation for the fade-in effect */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Responsive styling */
+@media (max-width: 500px) {
+  .alertBox {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .alertIcon {
+    font-size: 20px;
+  }
+}
+
+.successAlert {
+  position: fixed;
+  top: 20px; /* Positioned at top for better visibility */
+  right: 20px;
+  background-color: #f0fdf4;
+  color: #22c55e;
+  border: 1px solid #86efac;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 10000; /* Higher z-index to ensure visibility */
+  animation: slideIn 0.3s ease-out;
+  min-width: 300px;
+  max-width: 400px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.alertContent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  color: #22c55e;
+}
+
+.message {
+  font-size: 14px;
+  line-height: 1.4;
+  flex-grow: 1;
+  color: #166534;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #166534;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.closeButton:hover {
+  opacity: 1;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .successAlert {
+    top: 20px; /* Keep consistent top position on mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .successAlert {
+    left: 20px;
+    right: 20px;
+    min-width: auto;
+    max-width: none;
+    top: 20px; /* Keep consistent top position on mobile */
+  }
+}

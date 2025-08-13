@@ -1,0 +1,159 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  width: 100%;
+  /* background-color: #f4f4f4; */
+}
+
+.header {
+  width: 100%;
+  height: 50px;
+  font-family: "Titan One", sans-serif;
+  padding-left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: black;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+}
+
+.icon {
+  background-color: #56ccf2;
+  padding: 10px;
+  border-radius: 50%;
+}
+
+.line {
+  width: 70%;
+  height: 4px;
+  background-color: #56ccf2;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border-radius: 2px;
+}
+
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.scheduleCard {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.scheduleCard:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.scheduleItem {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.scheduleItem strong {
+  color: #34535e;
+}
+
+.button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
+}
+
+.button:hover {
+  background-color: #218838;
+}
+
+.doneButton {
+  background-color: #6c757d;
+}
+
+.doneButton:hover {
+  background-color: #5a6268;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+    margin-left: 50px;
+    width: 78%;
+    margin-top: 20px;
+  }
+
+  .line {
+    width: 50%;
+  }
+
+  .header {
+    font-size: 1.2rem;
+  }
+
+  .scheduleCard {
+    padding: 15px;
+  }
+
+  .button {
+    font-size: 1rem;
+  }
+}
+
+.mainContentWrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.scheduleContent {
+  flex-grow: 1;
+  padding: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  z-index: 1000;
+}
+
+@media (max-width: 800px) {
+  .mainContentWrapper {
+    flex-direction: column;
+    margin-left: 100px;
+  }
+  .container {
+    width: 70%;
+    margin-left: 100px;
+    margin-top: 100px;
+  }
+
+  .scheduleContent {
+    margin-left: 0;
+    margin-right: 0; /* Remove margin-right on smaller screens */
+  }
+}

@@ -1,0 +1,166 @@
+.mainContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.container {
+  width: calc(100% - 250px);
+  /* width: 80% auto; */
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 250px;
+  padding: 0 20px;
+  /* background-color: white; */
+  z-index: 100;
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+  transition: all 0.3s ease;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.container.minimized {
+  left: 80px; /* When sidebar is minimized */
+  width: calc(100% - 80px); /* Adjust width */
+}
+
+.burger {
+  font-size: 28px;
+  color: #374151;
+  display: none;
+  cursor: pointer;
+  position: absolute;
+  right: 58px;
+  top: 18px;
+  z-index: 101; /* Ensure it stays above header */
+}
+
+.headerContent {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  align-items: center;
+  gap: 30px;
+}
+
+.searchbar {
+  display: flex;
+  align-items: center;
+  background-color: #f3f4f6;
+  border-radius: 8px;
+  padding: 8px 15px;
+  max-width: 300px;
+  flex: 1;
+}
+
+.searchIcon {
+  color: #6b7280;
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+.searchbar input {
+  border: none;
+  background-color: transparent;
+  width: 100%;
+  padding: 5px 0;
+  font-size: 14px;
+  color: #111827;
+  outline: none;
+}
+
+.informations {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.welcome {
+  font-size: 16px;
+  color: #4b5563;
+  font-weight: 700;
+  font-family: "Titan One", sans-serif;
+}
+
+.icons {
+  display: flex;
+  gap: 15px;
+}
+
+.icon {
+  font-size: 30px;
+  color: #6b7280;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.icon:hover {
+  color: #111827;
+}
+
+.logout {
+  display: flex;
+  align-items: center;
+  background-color: #ef4444;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.logout:hover {
+  background-color: #dc2626;
+}
+
+.logoutIcon {
+  font-size: 16px;
+  margin-right: 8px;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .burger {
+    display: block;
+  }
+
+  .headerContent {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background-color: rgba(216, 211, 205, 0.284);
+    flex-direction: column;
+    padding: 20px;
+    gap: 20px;
+    display: none;
+  }
+
+  .headerContent.active {
+    display: flex;
+  }
+
+  .searchbar {
+    width: 100%;
+  }
+
+  .informations {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .icons {
+    gap: 10px;
+  }
+}

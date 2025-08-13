@@ -1,0 +1,111 @@
+.container {
+  margin-top: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+.card {
+  background: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 500px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.icon {
+  color: #2d8450;
+  margin-bottom: 15px;
+}
+
+.iconWhite {
+  color: #fff;
+  margin-bottom: 15px;
+}
+
+.heading {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.headingWhite {
+  font-size: 1.5rem;
+  color: #fff;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.description {
+  color: #555;
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+.descriptionWhite {
+  color: #fff;
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+.btn {
+  background: linear-gradient(90deg, #007bff, #0056b3);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 30px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+}
+
+.btn:hover {
+  opacity: 0.5;
+  box-shadow: 0 6px 15px rgba(0, 123, 255, 0.4);
+}
+
+.btnWhite {
+  background: #fff;
+  color: #007bff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 30px;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+}
+
+.btnWhite:hover {
+  opacity: 0.5;
+  box-shadow: 0 6px 15px rgba(0, 123, 255, 0.4);
+}
+
+.blueBackground {
+  background: linear-gradient(90deg, #2d8450, #4dbe9d); /* Gradient color */
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .card {
+    width: 90%;
+  }
+}

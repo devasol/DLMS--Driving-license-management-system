@@ -1,0 +1,318 @@
+/* Performance-optimized CSS for better scroll performance */
+
+/* Hardware acceleration for smooth animations */
+.hw-accelerated {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: transform;
+}
+
+/* Optimized card styles with reduced box-shadow complexity */
+.optimized-card {
+  /* Use simpler box-shadow for better performance */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  /* CSS containment for better performance */
+  contain: layout style paint;
+  /* Hardware acceleration */
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+.optimized-card:hover {
+  transform: translate3d(0, -2px, 0);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Optimized gradient backgrounds */
+.optimized-gradient {
+  /* Use simpler gradients for better performance */
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  /* Avoid complex gradients during scroll */
+  background-attachment: local;
+}
+
+/* Smooth scrolling optimizations */
+.smooth-scroll {
+  scroll-behavior: smooth;
+  /* Enable hardware acceleration for scrolling */
+  transform: translate3d(0, 0, 0);
+  /* Optimize scroll performance */
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Use momentum scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Hide scrollbars for cleaner appearance */
+.hide-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* WebKit */
+}
+
+/* Optimized animation classes */
+.fade-in-optimized {
+  animation: fadeInOptimized 0.3s ease-out forwards;
+}
+
+@keyframes fadeInOptimized {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.slide-up-optimized {
+  animation: slideUpOptimized 0.25s ease-out forwards;
+}
+
+@keyframes slideUpOptimized {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Optimized hover effects */
+.hover-lift {
+  transition: transform 0.2s ease-out;
+  transform: translate3d(0, 0, 0);
+}
+
+.hover-lift:hover {
+  transform: translate3d(0, -2px, 0);
+}
+
+/* Performance-optimized loading states */
+.loading-skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Optimized text rendering */
+.optimized-text {
+  text-rendering: optimizeSpeed;
+  font-smooth: never;
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: auto;
+}
+
+/* Container optimizations */
+.performance-container {
+  /* CSS containment for better performance */
+  contain: layout style paint;
+  /* Optimize repaints */
+  isolation: isolate;
+  /* IMPORTANT: avoid transform here so position: fixed headers stick to viewport */
+}
+
+/* Grid optimizations */
+.optimized-grid {
+  display: grid;
+  /* Use CSS Grid for better performance than flexbox in some cases */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  /* CSS containment */
+  contain: layout;
+}
+
+/* Flexbox optimizations */
+.optimized-flex {
+  display: flex;
+  /* Avoid flex-grow/shrink calculations when possible */
+  flex: none;
+  /* CSS containment */
+  contain: layout;
+}
+
+/* Image optimizations */
+.optimized-image {
+  /* Prevent layout shifts */
+  width: 100%;
+  height: auto;
+  /* Optimize image rendering */
+  image-rendering: optimizeQuality;
+  /* Hardware acceleration */
+  transform: translate3d(0, 0, 0);
+  /* Lazy loading hint */
+  content-visibility: auto;
+}
+
+/* Button optimizations */
+.optimized-button {
+  /* Reduce repaints on hover */
+  transition: background-color 0.2s ease-out, transform 0.2s ease-out;
+  /* Hardware acceleration */
+  transform: translate3d(0, 0, 0);
+  /* CSS containment */
+  contain: layout style;
+  /* Prevent text selection */
+  user-select: none;
+  /* Optimize touch interactions */
+  touch-action: manipulation;
+}
+
+.optimized-button:hover {
+  transform: translate3d(0, -1px, 0);
+}
+
+.optimized-button:active {
+  transform: translate3d(0, 0, 0);
+}
+
+/* Modal and overlay optimizations */
+.optimized-overlay {
+  /* Use backdrop-filter efficiently */
+  backdrop-filter: blur(8px);
+  /* Hardware acceleration */
+  transform: translate3d(0, 0, 0);
+  /* CSS containment */
+  contain: layout style paint;
+  /* Optimize for fixed positioning */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+/* Sidebar optimizations */
+.optimized-sidebar {
+  /* CSS containment for better performance */
+  contain: layout style paint;
+  /* Hardware acceleration */
+  transform: translate3d(0, 0, 0);
+  /* Optimize transitions */
+  transition: transform 0.3s ease-out;
+  /* Prevent content from affecting layout */
+  overflow: hidden;
+}
+
+/* Content area optimizations */
+.optimized-content {
+  /* CSS containment */
+  contain: layout style;
+  /* Hardware acceleration */
+  transform: translate3d(0, 0, 0);
+  /* Optimize scrolling */
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Momentum scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Dashboard specific optimizations */
+.dashboard-optimized {
+  /* Reduce layout calculations */
+  contain: layout;
+  /* Hardware acceleration */
+  transform: translate3d(0, 0, 0);
+  /* Optimize for large content */
+  content-visibility: auto;
+  contain-intrinsic-size: 1000px;
+}
+
+/* Stats card optimizations */
+.stats-card-optimized {
+  /* Simple shadow for better performance */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  /* Hardware acceleration */
+  transform: translate3d(0, 0, 0);
+  /* CSS containment */
+  contain: layout style paint;
+  /* Optimize transitions */
+  transition: transform 0.2s ease-out;
+}
+
+.stats-card-optimized:hover {
+  transform: translate3d(0, -1px, 0);
+}
+
+/* Notification optimizations */
+.notification-optimized {
+  /* Hardware acceleration */
+  transform: translate3d(0, 0, 0);
+  /* CSS containment */
+  contain: layout style;
+  /* Optimize animations */
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+}
+
+/* Form optimizations */
+.form-optimized {
+  /* CSS containment */
+  contain: layout;
+  /* Hardware acceleration */
+  transform: translate3d(0, 0, 0);
+}
+
+.form-optimized input,
+.form-optimized textarea,
+.form-optimized select {
+  /* Optimize input rendering */
+  transform: translate3d(0, 0, 0);
+  /* Reduce repaints */
+  transition: border-color 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+/* Table optimizations */
+.table-optimized {
+  /* CSS containment */
+  contain: layout;
+  /* Optimize large tables */
+  content-visibility: auto;
+  contain-intrinsic-size: 500px;
+}
+
+/* Media queries for performance */
+@media (prefers-reduced-motion: reduce) {
+  /* Disable animations for users who prefer reduced motion */
+  .fade-in-optimized,
+  .slide-up-optimized,
+  .hover-lift,
+  .optimized-button,
+  .stats-card-optimized,
+  .notification-optimized {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* High DPI optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .optimized-image {
+    image-rendering: -webkit-optimize-contrast;
+  }
+}
+
+/* Dark mode optimizations */
+@media (prefers-color-scheme: dark) {
+  .loading-skeleton {
+    background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+  }
+}

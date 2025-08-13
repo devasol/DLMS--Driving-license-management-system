@@ -1,0 +1,594 @@
+/* Keyframes for fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Go Back Home Button */
+.goBackHomeButton {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #0066cc 0%, #003399 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 102, 204, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.goBackHomeButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  background: linear-gradient(135deg, #0055aa 0%, #002277 100%);
+}
+
+.goBackHomeButton:active {
+  transform: translateY(0);
+}
+
+.backIcon {
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+}
+
+.homeIcon {
+  font-size: 0.9rem;
+}
+
+.backText {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.goBackHomeButton:hover .backIcon {
+  transform: translateX(-2px);
+}
+
+/* Amazing Main container with interactive background */
+.container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  animation: fadeIn 1s ease-in-out;
+  padding: 20px;
+  margin: 0;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+      circle at 20% 80%,
+      rgba(240, 147, 251, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(78, 205, 196, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 40% 40%,
+      rgba(102, 126, 234, 0.1) 0%,
+      transparent 50%
+    );
+  animation: backgroundPulse 8s ease-in-out infinite alternate;
+  z-index: 1;
+}
+
+@keyframes backgroundPulse {
+  0% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
+}
+
+/* Amazing Card layout with glassmorphism design */
+.loginContainer {
+  display: flex;
+  width: min(1100px, 90vw);
+  height: min(75vh, 600px);
+  max-height: 80vh;
+  border-radius: 25px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  animation: cardFloat 1.5s ease-in-out,
+    cardGlow 4s ease-in-out infinite alternate;
+  margin: 0;
+  position: relative;
+  z-index: 2;
+  transform: perspective(1000px) rotateX(1deg);
+  transition: all 0.3s ease;
+}
+
+.loginContainer:hover {
+  transform: perspective(1000px) rotateX(0deg) translateY(-5px);
+  box-shadow: 0 35px 70px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+@keyframes cardFloat {
+  0% {
+    opacity: 0;
+    transform: perspective(1000px) rotateX(10deg) translateY(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1000px) rotateX(1deg) translateY(0);
+  }
+}
+
+@keyframes cardGlow {
+  0% {
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2),
+      0 0 30px rgba(102, 126, 234, 0.1);
+  }
+  100% {
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2),
+      0 0 50px rgba(240, 147, 251, 0.2);
+  }
+}
+
+/* Amazing Left side with interactive welcome */
+.welcomeSide {
+  width: 40%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  color: white;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.welcomeSide::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+      circle at 30% 70%,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 70% 30%,
+      rgba(240, 147, 251, 0.1) 0%,
+      transparent 50%
+    );
+  animation: welcomeGlow 6s ease-in-out infinite alternate;
+  z-index: 1;
+}
+
+@keyframes welcomeGlow {
+  0% {
+    opacity: 0.3;
+    transform: scale(1) rotate(0deg);
+  }
+  100% {
+    opacity: 0.7;
+    transform: scale(1.1) rotate(5deg);
+  }
+}
+
+/* Decorative circles */
+.circle {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+}
+
+.circle1 {
+  width: 200px;
+  height: 200px;
+  bottom: -50px;
+  left: -50px;
+}
+
+.circle2 {
+  width: 150px;
+  height: 150px;
+  bottom: 50px;
+  left: 50px;
+}
+
+/* Welcome text styling */
+.welcomeTitle {
+  font-size: 2rem; /* Reduced from 2.2rem */
+  font-weight: 700;
+  margin-bottom: 5px; /* Reduced from 8px */
+  color: white;
+  position: relative;
+  z-index: 2;
+}
+
+.welcomeSubtitle {
+  font-size: 0.9rem;
+  margin-bottom: 10px; /* Reduced from 15px */
+  color: white;
+  opacity: 0.9;
+  position: relative;
+  z-index: 2;
+}
+
+.welcomeText {
+  font-size: 0.85rem;
+  color: white;
+  opacity: 0.8;
+  line-height: 1.4; /* Reduced from 1.5 */
+  position: relative;
+  z-index: 2;
+}
+
+/* Amazing Right side with glassmorphism form */
+.formSide {
+  width: 60%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  position: relative;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.formSide::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+      circle at 80% 20%,
+      rgba(102, 126, 234, 0.05) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 20% 80%,
+      rgba(240, 147, 251, 0.05) 0%,
+      transparent 50%
+    );
+  animation: formGlow 10s ease-in-out infinite alternate;
+  z-index: 1;
+}
+
+@keyframes formGlow {
+  0% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.7;
+  }
+}
+
+.formTitle {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(135deg, #333 0%, #667eea 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: titleShimmer 3s ease-in-out infinite alternate;
+}
+
+@keyframes titleShimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+.formSubtitle {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 25px;
+  position: relative;
+  z-index: 2;
+  opacity: 0.8;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  position: relative;
+  z-index: 2;
+}
+
+.inputForm {
+  border: 2px solid rgba(102, 126, 234, 0.2);
+  border-radius: 12px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding-left: 18px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.inputForm::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(102, 126, 234, 0.1),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.inputForm:focus-within {
+  border: 2px solid #667eea;
+  background: rgba(255, 255, 255, 0.95);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.15);
+}
+
+.inputForm:focus-within::before {
+  left: 100%;
+}
+
+.input {
+  margin-left: 12px;
+  border-radius: 12px;
+  border: none;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  color: #333;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.input:focus {
+  outline: none;
+  color: #667eea;
+}
+
+.input::placeholder {
+  color: #999;
+  font-weight: 400;
+  transition: all 0.3s ease;
+}
+
+.inputForm:focus-within .input::placeholder {
+  color: #667eea;
+  transform: translateX(3px);
+}
+
+.buttonSubmit {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  border: none;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  height: 50px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 15px;
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.buttonSubmit::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.buttonSubmit:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 50%, #e085e9 100%);
+}
+
+.buttonSubmit:hover::before {
+  left: 100%;
+}
+
+.buttonSubmit:active {
+  transform: translateY(-1px);
+}
+
+.buttonSubmit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.p {
+  text-align: center;
+  color: #666;
+  font-size: 0.95rem;
+  margin: 15px 0 8px;
+  position: relative;
+  z-index: 2;
+  opacity: 0.8;
+}
+
+.span {
+  color: #667eea;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 2;
+  padding: 2px 0;
+}
+
+.span:hover {
+  color: #f093fb;
+  text-shadow: 0 0 10px rgba(240, 147, 251, 0.3);
+}
+
+.inputRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.inputRow .inputForm {
+  flex: 1;
+  min-width: calc(50% - 10px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .container {
+    padding: 10px;
+    overflow-y: auto;
+  }
+
+  .loginContainer {
+    width: 95vw;
+    height: auto;
+    max-height: 90vh;
+    flex-direction: column;
+    overflow-y: auto;
+    margin: 10px 0;
+  }
+
+  .welcomeSide {
+    width: 100%;
+    padding: 20px;
+    min-height: 150px;
+  }
+
+  .formSide {
+    width: 100%;
+    padding: 20px;
+    overflow-y: auto;
+  }
+
+  .formTitle {
+    font-size: 1.5rem;
+  }
+
+  .welcomeTitle {
+    font-size: 1.8rem;
+  }
+}
+
+/* Amazing Dark Mode Specific Styles */
+[data-theme="dark"] .container {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+[data-theme="dark"] .loginContainer {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .formSide {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(25px);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .formTitle {
+  background: linear-gradient(135deg, #ffffff 0%, #4f9eff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-theme="dark"] .inputForm {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(79, 158, 255, 0.3);
+}
+
+[data-theme="dark"] .inputForm:focus-within {
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid #4f9eff;
+  box-shadow: 0 8px 20px rgba(79, 158, 255, 0.2);
+}
+
+[data-theme="dark"] .input {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="dark"] .inputForm:focus-within .input::placeholder {
+  color: #4f9eff;
+}
+
+[data-theme="dark"] .span:hover {
+  color: #4f9eff;
+  text-shadow: 0 0 10px rgba(79, 158, 255, 0.3);
+}

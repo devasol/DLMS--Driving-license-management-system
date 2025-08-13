@@ -1,0 +1,121 @@
+.alertBox {
+  position: fixed;
+  top: 20px; /* Positioned at top for better visibility */
+  right: 20px;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 10000; /* Higher z-index to ensure visibility */
+  animation: slideIn 0.3s ease-out;
+  min-width: 300px;
+  max-width: 400px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.alertContent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.message {
+  font-size: 14px;
+  line-height: 1.4;
+  flex-grow: 1;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.closeButton:hover {
+  opacity: 1;
+}
+
+/* Alert types */
+.success {
+  background-color: #f0fdf4;
+  border: 1px solid #86efac;
+}
+
+.error {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+}
+
+.warning {
+  background-color: #fffbeb;
+  border: 1px solid #fef3c7;
+}
+
+.info {
+  background-color: #f0f9ff;
+  border: 1px solid #bae6fd;
+}
+
+/* Icon colors */
+.success .icon {
+  color: #22c55e;
+}
+
+.error .icon {
+  color: #ef4444;
+}
+
+.warning .icon {
+  color: #f59e0b;
+}
+
+.info .icon {
+  color: #3b82f6;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .alertBox {
+    top: 20px; /* Keep consistent top position on mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .alertBox {
+    left: 20px;
+    right: 20px;
+    min-width: auto;
+    max-width: none;
+    top: 20px; /* Keep consistent top position on mobile */
+  }
+}
