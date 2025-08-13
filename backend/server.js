@@ -47,21 +47,48 @@ app.use(
   })
 ); // Basic security headers
 
-// CORS configuration
-app.use(
-  cors({
-    origin: [
-      "http://localhost:3000",
-      "http://localhost:5173",
-      "http://localhost:5174",
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-    credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"],
-    preflightContinue: false,
-    optionsSuccessStatus: 204,
-  })
+// CORS configuration (allow local dev and deployed frontend)
+const defaultAllowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "https://dlms-skjh.onrender.com",
+];
+
+const envAllowed = [];
+if (process.env.FRONTEND_URL) envAllowed.push(process.env.FRONTEND_URL.trim());
+if (process.env.FRONTEND_URLS) {
+  envAllowed.push(
+    ...process.env.FRONTEND_URLS.split(",")
+      .map((s) => s.trim())
+      .filter(Boolean)
+  );
+}
+
+const allowedOrigins = Array.from(
+  new Set([...defaultAllowedOrigins, ...envAllowed])
 );
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests with no origin (e.g., mobile apps, curl)
+    if (!origin) return callback(null, true);
+    const normalized = origin.replace(/\/$/, "");
+    const isAllowed = allowedOrigins.some(
+      (o) => o.replace(/\/$/, "") === normalized
+    );
+    if (isAllowed) return callback(null, true);
+    return callback(new Error(`Not allowed by CORS: ${origin}`));
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"],
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+// Handle preflight requests for all routes
+app.options("*", cors(corsOptions));
 
 // Body parsing middleware with limits
 app.use(express.json({ limit: "10mb" }));
