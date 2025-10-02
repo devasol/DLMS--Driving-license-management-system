@@ -62,7 +62,7 @@ const AdminTrialResults = () => {
   const handleViewResult = async (resultId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5003/api/trial/admin/results/${resultId}`
+        `https://dlms-driving-license-management-system-v1.onrender.com/api/trial/admin/results/${resultId}`
       );
       if (response.data.success) {
         setSelectedResult(response.data.result);
@@ -230,7 +230,7 @@ const AdminTrialResults = () => {
                         <Avatar
                           src={
                             result.userId?.profilePicture
-                              ? `http://localhost:5001/api/users/profile-picture/${result.userId.profilePicture}`
+                              ? `https://dlms-driving-license-management-system-v1.onrender.com/api/users/profile-picture/${result.userId.profilePicture}`
                               : undefined
                           }
                           sx={{ mr: 2, width: 40, height: 40 }}
@@ -337,7 +337,7 @@ const AdminTrialResults = () => {
                     <Avatar
                       src={
                         selectedResult.userId?.profilePicture
-                          ? `http://localhost:5001/api/users/profile-picture/${selectedResult.userId.profilePicture}`
+                          ? `https://dlms-driving-license-management-system-v1.onrender.com/api/users/profile-picture/${selectedResult.userId.profilePicture}`
                           : undefined
                       }
                       sx={{ mr: 2, width: 60, height: 60 }}

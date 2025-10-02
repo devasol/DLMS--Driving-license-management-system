@@ -198,7 +198,7 @@ const ApplicationStatus = ({ onClose, onCancel }) => {
 
   const handleDownloadDocument = (document) => {
     console.log("Downloading document:", document);
-    const downloadUrl = `http://localhost:5003/api/license/documents/${document.filename}`;
+    const downloadUrl = `https://dlms-driving-license-management-system-v1.onrender.com/api/license/documents/${document.filename}`;
     console.log("Download URL:", downloadUrl);
     const link = document.createElement("a");
     link.href = downloadUrl;
@@ -223,7 +223,7 @@ const ApplicationStatus = ({ onClose, onCancel }) => {
   };
 
   const getDocumentUrl = (filename) => {
-    return `http://localhost:5003/api/license/documents/${filename}`;
+    return `https://dlms-driving-license-management-system-v1.onrender.com/api/license/documents/${filename}`;
   };
 
   const getStatusColor = (status) => {

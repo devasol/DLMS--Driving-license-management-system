@@ -15,6 +15,8 @@ API base (production): https://dlms-driving-license-management-system-2.onrender
 
 - npm run build (output in dist/)
 - To point a production build at your API, set VITE_API_URL during build/deploy
+  - VITE_API_URL=https://dlms-driving-license-management-system-v1.onrender.com/api
+  - npm run dev (http://localhost:5173)
 
 ## Notes
 

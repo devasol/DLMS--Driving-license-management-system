@@ -115,13 +115,13 @@ const UserDetails = ({ open, user, onClose, onDelete }) => {
 
   const handleViewDocument = (document) => {
     console.log("Viewing document:", document);
-    const documentUrl = `http://localhost:5001/api/license/documents/${document.filename}`;
+    const documentUrl = `https://dlms-driving-license-management-system-v1.onrender.com/api/license/documents/${document.filename}`;
     window.open(documentUrl, "_blank");
   };
 
   const handleDownloadDocument = (document) => {
     console.log("Downloading document:", document);
-    const downloadUrl = `http://localhost:5001/api/license/documents/${document.filename}`;
+    const downloadUrl = `https://dlms-driving-license-management-system-v1.onrender.com/api/license/documents/${document.filename}`;
     const link = document.createElement("a");
     link.href = downloadUrl;
     link.download = document.originalName || document.filename;
@@ -167,7 +167,7 @@ const UserDetails = ({ open, user, onClose, onDelete }) => {
                 <Avatar
                   src={
                     user?.profilePicture
-                      ? `http://localhost:5001/api/users/profile-picture/${user.profilePicture}`
+                      ? `https://dlms-driving-license-management-system-v1.onrender.com/api/users/profile-picture/${user.profilePicture}`
                       : undefined
                   }
                   sx={{

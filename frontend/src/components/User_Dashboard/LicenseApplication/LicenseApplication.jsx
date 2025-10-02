@@ -346,13 +346,16 @@ const LicenseApplication = () => {
         );
 
         // Add notification for successful application
-        await axios.post("http://localhost:5003/api/notifications", {
-          user_id: userId,
-          title: "License Application Submitted",
-          message:
-            "Your driving license application has been submitted successfully. We will review it shortly.",
-          type: "success",
-        });
+        await axios.post(
+          "https://dlms-driving-license-management-system-v1.onrender.com/api/notifications",
+          {
+            user_id: userId,
+            title: "License Application Submitted",
+            message:
+              "Your driving license application has been submitted successfully. We will review it shortly.",
+            type: "success",
+          }
+        );
 
         // Reset form after successful submission
         setFormData({

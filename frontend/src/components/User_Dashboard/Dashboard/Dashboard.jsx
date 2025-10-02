@@ -874,7 +874,7 @@ const Dashboard = () => {
   const handleRenewalSubmit = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5003/api/license/renew",
+        "https://dlms-driving-license-management-system-v1.onrender.com/api/license/renew",
         renewalData
       );
       if (response.data.success) {
@@ -998,7 +998,7 @@ const Dashboard = () => {
   const cancelApplication = async (applicationId) => {
     try {
       const response = await axios.delete(
-        `http://localhost:5003/api/license/applications/${applicationId}`
+        `https://dlms-driving-license-management-system-v1.onrender.com/api/license/applications/${applicationId}`
       );
 
       if (response.data && response.data.success) {

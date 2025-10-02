@@ -121,7 +121,7 @@ const ApplicationsList = () => {
   const handleUpdateStatus = async () => {
     try {
       await axios.patch(
-        `http://localhost:5003/api/license/admin/applications/${selectedApplication._id}/status`,
+        `https://dlms-driving-license-management-system-v1.onrender.com/api/license/admin/applications/${selectedApplication._id}/status`,
         {
           ...statusUpdate,
           adminId,
@@ -148,7 +148,7 @@ const ApplicationsList = () => {
   const handleMarkUnderReview = async (applicationId) => {
     try {
       await axios.patch(
-        `http://localhost:5003/api/license/admin/applications/${applicationId}/review`,
+        `https://dlms-driving-license-management-system-v1.onrender.com/api/license/admin/applications/${applicationId}/review`,
         { adminId }
       );
 
