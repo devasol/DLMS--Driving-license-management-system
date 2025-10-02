@@ -89,12 +89,9 @@ const Header = () => {
       const token = localStorage.getItem("token"); // Fixed: changed from "userToken" to "token"
 
       if (userId && token) {
-        const response = await axios.get(
-          `http://localhost:5004/api/notifications/user/${userId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await axios.get(`/api/notifications/user/${userId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setNotifications(response.data || []);
         const unread = (response.data || []).filter((n) => !n.seen).length;
         setUnreadCount(unread);
@@ -125,17 +122,19 @@ const Header = () => {
     navigate(isAdmin ? "/admin/dashboard" : "/dashboard");
   };
 
+  // Open the logout confirmation modal
+  const handleLogout = () => {
+    setShowDropdown(false);
+    setShowLogoutModal(true);
+  };
+
   const getInitial = (name) => {
     return name && typeof name === "string"
       ? name.charAt(0).toUpperCase()
       : "U";
   };
 
-  const handleLogout = () => {
-    console.log("Logout clicked, showing modal");
-    setShowLogoutModal(true);
-    setShowDropdown(false);
-  };
+  // ...existing code...
 
   const confirmLogout = () => {
     localStorage.removeItem("userName");
@@ -169,7 +168,7 @@ const Header = () => {
     try {
       const token = localStorage.getItem("token"); // Fixed: changed from "userToken" to "token"
       await axios.patch(
-        `http://localhost:5004/api/notifications/${notificationId}/seen`,
+        `/api/notifications/${notificationId}/seen`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },

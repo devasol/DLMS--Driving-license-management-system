@@ -86,9 +86,7 @@ const LicenseManagement = () => {
         params.append("status", statusFilter);
       }
 
-      const response = await axios.get(
-        `http://localhost:5004/api/payments/licenses?${params}`
-      );
+      const response = await axios.get(`/api/payments/licenses?${params}`);
 
       if (response.data.success) {
         setLicenses(response.data.licenses);
@@ -106,9 +104,7 @@ const LicenseManagement = () => {
       setLoading(true);
 
       // Get all payments that are verified but don't have licenses yet
-      const response = await axios.get(
-        "http://localhost:5004/api/payments/all"
-      );
+      const response = await axios.get("/api/payments/all");
 
       if (response.data.success) {
         const verifiedPayments = response.data.payments.filter(
@@ -121,7 +117,7 @@ const LicenseManagement = () => {
         for (const payment of verifiedPayments) {
           try {
             const eligibilityResponse = await axios.get(
-              `http://localhost:5004/api/payments/license/eligibility/${payment.userId._id}`
+              `/api/payments/license/eligibility/${payment.userId._id}`
             );
 
             if (
@@ -166,7 +162,7 @@ const LicenseManagement = () => {
       console.log(`🎫 Issuing license for payment ${payment._id}`);
 
       const response = await axios.post(
-        `http://localhost:5004/api/payments/license/issue/${payment._id}`,
+        `/api/payments/license/issue/${payment._id}`,
         {
           adminId: adminId,
           adminNotes: "License issued by admin",
@@ -222,7 +218,7 @@ const LicenseManagement = () => {
       console.log(`📄 Downloading license for user ${license.userId._id}`);
 
       const response = await axios.get(
-        `http://localhost:5004/api/payments/license/download/${license.userId._id}`,
+        `/api/payments/license/download/${license.userId._id}`,
         {
           responseType: "blob",
         }

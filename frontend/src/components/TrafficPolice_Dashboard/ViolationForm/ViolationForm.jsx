@@ -55,13 +55,21 @@ const ViolationForm = ({ onSuccess }) => {
     { value: "No License", label: "Driving Without License", points: 8 },
     { value: "Expired License", label: "Expired License", points: 4 },
     { value: "No Insurance", label: "No Insurance", points: 5 },
-    { value: "Mobile Phone Use", label: "Mobile Phone Use While Driving", points: 3 },
+    {
+      value: "Mobile Phone Use",
+      label: "Mobile Phone Use While Driving",
+      points: 3,
+    },
     { value: "Seatbelt Violation", label: "Seatbelt Violation", points: 2 },
     { value: "Wrong Way Driving", label: "Wrong Way Driving", points: 5 },
     { value: "Overtaking Violation", label: "Illegal Overtaking", points: 4 },
     { value: "Lane Violation", label: "Lane Violation", points: 2 },
     { value: "Signal Violation", label: "Signal Violation", points: 3 },
-    { value: "Pedestrian Violation", label: "Pedestrian Right of Way Violation", points: 4 },
+    {
+      value: "Pedestrian Violation",
+      label: "Pedestrian Right of Way Violation",
+      points: 4,
+    },
   ];
 
   useEffect(() => {
@@ -91,7 +99,11 @@ const ViolationForm = ({ onSuccess }) => {
       return;
     }
 
-    if (!violationData.violationType || !violationData.points || !violationData.location) {
+    if (
+      !violationData.violationType ||
+      !violationData.points ||
+      !violationData.location
+    ) {
       setSnackbar({
         open: true,
         message: "Please fill in all required fields.",
@@ -105,7 +117,7 @@ const ViolationForm = ({ onSuccess }) => {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        "http://localhost:5004/api/traffic-police/violations",
+        "/api/traffic-police/violations",
         {
           userId: selectedLicense.userId,
           licenseNumber: selectedLicense.number,
@@ -150,7 +162,7 @@ const ViolationForm = ({ onSuccess }) => {
     } catch (error) {
       console.error("Error recording violation:", error);
       let errorMessage = "Error recording violation. Please try again.";
-      
+
       if (error.response?.data?.message) {
         errorMessage = error.response.data.message;
       } else if (error.response?.status === 401) {
@@ -229,7 +241,7 @@ const ViolationForm = ({ onSuccess }) => {
                     </Typography>
                   </Box>
                   <Divider sx={{ mb: 2 }} />
-                  
+
                   <Box mb={2}>
                     <Typography variant="subtitle2" color="text.secondary">
                       Driver Name
@@ -238,7 +250,7 @@ const ViolationForm = ({ onSuccess }) => {
                       {selectedLicense.userName}
                     </Typography>
                   </Box>
-                  
+
                   <Box mb={2}>
                     <Typography variant="subtitle2" color="text.secondary">
                       License Number
@@ -247,7 +259,7 @@ const ViolationForm = ({ onSuccess }) => {
                       {selectedLicense.number}
                     </Typography>
                   </Box>
-                  
+
                   <Box mb={2}>
                     <Typography variant="subtitle2" color="text.secondary">
                       Current Points
@@ -258,14 +270,16 @@ const ViolationForm = ({ onSuccess }) => {
                       size="small"
                     />
                   </Box>
-                  
+
                   <Box>
                     <Typography variant="subtitle2" color="text.secondary">
                       License Status
                     </Typography>
                     <Chip
                       label={selectedLicense.status}
-                      color={selectedLicense.status === "Valid" ? "success" : "error"}
+                      color={
+                        selectedLicense.status === "Valid" ? "success" : "error"
+                      }
                       size="small"
                     />
                   </Box>
@@ -299,7 +313,9 @@ const ViolationForm = ({ onSuccess }) => {
                         <InputLabel>Violation Type</InputLabel>
                         <Select
                           value={violationData.violationType}
-                          onChange={(e) => handleViolationTypeChange(e.target.value)}
+                          onChange={(e) =>
+                            handleViolationTypeChange(e.target.value)
+                          }
                           label="Violation Type"
                         >
                           {violationTypes.map((type) => (
@@ -390,7 +406,13 @@ const ViolationForm = ({ onSuccess }) => {
                         </Button>
                         <Button
                           variant="contained"
-                          startIcon={loading ? <CircularProgress size={20} /> : <SaveIcon />}
+                          startIcon={
+                            loading ? (
+                              <CircularProgress size={20} />
+                            ) : (
+                              <SaveIcon />
+                            )
+                          }
                           onClick={handleSubmit}
                           disabled={loading}
                           color="warning"
@@ -412,7 +434,8 @@ const ViolationForm = ({ onSuccess }) => {
           transition={{ duration: 0.5, delay: 0.1 }}
         >
           <Alert severity="info" sx={{ mt: 2 }}>
-            No license selected. Please search for a license first using the License Search feature.
+            No license selected. Please search for a license first using the
+            License Search feature.
           </Alert>
         </motion.div>
       )}

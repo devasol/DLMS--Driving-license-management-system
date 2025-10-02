@@ -331,7 +331,7 @@ const LicenseApplication = () => {
       formDataToSend.append("userId", userId);
 
       const response = await axios.post(
-        "http://localhost:5004/api/license/applications",
+        "/api/license/applications",
         formDataToSend,
         {
           headers: {

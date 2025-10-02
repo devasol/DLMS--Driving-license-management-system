@@ -113,9 +113,9 @@ const ViolationsManagement = () => {
   const fetchViolations = async () => {
     try {
       setLoading(true);
-      let url = "http://localhost:5004/api/admin/violations";
+      let url = "/api/admin/violations";
       if (selectedUserId) {
-        url = `http://localhost:5004/api/admin/violations/user/${selectedUserId}`;
+        url = `/api/admin/violations/user/${selectedUserId}`;
       }
       const token = localStorage.getItem("token");
       const response = await axios.get(url, {
@@ -153,14 +153,11 @@ const ViolationsManagement = () => {
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(
-        "http://localhost:5004/api/admin/users",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get("/api/admin/users", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setUsers(response.data);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -183,15 +180,11 @@ const ViolationsManagement = () => {
       }
 
       const token = localStorage.getItem("token");
-      await axios.post(
-        "http://localhost:5004/api/admin/violations",
-        newViolation,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axios.post("/api/admin/violations", newViolation, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       setSnackbar({
         open: true,
@@ -237,7 +230,7 @@ const ViolationsManagement = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `http://localhost:5004/api/admin/violations/${selectedViolation._id}`,
+        `/api/admin/violations/${selectedViolation._id}`,
         selectedViolation,
         {
           headers: {
@@ -269,14 +262,11 @@ const ViolationsManagement = () => {
     if (window.confirm("Are you sure you want to delete this violation?")) {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(
-          `http://localhost:5004/api/admin/violations/${violationId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        await axios.delete(`/api/admin/violations/${violationId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         setSnackbar({
           open: true,

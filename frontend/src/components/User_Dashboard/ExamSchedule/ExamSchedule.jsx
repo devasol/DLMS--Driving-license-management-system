@@ -63,14 +63,12 @@ const ExamSchedule = () => {
       }
 
       // Fetch written exams
-      const writtenResponse = await axios.get(
-        `http://localhost:5004/api/exams/written/${userId}`
-      );
+      const writtenResponse = await axios.get(`/api/exams/written/${userId}`);
       setWrittenExams(writtenResponse.data);
 
       // Fetch practical exams
       const practicalResponse = await axios.get(
-        `http://localhost:5004/api/exams/practical/${userId}`
+        `/api/exams/practical/${userId}`
       );
       setPracticalExams(practicalResponse.data);
 
@@ -84,15 +82,17 @@ const ExamSchedule = () => {
   };
 
   const handleCancelExam = async (examId, examType) => {
-    if (!window.confirm("Are you sure you want to cancel this exam? This action cannot be undone.")) {
+    if (
+      !window.confirm(
+        "Are you sure you want to cancel this exam? This action cannot be undone."
+      )
+    ) {
       return;
     }
 
     try {
       // Use the correct API endpoint and port
-      await axios.delete(
-        `http://localhost:5004/api/exams/schedules/${examId}`
-      );
+      await axios.delete(`/api/exams/schedules/${examId}`);
 
       // Update the local state
       if (examType === "theory" || examType === "written") {
@@ -105,14 +105,20 @@ const ExamSchedule = () => {
       setTimeout(() => setSuccessMessage(""), 3000);
     } catch (err) {
       console.error("Error canceling exam:", err);
-      setError("Failed to cancel exam: " + (err.response?.data?.message || err.message));
+      setError(
+        "Failed to cancel exam: " + (err.response?.data?.message || err.message)
+      );
       setTimeout(() => setError(""), 5000);
     }
   };
 
   const handleEditExam = (exam) => {
     // For now, just show an alert. In a full implementation, this would open an edit dialog
-    alert(`Edit functionality for ${exam.type} exam on ${new Date(exam.date).toLocaleDateString()} is not yet implemented. Please cancel and reschedule if needed.`);
+    alert(
+      `Edit functionality for ${exam.type} exam on ${new Date(
+        exam.date
+      ).toLocaleDateString()} is not yet implemented. Please cancel and reschedule if needed.`
+    );
   };
 
   const formatDate = (dateString) => {
@@ -179,7 +185,13 @@ const ExamSchedule = () => {
         <List>
           {examSchedules.map((exam) => (
             <StyledPaper key={exam._id} sx={{ mb: 2, p: 2 }}>
-              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                     {exam.type === "theory" ? (
@@ -191,15 +203,34 @@ const ExamSchedule = () => {
                       <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                         {exam.type === "theory" ? "Theory" : "Practical"} Exam
                       </Typography>
-                      <Box sx={{ display: "flex", alignItems: "center", gap: 2, mt: 0.5 }}>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 2,
+                          mt: 0.5,
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 0.5,
+                          }}
+                        >
                           <Event fontSize="small" color="action" />
                           <Typography variant="body2" color="text.secondary">
                             {formatDate(exam.date)}
                           </Typography>
                         </Box>
                         {exam.time && (
-                          <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 0.5,
+                            }}
+                          >
                             <AccessTime fontSize="small" color="action" />
                             <Typography variant="body2" color="text.secondary">
                               {formatTime(exam.time)}
@@ -207,7 +238,13 @@ const ExamSchedule = () => {
                           </Box>
                         )}
                         {exam.location && (
-                          <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 0.5,
+                            }}
+                          >
                             <LocationOn fontSize="small" color="action" />
                             <Typography variant="body2" color="text.secondary">
                               {exam.location}
@@ -223,10 +260,15 @@ const ExamSchedule = () => {
                   <Chip
                     label={exam.status}
                     color={
-                      exam.status === "scheduled" ? "primary" :
-                      exam.status === "approved" ? "success" :
-                      exam.status === "completed" ? "success" :
-                      exam.status === "rejected" ? "error" : "default"
+                      exam.status === "scheduled"
+                        ? "primary"
+                        : exam.status === "approved"
+                        ? "success"
+                        : exam.status === "completed"
+                        ? "success"
+                        : exam.status === "rejected"
+                        ? "error"
+                        : "default"
                     }
                     size="small"
                   />

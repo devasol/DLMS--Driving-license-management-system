@@ -153,9 +153,7 @@ const AdminUsers = () => {
       // First check if the database is connected
       let dbStatus;
       try {
-        const dbStatusResponse = await axios.get(
-          "http://localhost:5004/api/db-status"
-        );
+        const dbStatusResponse = await axios.get("/api/db-status");
         dbStatus = dbStatusResponse.data;
         console.log("Database status:", dbStatus);
 
@@ -175,7 +173,7 @@ const AdminUsers = () => {
       let response;
       const token = localStorage.getItem("token");
       try {
-        response = await axios.get("http://localhost:5004/api/admin/users", {
+        response = await axios.get("/api/admin/users", {
           timeout: 10000, // 10 second timeout
           headers: {
             Authorization: `Bearer ${token}`,
@@ -187,7 +185,7 @@ const AdminUsers = () => {
 
         // If that fails, try the direct users endpoint
         try {
-          response = await axios.get("http://localhost:5004/api/users", {
+          response = await axios.get("/api/users", {
             timeout: 10000,
             headers: {
               Authorization: `Bearer ${token}`,
@@ -295,15 +293,12 @@ const AdminUsers = () => {
 
       console.log(`Fetching details for user ID: ${user._id}`);
       const token = localStorage.getItem("token");
-      const response = await axios.get(
-        `http://localhost:5004/api/admin/users/${user._id}`,
-        {
-          timeout: 5000,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get(`/api/admin/users/${user._id}`, {
+        timeout: 5000,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       console.log("User details response:", response.data);
       setSelectedUser(response.data);
@@ -396,7 +391,7 @@ const AdminUsers = () => {
 
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        `http://localhost:5004/api/admin/users/${editUser._id}`,
+        `/api/admin/users/${editUser._id}`,
         editUser,
         {
           headers: {
@@ -453,14 +448,11 @@ const AdminUsers = () => {
       try {
         console.log(`Deleting user with ID: ${userId}`);
         const token = localStorage.getItem("token");
-        const response = await axios.delete(
-          `http://localhost:5004/api/admin/users/${userId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.delete(`/api/admin/users/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (response.data) {
           setUsers(users.filter((user) => user._id !== userId));
@@ -582,15 +574,11 @@ const AdminUsers = () => {
       console.log("Creating new user:", userData);
 
       const token = localStorage.getItem("token");
-      const response = await axios.post(
-        "http://localhost:5004/api/auth/register",
-        userData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.post("/api/auth/register", userData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (response.data) {
         setSnackbar({
@@ -621,7 +609,7 @@ const AdminUsers = () => {
   // Add a debug function to check API connection
   const checkApiConnection = async () => {
     try {
-      const response = await axios.get("http://localhost:5004/api");
+      const response = await axios.get("/api");
       console.log("API connection test:", response.data);
 
       setSnackbar({
@@ -650,7 +638,7 @@ const AdminUsers = () => {
 
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "http://localhost:5004/api/admin/seed-users",
+        "/api/admin/seed-users",
         {},
         {
           timeout: 10000,
@@ -944,7 +932,7 @@ const AdminUsers = () => {
                           <Avatar
                             src={
                               user.profilePicture
-                                ? `http://localhost:5004/api/users/profile-picture/${user.profilePicture}`
+                                ? `/api/users/profile-picture/${user.profilePicture}`
                                 : undefined
                             }
                             sx={{

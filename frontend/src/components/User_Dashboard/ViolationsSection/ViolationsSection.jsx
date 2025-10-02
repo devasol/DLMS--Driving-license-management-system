@@ -52,7 +52,7 @@ const ViolationsSection = ({ onClose }) => {
       }
 
       const response = await axios.get(
-        `http://localhost:5004/api/license/violations/user/${userId}`
+        `/api/license/violations/user/${userId}`
       );
 
       // Handle the new response format

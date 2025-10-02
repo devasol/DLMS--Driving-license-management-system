@@ -45,7 +45,11 @@ const AvailableExams = () => {
   const [selectedExam, setSelectedExam] = useState(null);
   const [openAssignDialog, setOpenAssignDialog] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "info" });
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "info",
+  });
 
   useEffect(() => {
     fetchAvailableExams();
@@ -55,7 +59,7 @@ const AvailableExams = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `http://localhost:5004/api/examiner/available-for-assignment`,
+        `/api/examiner/available-for-assignment`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -66,7 +70,7 @@ const AvailableExams = () => {
       setSnackbar({
         open: true,
         message: "Error fetching available exams",
-        severity: "error"
+        severity: "error",
       });
     } finally {
       setLoading(false);
@@ -77,7 +81,7 @@ const AvailableExams = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        `http://localhost:5004/api/examiner/assign/${exam._id}`,
+        `/api/examiner/assign/${exam._id}`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -88,11 +92,11 @@ const AvailableExams = () => {
         setSnackbar({
           open: true,
           message: "Exam assigned successfully!",
-          severity: "success"
+          severity: "success",
         });
-        
+
         // Remove the assigned exam from the list
-        setAvailableExams(prev => prev.filter(e => e._id !== exam._id));
+        setAvailableExams((prev) => prev.filter((e) => e._id !== exam._id));
         setOpenAssignDialog(false);
       }
     } catch (error) {
@@ -100,55 +104,82 @@ const AvailableExams = () => {
       setSnackbar({
         open: true,
         message: "Error assigning exam",
-        severity: "error"
+        severity: "error",
       });
     }
   };
 
-  const filteredExams = availableExams.filter(exam =>
-    exam.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    exam.location?.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredExams = availableExams.filter(
+    (exam) =>
+      exam.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      exam.location?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (loading) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
         <LinearProgress sx={{ width: "50%" }} />
       </Box>
     );
   }
 
   return (
-    <Box sx={{ 
-      minHeight: "100vh", 
-      background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-      p: { xs: 2, sm: 3 }
-    }}>
+    <Box
+      sx={{
+        minHeight: "100vh",
+        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        p: { xs: 2, sm: 3 },
+      }}
+    >
       {/* Header */}
-      <Paper 
+      <Paper
         elevation={3}
-        sx={{ 
-          p: { xs: 2, sm: 3 }, 
-          mb: 3, 
+        sx={{
+          p: { xs: 2, sm: 3 },
+          mb: 3,
           borderRadius: "20px",
-          background: "linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)"
+          background: "linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)",
         }}
       >
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: 2,
+          }}
+        >
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <IconButton onClick={() => navigate("/examiner/dashboard")}>
               <BackIcon />
             </IconButton>
             <Box>
-              <Typography variant="h4" fontWeight="bold" color="primary" sx={{ fontSize: { xs: "1.5rem", sm: "2rem" } }}>
+              <Typography
+                variant="h4"
+                fontWeight="bold"
+                color="primary"
+                sx={{ fontSize: { xs: "1.5rem", sm: "2rem" } }}
+              >
                 Available Practical Exams
               </Typography>
-              <Typography variant="body1" color="text.secondary" sx={{ fontSize: { xs: "0.875rem", sm: "1rem" } }}>
+              <Typography
+                variant="body1"
+                color="text.secondary"
+                sx={{ fontSize: { xs: "0.875rem", sm: "1rem" } }}
+              >
                 View and assign yourself to available practical driving tests
               </Typography>
             </Box>
           </Box>
-          <Chip 
+          <Chip
             label={`${filteredExams.length} Available`}
             color="primary"
             sx={{ fontSize: { xs: "0.75rem", sm: "0.875rem" } }}
@@ -190,11 +221,16 @@ const AvailableExams = () => {
 
       {/* Available Exams List */}
       <Paper elevation={3} sx={{ p: 3, borderRadius: "20px" }}>
-        <Typography variant="h5" fontWeight="bold" gutterBottom sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+        <Typography
+          variant="h5"
+          fontWeight="bold"
+          gutterBottom
+          sx={{ display: "flex", alignItems: "center", gap: 1 }}
+        >
           <AssignmentIcon color="primary" />
           Available Exams ({filteredExams.length})
         </Typography>
-        
+
         {filteredExams.length === 0 ? (
           <Box sx={{ textAlign: "center", py: 6 }}>
             <CarIcon sx={{ fontSize: 80, color: "text.secondary", mb: 2 }} />
@@ -202,7 +238,9 @@ const AvailableExams = () => {
               No available exams found
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {searchTerm ? "Try adjusting your search criteria" : "All practical exams have been assigned"}
+              {searchTerm
+                ? "Try adjusting your search criteria"
+                : "All practical exams have been assigned"}
             </Typography>
           </Box>
         ) : (
@@ -223,19 +261,30 @@ const AvailableExams = () => {
                     "&:hover": { backgroundColor: "#f5f5f5" },
                     flexDirection: { xs: "column", sm: "row" },
                     alignItems: { xs: "stretch", sm: "center" },
-                    p: { xs: 2, sm: 3 }
+                    p: { xs: 2, sm: 3 },
                   }}
                 >
-                  <ListItemIcon sx={{ minWidth: { xs: "auto", sm: 56 }, mb: { xs: 1, sm: 0 } }}>
-                    <Avatar sx={{ bgcolor: "primary.main", width: { xs: 40, sm: 48 }, height: { xs: 40, sm: 48 } }}>
+                  <ListItemIcon
+                    sx={{
+                      minWidth: { xs: "auto", sm: 56 },
+                      mb: { xs: 1, sm: 0 },
+                    }}
+                  >
+                    <Avatar
+                      sx={{
+                        bgcolor: "primary.main",
+                        width: { xs: 40, sm: 48 },
+                        height: { xs: 40, sm: 48 },
+                      }}
+                    >
                       <PersonIcon />
                     </Avatar>
                   </ListItemIcon>
                   <ListItemText
                     sx={{ flex: 1, mb: { xs: 2, sm: 0 } }}
                     primary={
-                      <Typography 
-                        variant="h6" 
+                      <Typography
+                        variant="h6"
                         fontWeight="bold"
                         sx={{ fontSize: { xs: "1rem", sm: "1.25rem" } }}
                       >
@@ -244,18 +293,30 @@ const AvailableExams = () => {
                     }
                     secondary={
                       <Box>
-                        <Typography 
-                          variant="body2" 
+                        <Typography
+                          variant="body2"
                           color="text.secondary"
-                          sx={{ fontSize: { xs: "0.75rem", sm: "0.875rem" }, display: "flex", alignItems: "center", gap: 0.5, mb: 0.5 }}
+                          sx={{
+                            fontSize: { xs: "0.75rem", sm: "0.875rem" },
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 0.5,
+                            mb: 0.5,
+                          }}
                         >
                           <ScheduleIcon fontSize="small" />
-                          {new Date(exam.date).toLocaleDateString()} at {exam.time}
+                          {new Date(exam.date).toLocaleDateString()} at{" "}
+                          {exam.time}
                         </Typography>
-                        <Typography 
-                          variant="body2" 
+                        <Typography
+                          variant="body2"
                           color="text.secondary"
-                          sx={{ fontSize: { xs: "0.75rem", sm: "0.875rem" }, display: "flex", alignItems: "center", gap: 0.5 }}
+                          sx={{
+                            fontSize: { xs: "0.75rem", sm: "0.875rem" },
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 0.5,
+                          }}
                         >
                           <LocationIcon fontSize="small" />
                           {exam.location}
@@ -269,12 +330,14 @@ const AvailableExams = () => {
                       </Box>
                     }
                   />
-                  <Box sx={{ 
-                    display: "flex", 
-                    gap: 1, 
-                    flexDirection: { xs: "column", sm: "row" },
-                    width: { xs: "100%", sm: "auto" }
-                  }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      gap: 1,
+                      flexDirection: { xs: "column", sm: "row" },
+                      width: { xs: "100%", sm: "auto" },
+                    }}
+                  >
                     <Button
                       variant="contained"
                       size="small"
@@ -283,10 +346,10 @@ const AvailableExams = () => {
                         setSelectedExam(exam);
                         setOpenAssignDialog(true);
                       }}
-                      sx={{ 
+                      sx={{
                         borderRadius: "8px",
                         fontSize: { xs: "0.75rem", sm: "0.875rem" },
-                        px: { xs: 2, sm: 3 }
+                        px: { xs: 2, sm: 3 },
                       }}
                     >
                       Assign to Me
@@ -300,19 +363,26 @@ const AvailableExams = () => {
       </Paper>
 
       {/* Assignment Confirmation Dialog */}
-      <Dialog open={openAssignDialog} onClose={() => setOpenAssignDialog(false)} maxWidth="sm" fullWidth>
+      <Dialog
+        open={openAssignDialog}
+        onClose={() => setOpenAssignDialog(false)}
+        maxWidth="sm"
+        fullWidth
+      >
         <DialogTitle>Confirm Exam Assignment</DialogTitle>
         <DialogContent>
           {selectedExam && (
             <Box>
               <Typography gutterBottom>
-                Are you sure you want to assign yourself to conduct the practical exam for:
+                Are you sure you want to assign yourself to conduct the
+                practical exam for:
               </Typography>
               <Typography variant="h6" color="primary" gutterBottom>
                 {selectedExam.fullName}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                📅 {new Date(selectedExam.date).toLocaleDateString()} at {selectedExam.time}
+                📅 {new Date(selectedExam.date).toLocaleDateString()} at{" "}
+                {selectedExam.time}
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 📍 {selectedExam.location}
@@ -322,8 +392,8 @@ const AvailableExams = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenAssignDialog(false)}>Cancel</Button>
-          <Button 
-            onClick={() => handleAssignExam(selectedExam)} 
+          <Button
+            onClick={() => handleAssignExam(selectedExam)}
             variant="contained"
             startIcon={<AssignmentIcon />}
           >
@@ -338,9 +408,7 @@ const AvailableExams = () => {
         autoHideDuration={6000}
         onClose={() => setSnackbar({ ...snackbar, open: false })}
       >
-        <Alert severity={snackbar.severity}>
-          {snackbar.message}
-        </Alert>
+        <Alert severity={snackbar.severity}>{snackbar.message}</Alert>
       </Snackbar>
     </Box>
   );

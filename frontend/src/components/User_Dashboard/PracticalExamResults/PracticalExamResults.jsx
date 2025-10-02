@@ -50,7 +50,7 @@ const PracticalExamResults = ({ onClose }) => {
 
       // Use the dedicated practical exam results endpoint for better data consistency
       const response = await axios.get(
-        `http://localhost:5004/api/exams/practical-results/${userId}`
+        `/api/exams/practical-results/${userId}`
       );
 
       if (response.data.success) {

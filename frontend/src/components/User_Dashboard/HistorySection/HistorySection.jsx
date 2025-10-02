@@ -107,7 +107,7 @@ const HistorySection = ({ onClose }) => {
     try {
       setLoading(true);
       const userId = localStorage.getItem("userId");
-      
+
       if (!userId) {
         setError("User not found. Please log in again.");
         return;
@@ -119,13 +119,14 @@ const HistorySection = ({ onClose }) => {
         limit: 10,
       });
 
-      if (filters.activityType) params.append("activityType", filters.activityType);
+      if (filters.activityType)
+        params.append("activityType", filters.activityType);
       if (filters.status) params.append("status", filters.status);
       if (filters.startDate) params.append("startDate", filters.startDate);
       if (filters.endDate) params.append("endDate", filters.endDate);
 
       const response = await axios.get(
-        `http://localhost:5004/api/user-activity/${userId}/history?${params}`
+        `/api/user-activity/${userId}/history?${params}`
       );
 
       if (response.data.success) {
@@ -144,9 +145,7 @@ const HistorySection = ({ onClose }) => {
   const fetchUserStats = async () => {
     try {
       const userId = localStorage.getItem("userId");
-      const response = await axios.get(
-        `http://localhost:5004/api/user-activity/${userId}/stats`
-      );
+      const response = await axios.get(`/api/user-activity/${userId}/stats`);
 
       if (response.data.success) {
         setStats(response.data.data);
@@ -155,8 +154,6 @@ const HistorySection = ({ onClose }) => {
       console.error("Error fetching user stats:", error);
     }
   };
-
-
 
   const getActivityIcon = (activityType, status) => {
     const iconMap = {
@@ -222,7 +219,7 @@ const HistorySection = ({ onClose }) => {
   };
 
   const handleFilterChange = (field, value) => {
-    setFilters(prev => ({ ...prev, [field]: value }));
+    setFilters((prev) => ({ ...prev, [field]: value }));
     setCurrentPage(1);
   };
 
@@ -238,7 +235,15 @@ const HistorySection = ({ onClose }) => {
 
   if (loading) {
     return (
-      <Box sx={{ p: 3, display: "flex", justifyContent: "center", alignItems: "center", minHeight: 400 }}>
+      <Box
+        sx={{
+          p: 3,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: 400,
+        }}
+      >
         <CircularProgress />
       </Box>
     );
@@ -273,7 +278,10 @@ const HistorySection = ({ onClose }) => {
           <Typography variant="h4" sx={{ fontWeight: "bold", color: "white" }}>
             Activity History
           </Typography>
-          <Typography variant="subtitle1" sx={{ color: "rgba(255,255,255,0.8)" }}>
+          <Typography
+            variant="subtitle1"
+            sx={{ color: "rgba(255,255,255,0.8)" }}
+          >
             Your complete activity timeline and statistics
           </Typography>
         </Box>
@@ -286,16 +294,8 @@ const HistorySection = ({ onClose }) => {
           onChange={(e, newValue) => setActiveTab(newValue)}
           variant="fullWidth"
         >
-          <Tab
-            icon={<TimelineIcon />}
-            label="Timeline"
-            iconPosition="start"
-          />
-          <Tab
-            icon={<StatsIcon />}
-            label="Statistics"
-            iconPosition="start"
-          />
+          <Tab icon={<TimelineIcon />} label="Timeline" iconPosition="start" />
+          <Tab icon={<StatsIcon />} label="Statistics" iconPosition="start" />
         </Tabs>
       </Paper>
 
@@ -305,7 +305,10 @@ const HistorySection = ({ onClose }) => {
           {/* Filters */}
           <Card sx={{ mb: 3 }}>
             <CardContent>
-              <Typography variant="h6" sx={{ mb: 2, display: "flex", alignItems: "center" }}>
+              <Typography
+                variant="h6"
+                sx={{ mb: 2, display: "flex", alignItems: "center" }}
+              >
                 <FilterIcon sx={{ mr: 1 }} />
                 Filters
               </Typography>
@@ -315,7 +318,9 @@ const HistorySection = ({ onClose }) => {
                     <InputLabel>Activity Type</InputLabel>
                     <Select
                       value={filters.activityType}
-                      onChange={(e) => handleFilterChange("activityType", e.target.value)}
+                      onChange={(e) =>
+                        handleFilterChange("activityType", e.target.value)
+                      }
                       label="Activity Type"
                     >
                       {activityTypes.map((type) => (
@@ -331,7 +336,9 @@ const HistorySection = ({ onClose }) => {
                     <InputLabel>Status</InputLabel>
                     <Select
                       value={filters.status}
-                      onChange={(e) => handleFilterChange("status", e.target.value)}
+                      onChange={(e) =>
+                        handleFilterChange("status", e.target.value)
+                      }
                       label="Status"
                     >
                       {statusTypes.map((status) => (
@@ -349,7 +356,9 @@ const HistorySection = ({ onClose }) => {
                     label="Start Date"
                     type="date"
                     value={filters.startDate}
-                    onChange={(e) => handleFilterChange("startDate", e.target.value)}
+                    onChange={(e) =>
+                      handleFilterChange("startDate", e.target.value)
+                    }
                     InputLabelProps={{ shrink: true }}
                   />
                 </Grid>
@@ -360,17 +369,15 @@ const HistorySection = ({ onClose }) => {
                     label="End Date"
                     type="date"
                     value={filters.endDate}
-                    onChange={(e) => handleFilterChange("endDate", e.target.value)}
+                    onChange={(e) =>
+                      handleFilterChange("endDate", e.target.value)
+                    }
                     InputLabelProps={{ shrink: true }}
                   />
                 </Grid>
               </Grid>
               <Box sx={{ mt: 2, display: "flex", gap: 1 }}>
-                <Button
-                  variant="outlined"
-                  size="small"
-                  onClick={clearFilters}
-                >
+                <Button variant="outlined" size="small" onClick={clearFilters}>
                   Clear Filters
                 </Button>
                 <Button
@@ -408,7 +415,13 @@ const HistorySection = ({ onClose }) => {
                       </Box>
                     </Box>
                     <Typography variant="body2" color="text.secondary">
-                      Member since: {history.user?.joinDate ? format(new Date(history.user.joinDate), "MMM dd, yyyy") : "N/A"}
+                      Member since:{" "}
+                      {history.user?.joinDate
+                        ? format(
+                            new Date(history.user.joinDate),
+                            "MMM dd, yyyy"
+                          )
+                        : "N/A"}
                     </Typography>
                   </CardContent>
                 </Card>
@@ -419,7 +432,13 @@ const HistorySection = ({ onClose }) => {
                     <Typography variant="h6" gutterBottom>
                       Activity Summary
                     </Typography>
-                    <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        mb: 1,
+                      }}
+                    >
                       <Typography variant="body2">Total Activities:</Typography>
                       <Chip
                         label={history.statistics?.totalActivities || 0}
@@ -429,19 +448,41 @@ const HistorySection = ({ onClose }) => {
                     </Box>
                     {history.license && (
                       <>
-                        <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
-                          <Typography variant="body2">License Status:</Typography>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            mb: 1,
+                          }}
+                        >
+                          <Typography variant="body2">
+                            License Status:
+                          </Typography>
                           <Chip
                             label={history.license.status}
-                            color={history.license.status === "active" ? "success" : "warning"}
+                            color={
+                              history.license.status === "active"
+                                ? "success"
+                                : "warning"
+                            }
                             size="small"
                           />
                         </Box>
-                        <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
-                          <Typography variant="body2">Demerit Points:</Typography>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            mb: 1,
+                          }}
+                        >
+                          <Typography variant="body2">
+                            Demerit Points:
+                          </Typography>
                           <Chip
                             label={`${history.license.points || 0} pts`}
-                            color={history.license.points > 6 ? "error" : "success"}
+                            color={
+                              history.license.points > 6 ? "error" : "success"
+                            }
                             size="small"
                           />
                         </Box>
@@ -456,7 +497,10 @@ const HistorySection = ({ onClose }) => {
           {/* Activities List */}
           <Card>
             <CardContent>
-              <Typography variant="h6" sx={{ mb: 2, display: "flex", alignItems: "center" }}>
+              <Typography
+                variant="h6"
+                sx={{ mb: 2, display: "flex", alignItems: "center" }}
+              >
                 <TimelineIcon sx={{ mr: 1 }} />
                 Activity Timeline ({pagination.total || 0} total)
               </Typography>
@@ -464,15 +508,16 @@ const HistorySection = ({ onClose }) => {
 
               {activities.length === 0 ? (
                 <Box sx={{ textAlign: "center", py: 4 }}>
-                  <HistoryIcon sx={{ fontSize: 64, color: "text.secondary", mb: 2 }} />
+                  <HistoryIcon
+                    sx={{ fontSize: 64, color: "text.secondary", mb: 2 }}
+                  />
                   <Typography variant="h6" color="text.secondary" gutterBottom>
                     No Activities Found
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {Object.values(filters).some(f => f)
+                    {Object.values(filters).some((f) => f)
                       ? "Try adjusting your filters to see more activities."
-                      : "Your activity history will appear here as you use the system."
-                    }
+                      : "Your activity history will appear here as you use the system."}
                   </Typography>
                 </Box>
               ) : (
@@ -483,17 +528,30 @@ const HistorySection = ({ onClose }) => {
                         <ListItemAvatar>
                           <Avatar
                             sx={{
-                              bgcolor: getActivityColor(activity.activityType, activity.status),
+                              bgcolor: getActivityColor(
+                                activity.activityType,
+                                activity.status
+                              ),
                               width: 48,
                               height: 48,
                             }}
                           >
-                            {getActivityIcon(activity.activityType, activity.status)}
+                            {getActivityIcon(
+                              activity.activityType,
+                              activity.status
+                            )}
                           </Avatar>
                         </ListItemAvatar>
                         <ListItemText
                           primary={
-                            <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1,
+                                mb: 1,
+                              }}
+                            >
                               <Typography variant="body1" fontWeight="medium">
                                 {activity.description}
                               </Typography>
@@ -502,40 +560,93 @@ const HistorySection = ({ onClose }) => {
                                 label={activity.status}
                                 size="small"
                                 color={
-                                  activity.status === "success" ? "success" :
-                                  activity.status === "pending" ? "warning" :
-                                  activity.status === "failed" ? "error" : "default"
+                                  activity.status === "success"
+                                    ? "success"
+                                    : activity.status === "pending"
+                                    ? "warning"
+                                    : activity.status === "failed"
+                                    ? "error"
+                                    : "default"
                                 }
                               />
                             </Box>
                           }
                           secondary={
                             <Box>
-                              <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                                {activity.action} • {activity.createdAt ? format(new Date(activity.createdAt), "MMM dd, yyyy 'at' HH:mm") : "Date not available"}
+                              <Typography
+                                variant="body2"
+                                color="text.secondary"
+                                sx={{ mb: 1 }}
+                              >
+                                {activity.action} •{" "}
+                                {activity.createdAt
+                                  ? format(
+                                      new Date(activity.createdAt),
+                                      "MMM dd, yyyy 'at' HH:mm"
+                                    )
+                                  : "Date not available"}
                               </Typography>
-                              <Typography variant="caption" color="text.secondary">
-                                {activity.createdAt ? formatDistanceToNow(new Date(activity.createdAt), { addSuffix: true }) : ""}
+                              <Typography
+                                variant="caption"
+                                color="text.secondary"
+                              >
+                                {activity.createdAt
+                                  ? formatDistanceToNow(
+                                      new Date(activity.createdAt),
+                                      { addSuffix: true }
+                                    )
+                                  : ""}
                               </Typography>
-                              {activity.details && Object.keys(activity.details).length > 0 && (
-                                <Box sx={{ mt: 1, p: 1, bgcolor: "grey.50", borderRadius: 1 }}>
-                                  <Typography variant="caption" color="text.secondary" component="div">
-                                    <strong>Details:</strong>
-                                  </Typography>
-                                  <Box component="pre" sx={{ fontSize: "0.75rem", mt: 0.5, whiteSpace: "pre-wrap", fontFamily: "monospace" }}>
-                                    {Object.entries(activity.details).map(([key, value]) => (
-                                      <Box key={key} component="div" sx={{ mb: 0.5 }}>
-                                        <strong>{key}:</strong> {typeof value === 'object' ? JSON.stringify(value, null, 2) : String(value)}
-                                      </Box>
-                                    ))}
+                              {activity.details &&
+                                Object.keys(activity.details).length > 0 && (
+                                  <Box
+                                    sx={{
+                                      mt: 1,
+                                      p: 1,
+                                      bgcolor: "grey.50",
+                                      borderRadius: 1,
+                                    }}
+                                  >
+                                    <Typography
+                                      variant="caption"
+                                      color="text.secondary"
+                                      component="div"
+                                    >
+                                      <strong>Details:</strong>
+                                    </Typography>
+                                    <Box
+                                      component="pre"
+                                      sx={{
+                                        fontSize: "0.75rem",
+                                        mt: 0.5,
+                                        whiteSpace: "pre-wrap",
+                                        fontFamily: "monospace",
+                                      }}
+                                    >
+                                      {Object.entries(activity.details).map(
+                                        ([key, value]) => (
+                                          <Box
+                                            key={key}
+                                            component="div"
+                                            sx={{ mb: 0.5 }}
+                                          >
+                                            <strong>{key}:</strong>{" "}
+                                            {typeof value === "object"
+                                              ? JSON.stringify(value, null, 2)
+                                              : String(value)}
+                                          </Box>
+                                        )
+                                      )}
+                                    </Box>
                                   </Box>
-                                </Box>
-                              )}
+                                )}
                             </Box>
                           }
                         />
                       </ListItem>
-                      {index < activities.length - 1 && <Divider variant="inset" component="li" />}
+                      {index < activities.length - 1 && (
+                        <Divider variant="inset" component="li" />
+                      )}
                     </React.Fragment>
                   ))}
                 </List>
@@ -561,7 +672,10 @@ const HistorySection = ({ onClose }) => {
       {activeTab === 1 && (
         <Card>
           <CardContent>
-            <Typography variant="h6" sx={{ mb: 3, display: "flex", alignItems: "center" }}>
+            <Typography
+              variant="h6"
+              sx={{ mb: 3, display: "flex", alignItems: "center" }}
+            >
               <StatsIcon sx={{ mr: 1 }} />
               Activity Statistics
             </Typography>
@@ -574,9 +688,18 @@ const HistorySection = ({ onClose }) => {
                       Activity Breakdown
                     </Typography>
                     {stats.activityByType?.map((item) => (
-                      <Box key={item._id} sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
+                      <Box
+                        key={item._id}
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          mb: 1,
+                        }}
+                      >
                         <Typography variant="body2">
-                          {activityTypes.find(t => t.value === item._id)?.label || item._id}:
+                          {activityTypes.find((t) => t.value === item._id)
+                            ?.label || item._id}
+                          :
                         </Typography>
                         <Chip label={item.count} size="small" />
                       </Box>
@@ -589,17 +712,29 @@ const HistorySection = ({ onClose }) => {
                       Status Distribution
                     </Typography>
                     {stats.activityByStatus?.map((item) => (
-                      <Box key={item._id} sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
+                      <Box
+                        key={item._id}
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          mb: 1,
+                        }}
+                      >
                         <Typography variant="body2">
-                          {item._id.charAt(0).toUpperCase() + item._id.slice(1)}:
+                          {item._id.charAt(0).toUpperCase() + item._id.slice(1)}
+                          :
                         </Typography>
                         <Chip
                           label={item.count}
                           size="small"
                           color={
-                            item._id === "success" ? "success" :
-                            item._id === "pending" ? "warning" :
-                            item._id === "failed" ? "error" : "default"
+                            item._id === "success"
+                              ? "success"
+                              : item._id === "pending"
+                              ? "warning"
+                              : item._id === "failed"
+                              ? "error"
+                              : "default"
                           }
                         />
                       </Box>
@@ -639,7 +774,11 @@ const HistorySection = ({ onClose }) => {
             ) : (
               <Box sx={{ textAlign: "center", py: 4 }}>
                 <CircularProgress />
-                <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mt: 2 }}
+                >
                   Loading statistics...
                 </Typography>
               </Box>

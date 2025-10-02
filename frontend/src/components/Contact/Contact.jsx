@@ -201,16 +201,13 @@ const Contact = () => {
       }
 
       // Send form data to backend
-      const response = await axios.post(
-        "http://localhost:5004/api/contact/submit",
-        {
-          name: formData.name.trim(),
-          email: formData.email.trim(),
-          subject: formData.subject.trim(),
-          message: formData.message.trim(),
-          priority: formData.priority,
-        }
-      );
+      const response = await axios.post("/api/contact/submit", {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        subject: formData.subject.trim(),
+        message: formData.message.trim(),
+        priority: formData.priority,
+      });
 
       if (response.data.success) {
         setIsSubmitting(false);
@@ -279,13 +276,10 @@ const Contact = () => {
           text: msg.text,
         }));
 
-        const response = await axios.post(
-          "http://localhost:5004/api/chat/message",
-          {
-            message: currentInput,
-            conversationHistory: conversationHistory,
-          }
-        );
+        const response = await axios.post("/api/chat/message", {
+          message: currentInput,
+          conversationHistory: conversationHistory,
+        });
 
         const botResponse = {
           id: Date.now() + 1,

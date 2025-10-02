@@ -173,19 +173,16 @@ const Settings = () => {
     setIsLoading(true);
     try {
       const userId = localStorage.getItem("userId");
-      const response = await fetch(
-        `http://localhost:5004/api/users/change-password/${userId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            currentPassword: passwordData.currentPassword,
-            newPassword: passwordData.newPassword,
-          }),
-        }
-      );
+      const response = await fetch(`/api/users/change-password/${userId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          currentPassword: passwordData.currentPassword,
+          newPassword: passwordData.newPassword,
+        }),
+      });
 
       if (response.ok) {
         setPasswordDialogOpen(false);

@@ -35,7 +35,7 @@ import axios from "axios";
 const PracticalExamConduct = () => {
   const { examId } = useParams();
   const navigate = useNavigate();
-  
+
   const [examData, setExamData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [examResult, setExamResult] = useState({
@@ -71,13 +71,11 @@ const PracticalExamConduct = () => {
 
   const fetchExamData = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:5004/api/exams/schedules/${examId}`
-      );
+      const response = await axios.get(`/api/exams/schedules/${examId}`);
       setExamData(response.data.data);
-      setExamResult(prev => ({
+      setExamResult((prev) => ({
         ...prev,
-        evaluatedBy: localStorage.getItem("userName") || "Instructor"
+        evaluatedBy: localStorage.getItem("userName") || "Instructor",
       }));
     } catch (error) {
       console.error("Error fetching exam data:", error);
@@ -92,22 +90,22 @@ const PracticalExamConduct = () => {
   };
 
   const handleManeuverChange = (maneuver, value) => {
-    setExamResult(prev => ({
+    setExamResult((prev) => ({
       ...prev,
       maneuvers: {
         ...prev.maneuvers,
-        [maneuver]: value
-      }
+        [maneuver]: value,
+      },
     }));
   };
 
   const handleTrafficRuleChange = (rule, value) => {
-    setExamResult(prev => ({
+    setExamResult((prev) => ({
       ...prev,
       trafficRules: {
         ...prev.trafficRules,
-        [rule]: value
-      }
+        [rule]: value,
+      },
     }));
   };
 
@@ -115,20 +113,20 @@ const PracticalExamConduct = () => {
     const maneuverScores = Object.values(examResult.maneuvers);
     const trafficScores = Object.values(examResult.trafficRules);
     const allScores = [...maneuverScores, ...trafficScores];
-    
-    const validScores = allScores.filter(score => score !== "");
+
+    const validScores = allScores.filter((score) => score !== "");
     if (validScores.length === 0) return 0;
-    
-    const passCount = validScores.filter(score => score === "pass").length;
+
+    const passCount = validScores.filter((score) => score === "pass").length;
     return Math.round((passCount / validScores.length) * 100);
   };
 
   const handleSubmitResult = async () => {
     try {
       const calculatedScore = calculateScore();
-      
+
       const response = await axios.put(
-        `http://localhost:5004/api/exams/schedules/${examId}/complete`,
+        `/api/exams/schedules/${examId}/complete`,
         {
           score: calculatedScore,
           notes: examResult.notes,
@@ -146,7 +144,7 @@ const PracticalExamConduct = () => {
           severity: "success",
         });
         setOpenSubmitDialog(false);
-        
+
         // Navigate back to practical exam management after a delay
         setTimeout(() => {
           navigate("/admin/practical-exams");
@@ -156,7 +154,9 @@ const PracticalExamConduct = () => {
       console.error("Error submitting exam result:", error);
       setSnackbar({
         open: true,
-        message: "Error submitting result: " + (error.response?.data?.message || error.message),
+        message:
+          "Error submitting result: " +
+          (error.response?.data?.message || error.message),
         severity: "error",
       });
     }
@@ -175,9 +175,13 @@ const PracticalExamConduct = () => {
                 <FormLabel component="legend">{label}</FormLabel>
                 <RadioGroup
                   row
-                  value={category === 'maneuvers' ? examResult.maneuvers[key] : examResult.trafficRules[key]}
-                  onChange={(e) => 
-                    category === 'maneuvers' 
+                  value={
+                    category === "maneuvers"
+                      ? examResult.maneuvers[key]
+                      : examResult.trafficRules[key]
+                  }
+                  onChange={(e) =>
+                    category === "maneuvers"
                       ? handleManeuverChange(key, e.target.value)
                       : handleTrafficRuleChange(key, e.target.value)
                   }
@@ -185,18 +189,26 @@ const PracticalExamConduct = () => {
                   <FormControlLabel
                     value="pass"
                     control={<Radio />}
-                    label={<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <CheckIcon color="success" fontSize="small" />
-                      Pass
-                    </Box>}
+                    label={
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                      >
+                        <CheckIcon color="success" fontSize="small" />
+                        Pass
+                      </Box>
+                    }
                   />
                   <FormControlLabel
                     value="fail"
                     control={<Radio />}
-                    label={<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <CancelIcon color="error" fontSize="small" />
-                      Fail
-                    </Box>}
+                    label={
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                      >
+                        <CancelIcon color="error" fontSize="small" />
+                        Fail
+                      </Box>
+                    }
                   />
                 </RadioGroup>
               </FormControl>
@@ -209,7 +221,7 @@ const PracticalExamConduct = () => {
 
   if (loading) {
     return (
-      <Box sx={{ p: 3, textAlign: 'center' }}>
+      <Box sx={{ p: 3, textAlign: "center" }}>
         <Typography>Loading exam data...</Typography>
       </Box>
     );
@@ -217,11 +229,14 @@ const PracticalExamConduct = () => {
 
   if (!examData) {
     return (
-      <Box sx={{ p: 3, textAlign: 'center' }}>
+      <Box sx={{ p: 3, textAlign: "center" }}>
         <Alert severity="error">
           Exam not found or you don't have permission to access this exam.
         </Alert>
-        <Button onClick={() => navigate("/admin/practical-exams")} sx={{ mt: 2 }}>
+        <Button
+          onClick={() => navigate("/admin/practical-exams")}
+          sx={{ mt: 2 }}
+        >
           Back to Practical Exams
         </Button>
       </Box>
@@ -249,12 +264,12 @@ const PracticalExamConduct = () => {
       <Typography variant="h4" fontWeight="bold" gutterBottom>
         🚗 Conduct Practical Exam
       </Typography>
-      
+
       {/* Exam Information */}
       <Paper sx={{ p: 3, mb: 3 }}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
               <PersonIcon color="primary" />
               <Box>
                 <Typography variant="h6">
@@ -267,11 +282,12 @@ const PracticalExamConduct = () => {
             </Box>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
               <DriveIcon color="primary" />
               <Box>
                 <Typography variant="body1">
-                  <strong>Date:</strong> {new Date(examData.date).toLocaleDateString()}
+                  <strong>Date:</strong>{" "}
+                  {new Date(examData.date).toLocaleDateString()}
                 </Typography>
                 <Typography variant="body1">
                   <strong>Time:</strong> {examData.time}
@@ -286,8 +302,12 @@ const PracticalExamConduct = () => {
       </Paper>
 
       {/* Evaluation Form */}
-      {renderEvaluationSection("Driving Maneuvers", maneuverItems, 'maneuvers')}
-      {renderEvaluationSection("Traffic Rules & Safety", trafficRuleItems, 'trafficRules')}
+      {renderEvaluationSection("Driving Maneuvers", maneuverItems, "maneuvers")}
+      {renderEvaluationSection(
+        "Traffic Rules & Safety",
+        trafficRuleItems,
+        "trafficRules"
+      )}
 
       {/* Overall Performance and Notes */}
       <Card sx={{ mb: 3 }}>
@@ -301,12 +321,33 @@ const PracticalExamConduct = () => {
                 <FormLabel component="legend">Overall Performance</FormLabel>
                 <RadioGroup
                   value={examResult.overallPerformance}
-                  onChange={(e) => setExamResult(prev => ({ ...prev, overallPerformance: e.target.value }))}
+                  onChange={(e) =>
+                    setExamResult((prev) => ({
+                      ...prev,
+                      overallPerformance: e.target.value,
+                    }))
+                  }
                 >
-                  <FormControlLabel value="excellent" control={<Radio />} label="Excellent" />
-                  <FormControlLabel value="good" control={<Radio />} label="Good" />
-                  <FormControlLabel value="satisfactory" control={<Radio />} label="Satisfactory" />
-                  <FormControlLabel value="needs_improvement" control={<Radio />} label="Needs Improvement" />
+                  <FormControlLabel
+                    value="excellent"
+                    control={<Radio />}
+                    label="Excellent"
+                  />
+                  <FormControlLabel
+                    value="good"
+                    control={<Radio />}
+                    label="Good"
+                  />
+                  <FormControlLabel
+                    value="satisfactory"
+                    control={<Radio />}
+                    label="Satisfactory"
+                  />
+                  <FormControlLabel
+                    value="needs_improvement"
+                    control={<Radio />}
+                    label="Needs Improvement"
+                  />
                 </RadioGroup>
               </FormControl>
             </Grid>
@@ -314,7 +355,12 @@ const PracticalExamConduct = () => {
               <TextField
                 label="Evaluator Name"
                 value={examResult.evaluatedBy}
-                onChange={(e) => setExamResult(prev => ({ ...prev, evaluatedBy: e.target.value }))}
+                onChange={(e) =>
+                  setExamResult((prev) => ({
+                    ...prev,
+                    evaluatedBy: e.target.value,
+                  }))
+                }
                 fullWidth
                 required
               />
@@ -323,7 +369,9 @@ const PracticalExamConduct = () => {
               <TextField
                 label="Additional Notes"
                 value={examResult.notes}
-                onChange={(e) => setExamResult(prev => ({ ...prev, notes: e.target.value }))}
+                onChange={(e) =>
+                  setExamResult((prev) => ({ ...prev, notes: e.target.value }))
+                }
                 fullWidth
                 multiline
                 rows={4}
@@ -335,14 +383,17 @@ const PracticalExamConduct = () => {
       </Card>
 
       {/* Score Display */}
-      <Paper sx={{ p: 3, mb: 3, textAlign: 'center' }}>
+      <Paper sx={{ p: 3, mb: 3, textAlign: "center" }}>
         <Typography variant="h6" gutterBottom>
           Calculated Score
         </Typography>
-        <Typography variant="h3" color={calculateScore() >= 70 ? "success.main" : "error.main"}>
+        <Typography
+          variant="h3"
+          color={calculateScore() >= 70 ? "success.main" : "error.main"}
+        >
           {calculateScore()}%
         </Typography>
-        <Chip 
+        <Chip
           label={calculateScore() >= 70 ? "PASS" : "FAIL"}
           color={calculateScore() >= 70 ? "success" : "error"}
           size="large"
@@ -351,7 +402,7 @@ const PracticalExamConduct = () => {
       </Paper>
 
       {/* Action Buttons */}
-      <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center' }}>
+      <Box sx={{ display: "flex", gap: 2, justifyContent: "center" }}>
         <Button
           variant="outlined"
           onClick={() => navigate("/admin/practical-exams")}
@@ -369,17 +420,22 @@ const PracticalExamConduct = () => {
       </Box>
 
       {/* Submit Confirmation Dialog */}
-      <Dialog open={openSubmitDialog} onClose={() => setOpenSubmitDialog(false)}>
+      <Dialog
+        open={openSubmitDialog}
+        onClose={() => setOpenSubmitDialog(false)}
+      >
         <DialogTitle>Submit Practical Exam Result</DialogTitle>
         <DialogContent>
           <Typography gutterBottom>
             Are you sure you want to submit this practical exam result?
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Score: {calculateScore()}% - {calculateScore() >= 70 ? "PASS" : "FAIL"}
+            Score: {calculateScore()}% -{" "}
+            {calculateScore() >= 70 ? "PASS" : "FAIL"}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            This action cannot be undone and will send the result for admin approval.
+            This action cannot be undone and will send the result for admin
+            approval.
           </Typography>
         </DialogContent>
         <DialogActions>
@@ -396,7 +452,10 @@ const PracticalExamConduct = () => {
         autoHideDuration={6000}
         onClose={() => setSnackbar({ ...snackbar, open: false })}
       >
-        <Alert severity={snackbar.severity} onClose={() => setSnackbar({ ...snackbar, open: false })}>
+        <Alert
+          severity={snackbar.severity}
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+        >
           {snackbar.message}
         </Alert>
       </Snackbar>

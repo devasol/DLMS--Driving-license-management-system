@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useSearchParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import styles from "./EmailVerification.module.css";
-import { FaCheckCircle, FaTimesCircle, FaSpinner, FaEnvelope } from "react-icons/fa";
+import {
+  FaCheckCircle,
+  FaTimesCircle,
+  FaSpinner,
+  FaEnvelope,
+} from "react-icons/fa";
 
 const EmailVerification = () => {
   const [searchParams] = useSearchParams();
@@ -27,20 +32,20 @@ const EmailVerification = () => {
   const verifyEmail = async (verificationToken) => {
     try {
       const response = await axios.get(
-        `http://localhost:5004/api/auth/verify-email?token=${verificationToken}`
+        `/api/auth/verify-email?token=${verificationToken}`
       );
 
       if (response.status === 200) {
         setVerificationStatus("success");
         setMessage(response.data.message);
-        
+
         // Redirect to login after 3 seconds
         setTimeout(() => {
-          navigate("/signin", { 
-            state: { 
+          navigate("/signin", {
+            state: {
               message: "Email verified successfully! You can now log in.",
-              type: "success"
-            }
+              type: "success",
+            },
           });
         }, 3000);
       }
@@ -49,7 +54,9 @@ const EmailVerification = () => {
       if (error.response?.data?.message) {
         setMessage(error.response.data.message);
       } else {
-        setMessage("Failed to verify email. Please try again or contact support.");
+        setMessage(
+          "Failed to verify email. Please try again or contact support."
+        );
       }
     }
   };
@@ -65,20 +72,23 @@ const EmailVerification = () => {
     setResendMessage("");
 
     try {
-      const response = await axios.post(
-        "http://localhost:5004/api/auth/resend-verification",
-        { email: resendEmail }
-      );
+      const response = await axios.post("/api/auth/resend-verification", {
+        email: resendEmail,
+      });
 
       if (response.status === 200) {
-        setResendMessage("Verification email sent successfully! Please check your email.");
+        setResendMessage(
+          "Verification email sent successfully! Please check your email."
+        );
         setResendEmail("");
       }
     } catch (error) {
       if (error.response?.data?.message) {
         setResendMessage(error.response.data.message);
       } else {
-        setResendMessage("Failed to send verification email. Please try again.");
+        setResendMessage(
+          "Failed to send verification email. Please try again."
+        );
       }
     } finally {
       setIsResending(false);
@@ -123,7 +133,10 @@ const EmailVerification = () => {
 
               <div className={styles.resendSection}>
                 <h3>Need a new verification email?</h3>
-                <form onSubmit={handleResendVerification} className={styles.resendForm}>
+                <form
+                  onSubmit={handleResendVerification}
+                  className={styles.resendForm}
+                >
                   <div className={styles.inputGroup}>
                     <FaEnvelope className={styles.inputIcon} />
                     <input
@@ -134,8 +147,8 @@ const EmailVerification = () => {
                       required
                     />
                   </div>
-                  <button 
-                    type="submit" 
+                  <button
+                    type="submit"
                     disabled={isResending}
                     className={styles.resendButton}
                   >
@@ -150,9 +163,13 @@ const EmailVerification = () => {
                   </button>
                 </form>
                 {resendMessage && (
-                  <p className={`${styles.resendMessage} ${
-                    resendMessage.includes("successfully") ? styles.success : styles.error
-                  }`}>
+                  <p
+                    className={`${styles.resendMessage} ${
+                      resendMessage.includes("successfully")
+                        ? styles.success
+                        : styles.error
+                    }`}
+                  >
                     {resendMessage}
                   </p>
                 )}

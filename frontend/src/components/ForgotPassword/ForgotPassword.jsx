@@ -59,12 +59,9 @@ const ForgotPassword = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://localhost:5004/api/auth/forgot-password",
-        {
-          email: email.toLowerCase(),
-        }
-      );
+      const response = await axios.post("/api/auth/forgot-password", {
+        email: email.toLowerCase(),
+      });
 
       if (response.data.success) {
         setSuccessMessage(response.data.message);
@@ -120,13 +117,10 @@ const ForgotPassword = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://localhost:5004/api/auth/verify-reset-otp",
-        {
-          email: email.toLowerCase(),
-          otp: otp,
-        }
-      );
+      const response = await axios.post("/api/auth/verify-reset-otp", {
+        email: email.toLowerCase(),
+        otp: otp,
+      });
 
       if (response.data.success) {
         setSuccessMessage(response.data.message);
@@ -170,15 +164,12 @@ const ForgotPassword = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://localhost:5004/api/auth/reset-password",
-        {
-          email: email.toLowerCase(),
-          otp: otp,
-          newPassword: newPassword,
-          confirmPassword: confirmPassword,
-        }
-      );
+      const response = await axios.post("/api/auth/reset-password", {
+        email: email.toLowerCase(),
+        otp: otp,
+        newPassword: newPassword,
+        confirmPassword: confirmPassword,
+      });
 
       if (response.data.success) {
         setSuccessMessage(response.data.message);

@@ -55,7 +55,7 @@ const LicenseSearch = ({ onViolationAdd }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `http://localhost:5004/api/traffic-police/license/${licenseNumber}`,
+        `/api/traffic-police/license/${licenseNumber}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

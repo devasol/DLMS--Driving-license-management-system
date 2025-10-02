@@ -72,7 +72,7 @@ const GetLicense = () => {
       if (serverAvailable) {
         try {
           const response = await axios.get(
-            `http://localhost:5004/api/payments/license/download/${userId}`,
+            `/api/payments/license/download/${userId}`,
             {
               responseType: "blob",
               timeout: 15000,
@@ -495,7 +495,7 @@ const GetLicense = () => {
   // Test server connectivity
   const testServerConnection = async () => {
     try {
-      const response = await axios.get("http://localhost:5004/api/health", {
+      const response = await axios.get("/api/health", {
         timeout: 5000,
       });
       console.log("✅ Server connection successful:", response.status);
@@ -588,7 +588,7 @@ const GetLicense = () => {
       // Check license eligibility (this includes payment, exams, and license status)
       try {
         const eligibilityResponse = await axios.get(
-          `http://localhost:5004/api/payments/license/eligibility/${userId}`,
+          `/api/payments/license/eligibility/${userId}`,
           { timeout: 5000 }
         );
 
@@ -668,7 +668,7 @@ const GetLicense = () => {
           // Check if license already issued (direct check)
           try {
             const licenseResponse = await axios.get(
-              `http://localhost:5004/api/payments/license/${userId}`,
+              `/api/payments/license/${userId}`,
               { timeout: 5000 }
             );
             if (licenseResponse.data.success && licenseResponse.data.license) {
@@ -687,7 +687,7 @@ const GetLicense = () => {
           // Check if payment already submitted
           try {
             const paymentResponse = await axios.get(
-              `http://localhost:5004/api/payments/status/${userId}`,
+              `/api/payments/status/${userId}`,
               { timeout: 5000 }
             );
             if (paymentResponse.data.success) {
@@ -938,22 +938,15 @@ const GetLicense = () => {
       formData.append("paymentDate", paymentForm.paymentDate);
       formData.append("receipt", paymentForm.receiptFile);
 
-      console.log(
-        "Making API call to:",
-        "http://localhost:5004/api/payments/submit"
-      );
+      console.log("Making API call to:", "/api/payments/submit");
 
       try {
-        const response = await axios.post(
-          "http://localhost:5004/api/payments/submit",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-            timeout: 10000, // 10 second timeout
-          }
-        );
+        const response = await axios.post("/api/payments/submit", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          timeout: 10000, // 10 second timeout
+        });
 
         console.log("Payment submission response:", response.data);
 

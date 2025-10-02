@@ -99,23 +99,17 @@ const ExaminerDashboard = () => {
   const fetchExaminerData = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(
-        `http://localhost:5004/api/examiner/profile`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await axios.get(`/api/examiner/profile`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setExaminerData(response.data);
     } catch (error) {
       console.error("Error fetching examiner data:", error);
       // Fallback to basic user data if examiner endpoint fails
       try {
-        const fallbackResponse = await axios.get(
-          `http://localhost:5004/api/users/${examinerId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const fallbackResponse = await axios.get(`/api/users/${examinerId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setExaminerData(fallbackResponse.data);
       } catch (fallbackError) {
         console.error("Error fetching fallback user data:", fallbackError);
@@ -127,12 +121,9 @@ const ExaminerDashboard = () => {
     try {
       const token = localStorage.getItem("token");
       console.log("🔄 Fetching assigned exams...");
-      const response = await axios.get(
-        `http://localhost:5004/api/examiner/assigned`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await axios.get(`/api/examiner/assigned`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       console.log("📋 Assigned exams response:", response.data);
       setAssignedExams(response.data || []);
 
@@ -158,12 +149,9 @@ const ExaminerDashboard = () => {
     try {
       const token = localStorage.getItem("token");
       console.log("🔄 Fetching exam history...");
-      const response = await axios.get(
-        `http://localhost:5004/api/examiner/history`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await axios.get(`/api/examiner/history`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       console.log("📋 Exam history response:", response.data);
       setExamHistory(response.data || []);
     } catch (error) {

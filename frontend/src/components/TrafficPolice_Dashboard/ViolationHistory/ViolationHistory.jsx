@@ -49,10 +49,10 @@ const ViolationHistory = () => {
     try {
       setLoading(true);
       setError("");
-      
+
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "http://localhost:5004/api/traffic-police/violations/my-records",
+        "/api/traffic-police/violations/my-records",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -85,7 +85,9 @@ const ViolationHistory = () => {
         ?.toLowerCase()
         .includes(searchTerm.toLowerCase()) ||
       violation.type?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      violation.licenseNumber?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      violation.licenseNumber
+        ?.toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
       violation.location?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -120,7 +122,12 @@ const ViolationHistory = () => {
       >
         <Card sx={{ mb: 3 }}>
           <CardContent>
-            <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              mb={2}
+            >
               <Typography variant="h6" fontWeight="bold">
                 Violation Records ({filteredViolations.length})
               </Typography>
@@ -174,13 +181,27 @@ const ViolationHistory = () => {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell><strong>Driver</strong></TableCell>
-                      <TableCell><strong>License #</strong></TableCell>
-                      <TableCell><strong>Violation Type</strong></TableCell>
-                      <TableCell><strong>Points</strong></TableCell>
-                      <TableCell><strong>Location</strong></TableCell>
-                      <TableCell><strong>Date</strong></TableCell>
-                      <TableCell><strong>Actions</strong></TableCell>
+                      <TableCell>
+                        <strong>Driver</strong>
+                      </TableCell>
+                      <TableCell>
+                        <strong>License #</strong>
+                      </TableCell>
+                      <TableCell>
+                        <strong>Violation Type</strong>
+                      </TableCell>
+                      <TableCell>
+                        <strong>Points</strong>
+                      </TableCell>
+                      <TableCell>
+                        <strong>Location</strong>
+                      </TableCell>
+                      <TableCell>
+                        <strong>Date</strong>
+                      </TableCell>
+                      <TableCell>
+                        <strong>Actions</strong>
+                      </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -193,7 +214,10 @@ const ViolationHistory = () => {
                               <Typography variant="body2" fontWeight="medium">
                                 {violation.userId?.fullName || "Unknown Driver"}
                               </Typography>
-                              <Typography variant="caption" color="text.secondary">
+                              <Typography
+                                variant="caption"
+                                color="text.secondary"
+                              >
                                 {violation.userId?.email}
                               </Typography>
                             </Box>
@@ -232,8 +256,12 @@ const ViolationHistory = () => {
                           <Box display="flex" alignItems="center" gap={1}>
                             <DateIcon color="action" fontSize="small" />
                             <Typography variant="body2">
-                              {violation.date && !isNaN(new Date(violation.date))
-                                ? format(new Date(violation.date), "MMM dd, yyyy")
+                              {violation.date &&
+                              !isNaN(new Date(violation.date))
+                                ? format(
+                                    new Date(violation.date),
+                                    "MMM dd, yyyy"
+                                  )
                                 : "Invalid date"}
                             </Typography>
                           </Box>
@@ -252,10 +280,9 @@ const ViolationHistory = () => {
               </TableContainer>
             ) : (
               <Alert severity="info">
-                {searchTerm 
+                {searchTerm
                   ? `No violations found matching "${searchTerm}"`
-                  : "No violations recorded yet. Start by searching for a license and adding violations."
-                }
+                  : "No violations recorded yet. Start by searching for a license and adding violations."}
               </Alert>
             )}
           </CardContent>

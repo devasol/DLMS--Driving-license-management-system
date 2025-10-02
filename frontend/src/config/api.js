@@ -5,9 +5,10 @@ const DEBUG = import.meta.env.VITE_API_DEBUG === "true";
 
 // Create axios instance with default configuration
 const api = axios.create({
-  baseURL:
-    import.meta.env.VITE_API_URL ||
-    "https://dlms-driving-license-management-system-2.onrender.com/api",
+  // Use VITE_API_URL when provided (e.g. production). During local dev we
+  // want requests to be relative so Vite's proxy (configured in
+  // frontend/vite.config.mjs) forwards /api requests to the backend.
+  baseURL: import.meta.env.VITE_API_URL || "/api",
   timeout: 15000, // Increased timeout for better reliability
   headers: {
     "Content-Type": "application/json",

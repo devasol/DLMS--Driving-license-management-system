@@ -768,13 +768,9 @@ const Dashboard = () => {
       }
 
       console.log("🔄 Fetching application status for user:", userId);
-      console.log(
-        "🔄 API URL:",
-        `http://localhost:5004/api/license/applications/user/${userId}`
-      );
 
       const response = await axios.get(
-        `http://localhost:5004/api/license/applications/user/${userId}`
+        `/api/license/applications/user/${userId}`
       );
 
       console.log("📥 Raw API response:", response);
@@ -825,9 +821,7 @@ const Dashboard = () => {
 
   const fetchNotifications = async (userId) => {
     try {
-      const response = await axios.get(
-        `http://localhost:5004/api/notifications/user/${userId}`
-      );
+      const response = await axios.get(`/api/notifications/user/${userId}`);
       if (response.data && Array.isArray(response.data)) {
         setUserNotifications(response.data);
         const unread = response.data.filter(
@@ -844,9 +838,7 @@ const Dashboard = () => {
 
   const markNotificationAsSeen = async (notificationId) => {
     try {
-      await axios.patch(
-        `http://localhost:5004/api/notifications/${notificationId}/seen`
-      );
+      await axios.patch(`/api/notifications/${notificationId}/seen`);
       setUserNotifications((prevNotifications) =>
         prevNotifications.map((notification) =>
           notification._id === notificationId
@@ -862,9 +854,7 @@ const Dashboard = () => {
 
   const deleteNotification = async (notificationId) => {
     try {
-      await axios.delete(
-        `http://localhost:5004/api/notifications/${notificationId}`
-      );
+      await axios.delete(`/api/notifications/${notificationId}`);
       setUserNotifications((prevNotifications) =>
         prevNotifications.filter(
           (notification) => notification._id !== notificationId
@@ -919,7 +909,7 @@ const Dashboard = () => {
       // Use the status endpoint (most reliable and complete)
       try {
         const statusResponse = await axios.get(
-          `http://localhost:5004/api/license/status?userId=${userId}`
+          `/api/license/status?userId=${userId}`
         );
 
         console.log("🔍 License status response:", statusResponse.data);
@@ -959,7 +949,7 @@ const Dashboard = () => {
         // Try the debug endpoint as fallback
         try {
           const debugResponse = await axios.get(
-            `http://localhost:5004/api/license/debug/user/${userId}`
+            `/api/license/debug/user/${userId}`
           );
 
           if (debugResponse.data && debugResponse.data.licenseExists) {
@@ -1055,21 +1045,18 @@ const Dashboard = () => {
         throw new Error("User information not found");
       }
 
-      const response = await axios.post(
-        "http://localhost:5004/api/exams/schedule",
-        {
-          userId,
-          userName,
-          examType: data.type,
-          date: data.date,
-          time: data.time,
-          location:
-            data.type === "practical"
-              ? data.location || "Kality, Addis Ababa"
-              : "online",
-          notes: data.notes,
-        }
-      );
+      const response = await axios.post("/api/exams/schedule", {
+        userId,
+        userName,
+        examType: data.type,
+        date: data.date,
+        time: data.time,
+        location:
+          data.type === "practical"
+            ? data.location || "Kality, Addis Ababa"
+            : "online",
+        notes: data.notes,
+      });
 
       if (response.data.success) {
         return {
@@ -1272,9 +1259,7 @@ const Dashboard = () => {
 
       console.log("Fetching user profile for userId:", userId);
 
-      const response = await axios.get(
-        `http://localhost:5004/api/users/${userId}`
-      );
+      const response = await axios.get(`/api/users/${userId}`);
 
       console.log("User profile response:", response.data);
 
@@ -1389,9 +1374,7 @@ const Dashboard = () => {
       try {
         const userId = localStorage.getItem("userId");
         if (userId) {
-          const response = await axios.get(
-            `http://localhost:5004/api/users/${userId}`
-          );
+          const response = await axios.get(`/api/users/${userId}`);
           if (response.data) {
             setUserProfile((prev) => ({
               ...prev,
@@ -1423,7 +1406,7 @@ const Dashboard = () => {
     if (userProfile.profilePicture) {
       console.log(
         "🔍 FULL IMAGE URL:",
-        `http://localhost:5004/uploads/profile-pictures/${userProfile.profilePicture}`
+        `/uploads/profile-pictures/${userProfile.profilePicture}`
       );
     }
   }, [userProfile]);
@@ -1512,7 +1495,7 @@ const Dashboard = () => {
 
         // Upload to backend
         const response = await axios.post(
-          `http://localhost:5004/api/users/${userId}/profile-picture`,
+          `/api/users/${userId}/profile-picture`,
           formData,
           {
             headers: {
@@ -1637,15 +1620,11 @@ const Dashboard = () => {
 
       console.log("Updating user profile with data:", updateData);
 
-      const response = await axios.put(
-        `http://localhost:5004/api/users/${userId}`,
-        updateData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.put(`/api/users/${userId}`, updateData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       console.log("Profile update response:", response.data);
 
@@ -1738,13 +1717,10 @@ const Dashboard = () => {
       }
 
       const userId = localStorage.getItem("userId");
-      const response = await axios.put(
-        `http://localhost:5004/api/users/${userId}/password`,
-        {
-          currentPassword: passwordData.currentPassword,
-          newPassword: passwordData.newPassword,
-        }
-      );
+      const response = await axios.put(`/api/users/${userId}/password`, {
+        currentPassword: passwordData.currentPassword,
+        newPassword: passwordData.newPassword,
+      });
 
       if (response.data.success) {
         setSuccessMessage({
@@ -2696,7 +2672,7 @@ const Dashboard = () => {
               onClick={handleProfileMenuOpen}
               src={
                 userProfile.profilePicture
-                  ? `http://localhost:5004/uploads/profile-pictures/${userProfile.profilePicture}`
+                  ? `/uploads/profile-pictures/${userProfile.profilePicture}`
                   : undefined
               }
               onError={() => {
@@ -4327,7 +4303,7 @@ const Dashboard = () => {
                                 );
 
                                 const response = await axios.get(
-                                  `http://localhost:5004/api/payments/license/download/${userId}`,
+                                  `/api/payments/license/download/${userId}`,
                                   {
                                     responseType: "blob",
                                     timeout: 15000,
@@ -5262,7 +5238,7 @@ const Dashboard = () => {
                             src={
                               profilePicturePreview ||
                               (userProfile.profilePicture
-                                ? `http://localhost:5004/uploads/profile-pictures/${userProfile.profilePicture}`
+                                ? `/uploads/profile-pictures/${userProfile.profilePicture}`
                                 : undefined)
                             }
                             alt="Profile Preview"

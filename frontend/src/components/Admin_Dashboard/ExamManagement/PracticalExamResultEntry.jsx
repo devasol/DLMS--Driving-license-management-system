@@ -55,13 +55,11 @@ const PracticalExamResultEntry = () => {
 
   const fetchExamData = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:5004/api/exams/schedules/${examId}`
-      );
+      const response = await axios.get(`/api/exams/schedules/${examId}`);
       setExamData(response.data.data);
-      setExamResult(prev => ({
+      setExamResult((prev) => ({
         ...prev,
-        evaluatedBy: localStorage.getItem("userName") || "Admin"
+        evaluatedBy: localStorage.getItem("userName") || "Admin",
       }));
     } catch (error) {
       console.error("Error fetching exam data:", error);
@@ -78,24 +76,33 @@ const PracticalExamResultEntry = () => {
   const handleSubmitResult = async () => {
     try {
       // Calculate score based on overall result
-      const calculatedScore = examResult.overallResult === "pass" ?
-        (examResult.score ? parseInt(examResult.score) : 75) :
-        (examResult.score ? parseInt(examResult.score) : 45);
+      const calculatedScore =
+        examResult.overallResult === "pass"
+          ? examResult.score
+            ? parseInt(examResult.score)
+            : 75
+          : examResult.score
+          ? parseInt(examResult.score)
+          : 45;
 
       const response = await axios.put(
-        `http://localhost:5004/api/exams/schedules/${examId}/complete-final`,
+        `/api/exams/schedules/${examId}/complete-final`,
         {
           score: calculatedScore,
           notes: examResult.notes,
           evaluatedBy: examResult.evaluatedBy,
-          overallPerformance: examResult.overallResult === "pass" ? "satisfactory" : "needs_improvement",
+          overallPerformance:
+            examResult.overallResult === "pass"
+              ? "satisfactory"
+              : "needs_improvement",
         }
       );
 
       if (response.data.success) {
         setSnackbar({
           open: true,
-          message: "Practical exam result submitted successfully! The candidate has been notified of their final result.",
+          message:
+            "Practical exam result submitted successfully! The candidate has been notified of their final result.",
           severity: "success",
         });
         setOpenSubmitDialog(false);
@@ -109,7 +116,9 @@ const PracticalExamResultEntry = () => {
       console.error("Error submitting exam result:", error);
       setSnackbar({
         open: true,
-        message: "Error submitting result: " + (error.response?.data?.message || error.message),
+        message:
+          "Error submitting result: " +
+          (error.response?.data?.message || error.message),
         severity: "error",
       });
     }
@@ -117,7 +126,7 @@ const PracticalExamResultEntry = () => {
 
   if (loading) {
     return (
-      <Box sx={{ p: 3, textAlign: 'center' }}>
+      <Box sx={{ p: 3, textAlign: "center" }}>
         <Typography>Loading exam data...</Typography>
       </Box>
     );
@@ -125,11 +134,14 @@ const PracticalExamResultEntry = () => {
 
   if (!examData) {
     return (
-      <Box sx={{ p: 3, textAlign: 'center' }}>
+      <Box sx={{ p: 3, textAlign: "center" }}>
         <Alert severity="error">
           Exam not found or you don't have permission to access this exam.
         </Alert>
-        <Button onClick={() => navigate("/admin/practical-exams")} sx={{ mt: 2 }}>
+        <Button
+          onClick={() => navigate("/admin/practical-exams")}
+          sx={{ mt: 2 }}
+        >
           Back to Practical Exams
         </Button>
       </Box>
@@ -138,7 +150,7 @@ const PracticalExamResultEntry = () => {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
+      <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}>
         <Button
           startIcon={<BackIcon />}
           onClick={() => navigate("/admin/practical-exams")}
@@ -158,7 +170,7 @@ const PracticalExamResultEntry = () => {
         </Typography>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
               <PersonIcon color="primary" />
               <Box>
                 <Typography variant="h6">
@@ -171,11 +183,12 @@ const PracticalExamResultEntry = () => {
             </Box>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
               <DriveIcon color="primary" />
               <Box>
                 <Typography variant="body1">
-                  <strong>Date:</strong> {new Date(examData.date).toLocaleDateString()}
+                  <strong>Date:</strong>{" "}
+                  {new Date(examData.date).toLocaleDateString()}
                 </Typography>
                 <Typography variant="body1">
                   <strong>Time:</strong> {examData.time}
@@ -205,13 +218,20 @@ const PracticalExamResultEntry = () => {
                 <FormLabel component="legend">Overall Test Result</FormLabel>
                 <RadioGroup
                   value={examResult.overallResult}
-                  onChange={(e) => setExamResult(prev => ({ ...prev, overallResult: e.target.value }))}
+                  onChange={(e) =>
+                    setExamResult((prev) => ({
+                      ...prev,
+                      overallResult: e.target.value,
+                    }))
+                  }
                 >
                   <FormControlLabel
                     value="pass"
                     control={<Radio />}
                     label={
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                      >
                         <Chip label="PASS" color="success" size="small" />
                         <span>Candidate passed the practical test</span>
                       </Box>
@@ -221,7 +241,9 @@ const PracticalExamResultEntry = () => {
                     value="fail"
                     control={<Radio />}
                     label={
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                      >
                         <Chip label="FAIL" color="error" size="small" />
                         <span>Candidate failed the practical test</span>
                       </Box>
@@ -236,7 +258,9 @@ const PracticalExamResultEntry = () => {
                 label="Score (Optional)"
                 type="number"
                 value={examResult.score}
-                onChange={(e) => setExamResult(prev => ({ ...prev, score: e.target.value }))}
+                onChange={(e) =>
+                  setExamResult((prev) => ({ ...prev, score: e.target.value }))
+                }
                 fullWidth
                 inputProps={{ min: 0, max: 100 }}
                 helperText="Enter specific score if available (0-100)"
@@ -247,7 +271,12 @@ const PracticalExamResultEntry = () => {
               <TextField
                 label="Evaluated By"
                 value={examResult.evaluatedBy}
-                onChange={(e) => setExamResult(prev => ({ ...prev, evaluatedBy: e.target.value }))}
+                onChange={(e) =>
+                  setExamResult((prev) => ({
+                    ...prev,
+                    evaluatedBy: e.target.value,
+                  }))
+                }
                 fullWidth
                 required
                 helperText="Name of the instructor/examiner"
@@ -258,7 +287,9 @@ const PracticalExamResultEntry = () => {
               <TextField
                 label="Examiner Notes"
                 value={examResult.notes}
-                onChange={(e) => setExamResult(prev => ({ ...prev, notes: e.target.value }))}
+                onChange={(e) =>
+                  setExamResult((prev) => ({ ...prev, notes: e.target.value }))
+                }
                 fullWidth
                 multiline
                 rows={4}
@@ -271,12 +302,22 @@ const PracticalExamResultEntry = () => {
       </Card>
 
       {/* Summary */}
-      <Paper sx={{ p: 3, mb: 3, textAlign: 'center', bgcolor: examResult.overallResult === 'pass' ? 'success.light' : 'error.light' }}>
+      <Paper
+        sx={{
+          p: 3,
+          mb: 3,
+          textAlign: "center",
+          bgcolor:
+            examResult.overallResult === "pass"
+              ? "success.light"
+              : "error.light",
+        }}
+      >
         <Typography variant="h6" gutterBottom>
           Result Summary
         </Typography>
         <Typography variant="h4" sx={{ mb: 1 }}>
-          {examResult.overallResult === 'pass' ? '✅ PASS' : '❌ FAIL'}
+          {examResult.overallResult === "pass" ? "✅ PASS" : "❌ FAIL"}
         </Typography>
         {examResult.score && (
           <Typography variant="h5" color="text.secondary">
@@ -286,7 +327,7 @@ const PracticalExamResultEntry = () => {
       </Paper>
 
       {/* Action Buttons */}
-      <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center' }}>
+      <Box sx={{ display: "flex", gap: 2, justifyContent: "center" }}>
         <Button
           variant="outlined"
           onClick={() => navigate("/admin/practical-exams")}
@@ -304,18 +345,22 @@ const PracticalExamResultEntry = () => {
       </Box>
 
       {/* Submit Confirmation Dialog */}
-      <Dialog open={openSubmitDialog} onClose={() => setOpenSubmitDialog(false)}>
+      <Dialog
+        open={openSubmitDialog}
+        onClose={() => setOpenSubmitDialog(false)}
+      >
         <DialogTitle>Submit Practical Exam Result</DialogTitle>
         <DialogContent>
           <Typography gutterBottom>
             Are you sure you want to submit this practical exam result?
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Result: {examResult.overallResult === 'pass' ? 'PASS' : 'FAIL'}
+            Result: {examResult.overallResult === "pass" ? "PASS" : "FAIL"}
             {examResult.score && ` - Score: ${examResult.score}%`}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            This will finalize the result and immediately notify the candidate. No further approval is required.
+            This will finalize the result and immediately notify the candidate.
+            No further approval is required.
           </Typography>
         </DialogContent>
         <DialogActions>
@@ -332,7 +377,10 @@ const PracticalExamResultEntry = () => {
         autoHideDuration={6000}
         onClose={() => setSnackbar({ ...snackbar, open: false })}
       >
-        <Alert severity={snackbar.severity} onClose={() => setSnackbar({ ...snackbar, open: false })}>
+        <Alert
+          severity={snackbar.severity}
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+        >
           {snackbar.message}
         </Alert>
       </Snackbar>

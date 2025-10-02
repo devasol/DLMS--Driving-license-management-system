@@ -48,9 +48,7 @@ const AdminTrialResults = () => {
   const fetchResults = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        "http://localhost:5004/api/trial/admin/results"
-      );
+      const response = await axios.get("/api/trial/admin/results");
       if (response.data.success) {
         setResults(response.data.results);
       }

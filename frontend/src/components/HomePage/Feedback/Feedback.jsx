@@ -41,9 +41,11 @@ const Feedback = () => {
   const [writtenFeedback, setWrittenFeedback] = useState("");
   const [showWrittenFeedback, setShowWrittenFeedback] = useState(false);
 
-  const userName = localStorage.getItem("userName") || localStorage.getItem("full_name");
+  const userName =
+    localStorage.getItem("userName") || localStorage.getItem("full_name");
   const userId = localStorage.getItem("userId");
-  const userEmail = localStorage.getItem("userEmail") || localStorage.getItem("user_email");
+  const userEmail =
+    localStorage.getItem("userEmail") || localStorage.getItem("user_email");
 
   const handleEmojiClick = (description) => {
     if (!userName || !userId) {
@@ -53,10 +55,12 @@ const Feedback = () => {
     }
 
     // Set the selected rating and show written feedback input
-    const selectedEmoji = emojiDatas.find((emoji) => emoji.description === description);
+    const selectedEmoji = emojiDatas.find(
+      (emoji) => emoji.description === description
+    );
     setSelectedRating({
       description,
-      mood: selectedEmoji?.mood || "Medium"
+      mood: selectedEmoji?.mood || "Medium",
     });
     setShowWrittenFeedback(true);
   };
@@ -80,14 +84,14 @@ const Feedback = () => {
         userId,
       });
 
-      const response = await axios.post("http://localhost:5004/api/feedbacks", {
+      const response = await axios.post("/api/feedbacks", {
         name: userName,
         feedback: selectedRating.description,
         rating: selectedRating.mood,
         writtenFeedback: writtenFeedback.trim() || null,
         userEmail: userEmail || undefined,
         userId,
-        category: 'service'
+        category: "service",
       });
 
       console.log("Feedback response:", response.data);
@@ -166,11 +170,19 @@ const Feedback = () => {
             className={`${styles.emojiContainer} ${moodClass} ${
               selectedRating?.description === description ? styles.selected : ""
             }`}
-            onClick={() => !isSubmitting && !showWrittenFeedback && handleEmojiClick(description)}
+            onClick={() =>
+              !isSubmitting &&
+              !showWrittenFeedback &&
+              handleEmojiClick(description)
+            }
             style={{
               opacity: isSubmitting || showWrittenFeedback ? 0.7 : 1,
-              cursor: isSubmitting || showWrittenFeedback ? "not-allowed" : "pointer",
-              border: selectedRating?.description === description ? "3px solid #007bff" : "none",
+              cursor:
+                isSubmitting || showWrittenFeedback ? "not-allowed" : "pointer",
+              border:
+                selectedRating?.description === description
+                  ? "3px solid #007bff"
+                  : "none",
             }}
           >
             <div className={styles.emoji}>{icon}</div>
@@ -184,7 +196,9 @@ const Feedback = () => {
         <div className={styles.writtenFeedbackSection}>
           <div className={styles.feedbackForm}>
             <h4>ተጨማሪ አስተያየት ይስጡ (አማራጭ)</h4>
-            <p>የተመረጠ ደረጃ: <strong>{selectedRating?.description}</strong></p>
+            <p>
+              የተመረጠ ደረጃ: <strong>{selectedRating?.description}</strong>
+            </p>
 
             <textarea
               className={styles.feedbackTextarea}

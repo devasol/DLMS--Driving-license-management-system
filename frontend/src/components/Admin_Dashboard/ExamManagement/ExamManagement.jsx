@@ -121,17 +121,23 @@ const ExamManagement = () => {
   const fetchExamSchedules = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        "http://localhost:5004/api/exams/schedules"
-      );
+      const response = await axios.get("/api/exams/schedules");
 
       // Handle different response structures
       let schedules = [];
-      if (response.data && response.data.data && Array.isArray(response.data.data)) {
+      if (
+        response.data &&
+        response.data.data &&
+        Array.isArray(response.data.data)
+      ) {
         schedules = response.data.data;
       } else if (response.data && Array.isArray(response.data)) {
         schedules = response.data;
-      } else if (response.data && response.data.schedules && Array.isArray(response.data.schedules)) {
+      } else if (
+        response.data &&
+        response.data.schedules &&
+        Array.isArray(response.data.schedules)
+      ) {
         schedules = response.data.schedules;
       }
 
@@ -147,17 +153,23 @@ const ExamManagement = () => {
   const fetchExamQuestions = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        "http://localhost:5004/api/exams/questions"
-      );
+      const response = await axios.get("/api/exams/questions");
 
       // Handle different response structures
       let questions = [];
-      if (response.data && response.data.data && Array.isArray(response.data.data)) {
+      if (
+        response.data &&
+        response.data.data &&
+        Array.isArray(response.data.data)
+      ) {
         questions = response.data.data;
       } else if (response.data && Array.isArray(response.data)) {
         questions = response.data;
-      } else if (response.data && response.data.questions && Array.isArray(response.data.questions)) {
+      } else if (
+        response.data &&
+        response.data.questions &&
+        Array.isArray(response.data.questions)
+      ) {
         questions = response.data.questions;
       }
 
@@ -173,17 +185,23 @@ const ExamManagement = () => {
   const fetchExamResults = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        "http://localhost:5004/api/exams/results"
-      );
+      const response = await axios.get("/api/exams/results");
 
       // Handle different response structures
       let results = [];
-      if (response.data && response.data.data && Array.isArray(response.data.data)) {
+      if (
+        response.data &&
+        response.data.data &&
+        Array.isArray(response.data.data)
+      ) {
         results = response.data.data;
       } else if (response.data && Array.isArray(response.data)) {
         results = response.data;
-      } else if (response.data && response.data.results && Array.isArray(response.data.results)) {
+      } else if (
+        response.data &&
+        response.data.results &&
+        Array.isArray(response.data.results)
+      ) {
         results = response.data.results;
       }
 
@@ -214,10 +232,7 @@ const ExamManagement = () => {
         return;
       }
 
-      const response = await axios.post(
-        "http://localhost:5004/api/exams/schedule",
-        scheduleForm
-      );
+      const response = await axios.post("/api/exams/schedule", scheduleForm);
 
       if (response.data.success) {
         setSnackbar({
@@ -263,10 +278,7 @@ const ExamManagement = () => {
         return;
       }
 
-      const response = await axios.post(
-        "http://localhost:5004/api/exams/questions",
-        questionForm
-      );
+      const response = await axios.post("/api/exams/questions", questionForm);
 
       if (response.data.success) {
         setSnackbar({
@@ -299,7 +311,7 @@ const ExamManagement = () => {
   const handleApproveSchedule = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:5004/api/exams/schedules/${selectedItem._id}/approve`,
+        `/api/exams/schedules/${selectedItem._id}/approve`,
         { adminMessage }
       );
 
@@ -328,7 +340,7 @@ const ExamManagement = () => {
   const handleRejectSchedule = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:5004/api/exams/schedules/${selectedItem._id}/reject`,
+        `/api/exams/schedules/${selectedItem._id}/reject`,
         { adminMessage }
       );
 
@@ -358,7 +370,7 @@ const ExamManagement = () => {
     if (window.confirm("Are you sure you want to delete this exam schedule?")) {
       try {
         const response = await axios.delete(
-          `http://localhost:5004/api/exams/schedules/${scheduleId}`
+          `/api/exams/schedules/${scheduleId}`
         );
 
         if (response.data.success) {
@@ -386,7 +398,7 @@ const ExamManagement = () => {
     if (window.confirm("Are you sure you want to delete this question?")) {
       try {
         const response = await axios.delete(
-          `http://localhost:5004/api/exams/questions/${questionId}`
+          `/api/exams/questions/${questionId}`
         );
 
         if (response.data.success) {
@@ -422,7 +434,7 @@ const ExamManagement = () => {
       }
 
       const response = await axios.put(
-        `http://localhost:5004/api/exams/schedules/${selectedItem._id}`,
+        `/api/exams/schedules/${selectedItem._id}`,
         {
           userName: selectedItem.userName,
           examType: selectedItem.examType,
@@ -469,7 +481,7 @@ const ExamManagement = () => {
       }
 
       const response = await axios.put(
-        `http://localhost:5004/api/exams/questions/${selectedItem._id}`,
+        `/api/exams/questions/${selectedItem._id}`,
         {
           question: selectedItem.question,
           options: selectedItem.options,
@@ -513,18 +525,15 @@ const ExamManagement = () => {
         return;
       }
 
-      const response = await axios.post(
-        "http://localhost:5004/api/exams/submit-result",
-        {
-          ...resultForm,
-          score: parseInt(resultForm.score),
-          correctAnswers: parseInt(resultForm.correctAnswers),
-          totalQuestions: parseInt(resultForm.totalQuestions),
-          timeSpent: parseInt(resultForm.timeSpent) || 0,
-          passed: parseInt(resultForm.score) >= 74,
-          dateTaken: new Date().toISOString(),
-        }
-      );
+      const response = await axios.post("/api/exams/submit-result", {
+        ...resultForm,
+        score: parseInt(resultForm.score),
+        correctAnswers: parseInt(resultForm.correctAnswers),
+        totalQuestions: parseInt(resultForm.totalQuestions),
+        timeSpent: parseInt(resultForm.timeSpent) || 0,
+        passed: parseInt(resultForm.score) >= 74,
+        dateTaken: new Date().toISOString(),
+      });
 
       if (response.data.success) {
         setSnackbar({
@@ -585,7 +594,7 @@ const ExamManagement = () => {
         return;
       }
 
-      const updateUrl = `http://localhost:5004/api/exams/results/${selectedItem._id}`;
+      const updateUrl = `/api/exams/results/${selectedItem._id}`;
       console.log("🔄 Updating exam result with URL:", updateUrl);
       console.log("📊 Update data:", {
         score: parseInt(resultForm.score),
@@ -615,21 +624,26 @@ const ExamManagement = () => {
           fetchExamResults();
         }
       } catch (error) {
-        console.error("❌ Server error, using local update for testing:", error);
+        console.error(
+          "❌ Server error, using local update for testing:",
+          error
+        );
 
         // For testing purposes, update locally when server is not available
-        setExamResults(prev => prev.map(result =>
-          result._id === selectedItem._id
-            ? {
-                ...result,
-                score: parseInt(resultForm.score),
-                passed: parseInt(resultForm.score) >= 74,
-                correctAnswers: parseInt(resultForm.correctAnswers),
-                totalQuestions: parseInt(resultForm.totalQuestions),
-                timeSpent: parseInt(resultForm.timeSpent) || 0,
-              }
-            : result
-        ));
+        setExamResults((prev) =>
+          prev.map((result) =>
+            result._id === selectedItem._id
+              ? {
+                  ...result,
+                  score: parseInt(resultForm.score),
+                  passed: parseInt(resultForm.score) >= 74,
+                  correctAnswers: parseInt(resultForm.correctAnswers),
+                  totalQuestions: parseInt(resultForm.totalQuestions),
+                  timeSpent: parseInt(resultForm.timeSpent) || 0,
+                }
+              : result
+          )
+        );
 
         setSnackbar({
           open: true,
@@ -658,7 +672,7 @@ const ExamManagement = () => {
     try {
       try {
         const response = await axios.delete(
-          `http://localhost:5004/api/exams/results/${selectedItem._id}`
+          `/api/exams/results/${selectedItem._id}`
         );
 
         if (response.data.success) {
@@ -672,10 +686,15 @@ const ExamManagement = () => {
           fetchExamResults();
         }
       } catch (error) {
-        console.error("❌ Server error, using local delete for testing:", error);
+        console.error(
+          "❌ Server error, using local delete for testing:",
+          error
+        );
 
         // For testing purposes, delete locally when server is not available
-        setExamResults(prev => prev.filter(result => result._id !== selectedItem._id));
+        setExamResults((prev) =>
+          prev.filter((result) => result._id !== selectedItem._id)
+        );
 
         setSnackbar({
           open: true,
@@ -922,11 +941,12 @@ const ExamManagement = () => {
                         }}
                       >
                         <Typography variant="h6" sx={{ flex: 1 }}>
-                          Q{index + 1}: {
-                            typeof question.question === 'string'
-                              ? question.question
-                              : question.question?.english || question.question?.amharic || 'No question text'
-                          }
+                          Q{index + 1}:{" "}
+                          {typeof question.question === "string"
+                            ? question.question
+                            : question.question?.english ||
+                              question.question?.amharic ||
+                              "No question text"}
                         </Typography>
                         <Box sx={{ display: "flex", gap: 1 }}>
                           {getDifficultyChip(question.difficulty)}
@@ -943,7 +963,9 @@ const ExamManagement = () => {
                           // Handle both old format (array) and new format (multilingual object)
                           const options = Array.isArray(question.options)
                             ? question.options
-                            : question.options?.english || question.options?.amharic || [];
+                            : question.options?.english ||
+                              question.options?.amharic ||
+                              [];
 
                           return options.map((option, optIndex) => (
                             <ListItem key={optIndex} sx={{ py: 0.5 }}>
@@ -1094,7 +1116,7 @@ const ExamManagement = () => {
                         />
                       </TableCell>
                       <TableCell>
-                        <Box sx={{ display: 'flex', gap: 1 }}>
+                        <Box sx={{ display: "flex", gap: 1 }}>
                           <IconButton
                             size="small"
                             onClick={() => {
@@ -1173,7 +1195,10 @@ const ExamManagement = () => {
                     setScheduleForm({
                       ...scheduleForm,
                       examType: e.target.value,
-                      location: e.target.value === "practical" ? "Kality, Addis Ababa" : "online",
+                      location:
+                        e.target.value === "practical"
+                          ? "Kality, Addis Ababa"
+                          : "online",
                     })
                   }
                 >
@@ -1284,9 +1309,15 @@ const ExamManagement = () => {
                       <MenuItem value="main-center">
                         🏢 Main Testing Center - Addis Ababa
                       </MenuItem>
-                      <MenuItem value="branch-1">🏢 Branch Center - Bole</MenuItem>
-                      <MenuItem value="branch-2">🏢 Branch Center - Piassa</MenuItem>
-                      <MenuItem value="branch-3">🏢 Branch Center - Merkato</MenuItem>
+                      <MenuItem value="branch-1">
+                        🏢 Branch Center - Bole
+                      </MenuItem>
+                      <MenuItem value="branch-2">
+                        🏢 Branch Center - Piassa
+                      </MenuItem>
+                      <MenuItem value="branch-3">
+                        🏢 Branch Center - Merkato
+                      </MenuItem>
                     </>
                   )}
                 </Select>
@@ -1515,7 +1546,10 @@ const ExamManagement = () => {
                   label="User Name"
                   value={selectedItem.userName || selectedItem.fullName || ""}
                   onChange={(e) =>
-                    setSelectedItem({ ...selectedItem, userName: e.target.value })
+                    setSelectedItem({
+                      ...selectedItem,
+                      userName: e.target.value,
+                    })
                   }
                   fullWidth
                 />
@@ -1526,7 +1560,10 @@ const ExamManagement = () => {
                   <Select
                     value={selectedItem.examType || ""}
                     onChange={(e) =>
-                      setSelectedItem({ ...selectedItem, examType: e.target.value })
+                      setSelectedItem({
+                        ...selectedItem,
+                        examType: e.target.value,
+                      })
                     }
                   >
                     <MenuItem value="theory">Theory Exam</MenuItem>
@@ -1538,7 +1575,9 @@ const ExamManagement = () => {
                 <TextField
                   label="Date"
                   type="date"
-                  value={selectedItem.date ? selectedItem.date.split('T')[0] : ""}
+                  value={
+                    selectedItem.date ? selectedItem.date.split("T")[0] : ""
+                  }
                   onChange={(e) =>
                     setSelectedItem({ ...selectedItem, date: e.target.value })
                   }
@@ -1581,7 +1620,10 @@ const ExamManagement = () => {
                   label="Location"
                   value={selectedItem.location || ""}
                   onChange={(e) =>
-                    setSelectedItem({ ...selectedItem, location: e.target.value })
+                    setSelectedItem({
+                      ...selectedItem,
+                      location: e.target.value,
+                    })
                   }
                   fullWidth
                 />
@@ -1609,40 +1651,68 @@ const ExamManagement = () => {
         fullWidth
       >
         <DialogTitle>
-          {selectedItem?.examType === "theory" ? "Theory" : selectedItem?.examType === "practical" ? "Practical" : "Exam"} Details
+          {selectedItem?.examType === "theory"
+            ? "Theory"
+            : selectedItem?.examType === "practical"
+            ? "Practical"
+            : "Exam"}{" "}
+          Details
         </DialogTitle>
         <DialogContent>
           {selectedItem && (
             <Grid container spacing={2} sx={{ mt: 1 }}>
               <Grid item xs={12}>
                 <Typography variant="h6" gutterBottom>
-                  {selectedItem.examType === "theory" ? "Theory Exam" :
-                   selectedItem.examType === "practical" ? "Practical Exam" :
-                   selectedItem.examType ? `${selectedItem.examType} Exam` : "Exam"} Information
+                  {selectedItem.examType === "theory"
+                    ? "Theory Exam"
+                    : selectedItem.examType === "practical"
+                    ? "Practical Exam"
+                    : selectedItem.examType
+                    ? `${selectedItem.examType} Exam`
+                    : "Exam"}{" "}
+                  Information
                 </Typography>
                 <Divider sx={{ mb: 2 }} />
               </Grid>
 
               <Grid item xs={12} sm={6}>
-                <Typography><strong>User:</strong> {selectedItem.userName || selectedItem.fullName || "N/A"}</Typography>
+                <Typography>
+                  <strong>User:</strong>{" "}
+                  {selectedItem.userName || selectedItem.fullName || "N/A"}
+                </Typography>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Typography><strong>User ID:</strong> {selectedItem.userId || "N/A"}</Typography>
+                <Typography>
+                  <strong>User ID:</strong> {selectedItem.userId || "N/A"}
+                </Typography>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Typography><strong>Exam Type:</strong> {selectedItem.examType || "N/A"}</Typography>
+                <Typography>
+                  <strong>Exam Type:</strong> {selectedItem.examType || "N/A"}
+                </Typography>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Typography><strong>Date:</strong> {selectedItem.date ? format(new Date(selectedItem.date), "PPP") : "N/A"}</Typography>
+                <Typography>
+                  <strong>Date:</strong>{" "}
+                  {selectedItem.date
+                    ? format(new Date(selectedItem.date), "PPP")
+                    : "N/A"}
+                </Typography>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Typography><strong>Time:</strong> {selectedItem.time || "N/A"}</Typography>
+                <Typography>
+                  <strong>Time:</strong> {selectedItem.time || "N/A"}
+                </Typography>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Typography><strong>Location:</strong> {selectedItem.location || "N/A"}</Typography>
+                <Typography>
+                  <strong>Location:</strong> {selectedItem.location || "N/A"}
+                </Typography>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Typography><strong>Status:</strong> {getStatusChip(selectedItem.status)}</Typography>
+                <Typography>
+                  <strong>Status:</strong> {getStatusChip(selectedItem.status)}
+                </Typography>
               </Grid>
 
               {selectedItem.score && (
@@ -1654,14 +1724,22 @@ const ExamManagement = () => {
                     <Divider sx={{ mb: 2 }} />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <Typography><strong>Score:</strong> {selectedItem.score}%</Typography>
+                    <Typography>
+                      <strong>Score:</strong> {selectedItem.score}%
+                    </Typography>
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <Typography><strong>Result:</strong> {selectedItem.passed ? "PASSED" : "FAILED"}</Typography>
+                    <Typography>
+                      <strong>Result:</strong>{" "}
+                      {selectedItem.passed ? "PASSED" : "FAILED"}
+                    </Typography>
                   </Grid>
                   {selectedItem.dateTaken && (
                     <Grid item xs={12} sm={6}>
-                      <Typography><strong>Date Taken:</strong> {format(new Date(selectedItem.dateTaken), "PPP")}</Typography>
+                      <Typography>
+                        <strong>Date Taken:</strong>{" "}
+                        {format(new Date(selectedItem.dateTaken), "PPP")}
+                      </Typography>
                     </Grid>
                   )}
                 </>
@@ -1704,7 +1782,10 @@ const ExamManagement = () => {
                   label="Question"
                   value={selectedItem.question || ""}
                   onChange={(e) =>
-                    setSelectedItem({ ...selectedItem, question: e.target.value })
+                    setSelectedItem({
+                      ...selectedItem,
+                      question: e.target.value,
+                    })
                   }
                   fullWidth
                   multiline
@@ -1714,21 +1795,25 @@ const ExamManagement = () => {
               </Grid>
 
               {/* Options */}
-              {selectedItem.options && selectedItem.options.map((option, index) => (
-                <Grid item xs={12} sm={6} key={index}>
-                  <TextField
-                    label={`Option ${index + 1}`}
-                    value={option}
-                    onChange={(e) => {
-                      const newOptions = [...selectedItem.options];
-                      newOptions[index] = e.target.value;
-                      setSelectedItem({ ...selectedItem, options: newOptions });
-                    }}
-                    fullWidth
-                    required
-                  />
-                </Grid>
-              ))}
+              {selectedItem.options &&
+                selectedItem.options.map((option, index) => (
+                  <Grid item xs={12} sm={6} key={index}>
+                    <TextField
+                      label={`Option ${index + 1}`}
+                      value={option}
+                      onChange={(e) => {
+                        const newOptions = [...selectedItem.options];
+                        newOptions[index] = e.target.value;
+                        setSelectedItem({
+                          ...selectedItem,
+                          options: newOptions,
+                        });
+                      }}
+                      fullWidth
+                      required
+                    />
+                  </Grid>
+                ))}
 
               <Grid item xs={12} sm={6}>
                 <FormControl fullWidth>
@@ -1736,17 +1821,24 @@ const ExamManagement = () => {
                   <RadioGroup
                     value={selectedItem.correctAnswer || 0}
                     onChange={(e) =>
-                      setSelectedItem({ ...selectedItem, correctAnswer: parseInt(e.target.value) })
+                      setSelectedItem({
+                        ...selectedItem,
+                        correctAnswer: parseInt(e.target.value),
+                      })
                     }
                   >
-                    {selectedItem.options && selectedItem.options.map((option, index) => (
-                      <FormControlLabel
-                        key={index}
-                        value={index}
-                        control={<Radio />}
-                        label={`Option ${index + 1}: ${option.substring(0, 30)}${option.length > 30 ? '...' : ''}`}
-                      />
-                    ))}
+                    {selectedItem.options &&
+                      selectedItem.options.map((option, index) => (
+                        <FormControlLabel
+                          key={index}
+                          value={index}
+                          control={<Radio />}
+                          label={`Option ${index + 1}: ${option.substring(
+                            0,
+                            30
+                          )}${option.length > 30 ? "..." : ""}`}
+                        />
+                      ))}
                   </RadioGroup>
                 </FormControl>
               </Grid>
@@ -1757,13 +1849,18 @@ const ExamManagement = () => {
                   <Select
                     value={selectedItem.category || ""}
                     onChange={(e) =>
-                      setSelectedItem({ ...selectedItem, category: e.target.value })
+                      setSelectedItem({
+                        ...selectedItem,
+                        category: e.target.value,
+                      })
                     }
                   >
                     <MenuItem value="traffic-rules">Traffic Rules</MenuItem>
                     <MenuItem value="road-signs">Road Signs</MenuItem>
                     <MenuItem value="vehicle-safety">Vehicle Safety</MenuItem>
-                    <MenuItem value="driving-techniques">Driving Techniques</MenuItem>
+                    <MenuItem value="driving-techniques">
+                      Driving Techniques
+                    </MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -1774,7 +1871,10 @@ const ExamManagement = () => {
                   <Select
                     value={selectedItem.difficulty || ""}
                     onChange={(e) =>
-                      setSelectedItem({ ...selectedItem, difficulty: e.target.value })
+                      setSelectedItem({
+                        ...selectedItem,
+                        difficulty: e.target.value,
+                      })
                     }
                   >
                     <MenuItem value="easy">Easy</MenuItem>
@@ -1787,7 +1887,9 @@ const ExamManagement = () => {
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenEditQuestionDialog(false)}>Cancel</Button>
+          <Button onClick={() => setOpenEditQuestionDialog(false)}>
+            Cancel
+          </Button>
           <Button
             onClick={handleEditQuestion}
             variant="contained"
@@ -1853,7 +1955,7 @@ const ExamManagement = () => {
                   setResultForm({
                     ...resultForm,
                     score: e.target.value,
-                    passed: parseInt(e.target.value) >= 74
+                    passed: parseInt(e.target.value) >= 74,
                   })
                 }
                 fullWidth
@@ -1867,7 +1969,10 @@ const ExamManagement = () => {
                 type="number"
                 value={resultForm.correctAnswers}
                 onChange={(e) =>
-                  setResultForm({ ...resultForm, correctAnswers: e.target.value })
+                  setResultForm({
+                    ...resultForm,
+                    correctAnswers: e.target.value,
+                  })
                 }
                 fullWidth
                 inputProps={{ min: 0 }}
@@ -1879,7 +1984,10 @@ const ExamManagement = () => {
                 type="number"
                 value={resultForm.totalQuestions}
                 onChange={(e) =>
-                  setResultForm({ ...resultForm, totalQuestions: e.target.value })
+                  setResultForm({
+                    ...resultForm,
+                    totalQuestions: e.target.value,
+                  })
                 }
                 fullWidth
                 inputProps={{ min: 1 }}
@@ -1913,7 +2021,8 @@ const ExamManagement = () => {
             </Grid>
             <Grid item xs={12}>
               <Typography variant="body2" color="text.secondary">
-                Status: {parseInt(resultForm.score) >= 74 ? "✅ Passed" : "❌ Failed"}
+                Status:{" "}
+                {parseInt(resultForm.score) >= 74 ? "✅ Passed" : "❌ Failed"}
                 {resultForm.score && ` (Score: ${resultForm.score}%)`}
               </Typography>
             </Grid>
@@ -1939,8 +2048,13 @@ const ExamManagement = () => {
           {selectedItem && (
             <Grid container spacing={3} sx={{ mt: 1 }}>
               <Grid item xs={12}>
-                <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 2 }}>
-                  Editing result for: {selectedItem.userName} (ID: {selectedItem.userId})
+                <Typography
+                  variant="subtitle2"
+                  color="text.secondary"
+                  sx={{ mb: 2 }}
+                >
+                  Editing result for: {selectedItem.userName} (ID:{" "}
+                  {selectedItem.userId})
                 </Typography>
               </Grid>
               <Grid item xs={12} md={6}>
@@ -1952,7 +2066,7 @@ const ExamManagement = () => {
                     setResultForm({
                       ...resultForm,
                       score: e.target.value,
-                      passed: parseInt(e.target.value) >= 74
+                      passed: parseInt(e.target.value) >= 74,
                     })
                   }
                   fullWidth
@@ -1978,7 +2092,10 @@ const ExamManagement = () => {
                   type="number"
                   value={resultForm.correctAnswers}
                   onChange={(e) =>
-                    setResultForm({ ...resultForm, correctAnswers: e.target.value })
+                    setResultForm({
+                      ...resultForm,
+                      correctAnswers: e.target.value,
+                    })
                   }
                   fullWidth
                   inputProps={{ min: 0 }}
@@ -1990,7 +2107,10 @@ const ExamManagement = () => {
                   type="number"
                   value={resultForm.totalQuestions}
                   onChange={(e) =>
-                    setResultForm({ ...resultForm, totalQuestions: e.target.value })
+                    setResultForm({
+                      ...resultForm,
+                      totalQuestions: e.target.value,
+                    })
                   }
                   fullWidth
                   inputProps={{ min: 1 }}
@@ -1998,7 +2118,8 @@ const ExamManagement = () => {
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2" color="text.secondary">
-                  Status: {parseInt(resultForm.score) >= 74 ? "✅ Passed" : "❌ Failed"}
+                  Status:{" "}
+                  {parseInt(resultForm.score) >= 74 ? "✅ Passed" : "❌ Failed"}
                   {resultForm.score && ` (Score: ${resultForm.score}%)`}
                 </Typography>
               </Grid>
@@ -2030,7 +2151,7 @@ const ExamManagement = () => {
               <Typography variant="body1" sx={{ mb: 2 }}>
                 Are you sure you want to delete this exam result?
               </Typography>
-              <Box sx={{ p: 2, bgcolor: 'grey.100', borderRadius: 1 }}>
+              <Box sx={{ p: 2, bgcolor: "grey.100", borderRadius: 1 }}>
                 <Typography variant="body2">
                   <strong>User:</strong> {selectedItem.userName}
                 </Typography>
@@ -2044,11 +2165,13 @@ const ExamManagement = () => {
                   <strong>Score:</strong> {selectedItem.score}%
                 </Typography>
                 <Typography variant="body2">
-                  <strong>Status:</strong> {selectedItem.passed ? "Passed" : "Failed"}
+                  <strong>Status:</strong>{" "}
+                  {selectedItem.passed ? "Passed" : "Failed"}
                 </Typography>
                 {selectedItem.dateTaken && (
                   <Typography variant="body2">
-                    <strong>Date:</strong> {format(new Date(selectedItem.dateTaken), "PPp")}
+                    <strong>Date:</strong>{" "}
+                    {format(new Date(selectedItem.dateTaken), "PPp")}
                   </Typography>
                 )}
               </Box>
@@ -2059,7 +2182,9 @@ const ExamManagement = () => {
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenDeleteResultDialog(false)}>Cancel</Button>
+          <Button onClick={() => setOpenDeleteResultDialog(false)}>
+            Cancel
+          </Button>
           <Button
             onClick={handleConfirmDeleteResult}
             variant="contained"

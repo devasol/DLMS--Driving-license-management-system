@@ -49,7 +49,11 @@ const RenewalManagement = () => {
   const [adminNotes, setAdminNotes] = useState("");
   const [processing, setProcessing] = useState(false);
   const [tabValue, setTabValue] = useState(0);
-  const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "info" });
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "info",
+  });
 
   useEffect(() => {
     fetchRenewals();
@@ -58,8 +62,8 @@ const RenewalManagement = () => {
   const fetchRenewals = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:5004/api/renewals/admin/all");
-      
+      const response = await axios.get("/api/renewals/admin/all");
+
       if (response.data.success) {
         setRenewals(response.data.renewals);
       }
@@ -68,7 +72,7 @@ const RenewalManagement = () => {
       setSnackbar({
         open: true,
         message: "Error fetching renewal applications",
-        severity: "error"
+        severity: "error",
       });
     } finally {
       setLoading(false);
@@ -86,7 +90,7 @@ const RenewalManagement = () => {
       const adminId = localStorage.getItem("userId");
 
       const response = await axios.patch(
-        `http://localhost:5004/api/renewals/admin/${selectedRenewal._id}/status`,
+        `/api/renewals/admin/${selectedRenewal._id}/status`,
         {
           status,
           adminNotes,
@@ -98,7 +102,7 @@ const RenewalManagement = () => {
         setSnackbar({
           open: true,
           message: `Renewal application ${status} successfully`,
-          severity: "success"
+          severity: "success",
         });
         fetchRenewals();
         setStatusDialog(false);
@@ -109,7 +113,7 @@ const RenewalManagement = () => {
       setSnackbar({
         open: true,
         message: "Error updating renewal status",
-        severity: "error"
+        severity: "error",
       });
     } finally {
       setProcessing(false);
@@ -122,7 +126,7 @@ const RenewalManagement = () => {
       const adminId = localStorage.getItem("userId");
 
       const response = await axios.post(
-        `http://localhost:5004/api/renewals/admin/${selectedRenewal._id}/issue`,
+        `/api/renewals/admin/${selectedRenewal._id}/issue`,
         { adminId }
       );
 
@@ -130,7 +134,7 @@ const RenewalManagement = () => {
         setSnackbar({
           open: true,
           message: "Renewed license issued successfully",
-          severity: "success"
+          severity: "success",
         });
         fetchRenewals();
         setIssueDialog(false);
@@ -140,7 +144,7 @@ const RenewalManagement = () => {
       setSnackbar({
         open: true,
         message: "Error issuing renewed license",
-        severity: "error"
+        severity: "error",
       });
     } finally {
       setProcessing(false);
@@ -187,7 +191,14 @@ const RenewalManagement = () => {
 
   if (loading) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: 400 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: 400,
+        }}
+      >
         <CircularProgress />
       </Box>
     );
@@ -205,7 +216,13 @@ const RenewalManagement = () => {
           color: "white",
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <RenewIcon sx={{ fontSize: 40 }} />
             <Box>
@@ -220,7 +237,10 @@ const RenewalManagement = () => {
           <Button
             variant="contained"
             onClick={fetchRenewals}
-            sx={{ bgcolor: "rgba(255,255,255,0.2)", "&:hover": { bgcolor: "rgba(255,255,255,0.3)" } }}
+            sx={{
+              bgcolor: "rgba(255,255,255,0.2)",
+              "&:hover": { bgcolor: "rgba(255,255,255,0.3)" },
+            }}
           >
             Refresh
           </Button>
@@ -229,32 +249,66 @@ const RenewalManagement = () => {
 
       <Card elevation={2}>
         <CardContent>
-          <Tabs value={tabValue} onChange={(e, newValue) => setTabValue(newValue)} sx={{ mb: 3 }}>
+          <Tabs
+            value={tabValue}
+            onChange={(e, newValue) => setTabValue(newValue)}
+            sx={{ mb: 3 }}
+          >
             <Tab label={`All (${renewals.length})`} />
-            <Tab label={`Pending (${renewals.filter(r => r.status === "pending").length})`} />
-            <Tab label={`Approved (${renewals.filter(r => r.status === "approved").length})`} />
-            <Tab label={`Rejected (${renewals.filter(r => r.status === "rejected").length})`} />
+            <Tab
+              label={`Pending (${
+                renewals.filter((r) => r.status === "pending").length
+              })`}
+            />
+            <Tab
+              label={`Approved (${
+                renewals.filter((r) => r.status === "approved").length
+              })`}
+            />
+            <Tab
+              label={`Rejected (${
+                renewals.filter((r) => r.status === "rejected").length
+              })`}
+            />
           </Tabs>
 
           <TableContainer component={Paper} elevation={0}>
             <Table>
               <TableHead>
                 <TableRow sx={{ bgcolor: "#f5f5f5" }}>
-                  <TableCell><strong>Applicant</strong></TableCell>
-                  <TableCell><strong>Email</strong></TableCell>
-                  <TableCell><strong>National ID</strong></TableCell>
-                  <TableCell><strong>License Document</strong></TableCell>
-                  <TableCell><strong>Reason</strong></TableCell>
-                  <TableCell><strong>Status</strong></TableCell>
-                  <TableCell><strong>Submitted</strong></TableCell>
-                  <TableCell><strong>Actions</strong></TableCell>
+                  <TableCell>
+                    <strong>Applicant</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Email</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>National ID</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>License Document</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Reason</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Status</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Submitted</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Actions</strong>
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {filteredRenewals.map((renewal) => (
                   <TableRow key={renewal._id} hover>
                     <TableCell>
-                      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 2 }}
+                      >
                         <Avatar sx={{ bgcolor: "#1976d2" }}>
                           <PersonIcon />
                         </Avatar>
@@ -263,7 +317,8 @@ const RenewalManagement = () => {
                             {renewal.name}
                           </Typography>
                           <Typography variant="caption" color="text.secondary">
-                            {renewal.userId?.fullName || renewal.userId?.full_name}
+                            {renewal.userId?.fullName ||
+                              renewal.userId?.full_name}
                           </Typography>
                         </Box>
                       </Box>
@@ -275,8 +330,20 @@ const RenewalManagement = () => {
                         <Button
                           size="small"
                           variant="outlined"
-                          startIcon={renewal.currentLicenseDocument.mimetype === 'application/pdf' ? <PdfIcon /> : <ImageIcon />}
-                          onClick={() => window.open(`http://localhost:5004/api/renewals/documents/${renewal.currentLicenseDocument.filename}`, '_blank')}
+                          startIcon={
+                            renewal.currentLicenseDocument.mimetype ===
+                            "application/pdf" ? (
+                              <PdfIcon />
+                            ) : (
+                              <ImageIcon />
+                            )
+                          }
+                          onClick={() =>
+                            window.open(
+                              `/api/renewals/documents/${renewal.currentLicenseDocument.filename}`,
+                              "_blank"
+                            )
+                          }
                           sx={{ textTransform: "none" }}
                         >
                           View Document
@@ -287,7 +354,9 @@ const RenewalManagement = () => {
                         </Typography>
                       )}
                     </TableCell>
-                    <TableCell>{getRenewalReasonText(renewal.renewalReason)}</TableCell>
+                    <TableCell>
+                      {getRenewalReasonText(renewal.renewalReason)}
+                    </TableCell>
                     <TableCell>
                       <Chip
                         label={renewal.status.toUpperCase()}
@@ -324,20 +393,21 @@ const RenewalManagement = () => {
                             </Button>
                           </>
                         )}
-                        {renewal.status === "approved" && !renewal.newLicenseIssued && (
-                          <Button
-                            size="small"
-                            variant="contained"
-                            color="primary"
-                            startIcon={<IssueIcon />}
-                            onClick={() => {
-                              setSelectedRenewal(renewal);
-                              setIssueDialog(true);
-                            }}
-                          >
-                            Issue License
-                          </Button>
-                        )}
+                        {renewal.status === "approved" &&
+                          !renewal.newLicenseIssued && (
+                            <Button
+                              size="small"
+                              variant="contained"
+                              color="primary"
+                              startIcon={<IssueIcon />}
+                              onClick={() => {
+                                setSelectedRenewal(renewal);
+                                setIssueDialog(true);
+                              }}
+                            >
+                              Issue License
+                            </Button>
+                          )}
                       </Box>
                     </TableCell>
                   </TableRow>
@@ -357,38 +427,80 @@ const RenewalManagement = () => {
       </Card>
 
       {/* View Renewal Dialog */}
-      <Dialog open={viewDialog} onClose={() => setViewDialog(false)} maxWidth="md" fullWidth>
+      <Dialog
+        open={viewDialog}
+        onClose={() => setViewDialog(false)}
+        maxWidth="md"
+        fullWidth
+      >
         <DialogTitle>Renewal Application Details</DialogTitle>
         <DialogContent>
           {selectedRenewal && (
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
-                <Typography variant="subtitle2" color="text.secondary">Applicant Name</Typography>
+                <Typography variant="subtitle2" color="text.secondary">
+                  Applicant Name
+                </Typography>
                 <Typography variant="body1">{selectedRenewal.name}</Typography>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Typography variant="subtitle2" color="text.secondary">Email</Typography>
+                <Typography variant="subtitle2" color="text.secondary">
+                  Email
+                </Typography>
                 <Typography variant="body1">{selectedRenewal.email}</Typography>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Typography variant="subtitle2" color="text.secondary">National ID</Typography>
-                <Typography variant="body1">{selectedRenewal.nationalId}</Typography>
+                <Typography variant="subtitle2" color="text.secondary">
+                  National ID
+                </Typography>
+                <Typography variant="body1">
+                  {selectedRenewal.nationalId}
+                </Typography>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="subtitle2" color="text.secondary">Current License Document</Typography>
+                <Typography variant="subtitle2" color="text.secondary">
+                  Current License Document
+                </Typography>
                 {selectedRenewal.currentLicenseDocument ? (
                   <Box sx={{ mt: 1 }}>
                     <Button
                       variant="outlined"
-                      startIcon={selectedRenewal.currentLicenseDocument.mimetype === 'application/pdf' ? <PdfIcon /> : <ImageIcon />}
-                      onClick={() => window.open(`http://localhost:5004/api/renewals/documents/${selectedRenewal.currentLicenseDocument.filename}`, '_blank')}
+                      startIcon={
+                        selectedRenewal.currentLicenseDocument.mimetype ===
+                        "application/pdf" ? (
+                          <PdfIcon />
+                        ) : (
+                          <ImageIcon />
+                        )
+                      }
+                      onClick={() =>
+                        window.open(
+                          `/api/renewals/documents/${selectedRenewal.currentLicenseDocument.filename}`,
+                          "_blank"
+                        )
+                      }
                       sx={{ textTransform: "none" }}
                     >
-                      View {selectedRenewal.currentLicenseDocument.mimetype === 'application/pdf' ? 'PDF' : 'Image'} Document
+                      View{" "}
+                      {selectedRenewal.currentLicenseDocument.mimetype ===
+                      "application/pdf"
+                        ? "PDF"
+                        : "Image"}{" "}
+                      Document
                     </Button>
-                    <Typography variant="caption" display="block" sx={{ mt: 1 }}>
-                      File: {selectedRenewal.currentLicenseDocument.originalName}
-                      ({(selectedRenewal.currentLicenseDocument.size / 1024 / 1024).toFixed(2)} MB)
+                    <Typography
+                      variant="caption"
+                      display="block"
+                      sx={{ mt: 1 }}
+                    >
+                      File:{" "}
+                      {selectedRenewal.currentLicenseDocument.originalName}(
+                      {(
+                        selectedRenewal.currentLicenseDocument.size /
+                        1024 /
+                        1024
+                      ).toFixed(2)}{" "}
+                      MB)
                     </Typography>
                   </Box>
                 ) : (
@@ -396,26 +508,41 @@ const RenewalManagement = () => {
                 )}
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="subtitle2" color="text.secondary">Renewal Reason</Typography>
-                <Typography variant="body1">{getRenewalReasonText(selectedRenewal.renewalReason)}</Typography>
+                <Typography variant="subtitle2" color="text.secondary">
+                  Renewal Reason
+                </Typography>
+                <Typography variant="body1">
+                  {getRenewalReasonText(selectedRenewal.renewalReason)}
+                </Typography>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Typography variant="subtitle2" color="text.secondary">Status</Typography>
+                <Typography variant="subtitle2" color="text.secondary">
+                  Status
+                </Typography>
                 <Chip
                   label={selectedRenewal.status.toUpperCase()}
                   color={getStatusColor(selectedRenewal.status)}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Typography variant="subtitle2" color="text.secondary">Submitted Date</Typography>
+                <Typography variant="subtitle2" color="text.secondary">
+                  Submitted Date
+                </Typography>
                 <Typography variant="body1">
-                  {format(new Date(selectedRenewal.submissionDate), "MMM dd, yyyy HH:mm")}
+                  {format(
+                    new Date(selectedRenewal.submissionDate),
+                    "MMM dd, yyyy HH:mm"
+                  )}
                 </Typography>
               </Grid>
               {selectedRenewal.adminNotes && (
                 <Grid item xs={12}>
-                  <Typography variant="subtitle2" color="text.secondary">Admin Notes</Typography>
-                  <Typography variant="body1">{selectedRenewal.adminNotes}</Typography>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    Admin Notes
+                  </Typography>
+                  <Typography variant="body1">
+                    {selectedRenewal.adminNotes}
+                  </Typography>
                 </Grid>
               )}
             </Grid>
@@ -427,7 +554,12 @@ const RenewalManagement = () => {
       </Dialog>
 
       {/* Status Update Dialog */}
-      <Dialog open={statusDialog} onClose={() => setStatusDialog(false)} maxWidth="sm" fullWidth>
+      <Dialog
+        open={statusDialog}
+        onClose={() => setStatusDialog(false)}
+        maxWidth="sm"
+        fullWidth
+      >
         <DialogTitle>Update Renewal Status</DialogTitle>
         <DialogContent>
           <TextField
@@ -462,11 +594,17 @@ const RenewalManagement = () => {
       </Dialog>
 
       {/* Issue License Dialog */}
-      <Dialog open={issueDialog} onClose={() => setIssueDialog(false)} maxWidth="sm" fullWidth>
+      <Dialog
+        open={issueDialog}
+        onClose={() => setIssueDialog(false)}
+        maxWidth="sm"
+        fullWidth
+      >
         <DialogTitle>Issue Renewed License</DialogTitle>
         <DialogContent>
           <Alert severity="info" sx={{ mt: 2 }}>
-            This will generate a new license number and update the expiry date for the approved renewal application.
+            This will generate a new license number and update the expiry date
+            for the approved renewal application.
           </Alert>
         </DialogContent>
         <DialogActions>
@@ -475,7 +613,9 @@ const RenewalManagement = () => {
             onClick={handleIssueLicense}
             color="primary"
             disabled={processing}
-            startIcon={processing ? <CircularProgress size={20} /> : <IssueIcon />}
+            startIcon={
+              processing ? <CircularProgress size={20} /> : <IssueIcon />
+            }
           >
             Issue License
           </Button>
@@ -487,7 +627,10 @@ const RenewalManagement = () => {
         autoHideDuration={6000}
         onClose={() => setSnackbar({ ...snackbar, open: false })}
       >
-        <Alert severity={snackbar.severity} onClose={() => setSnackbar({ ...snackbar, open: false })}>
+        <Alert
+          severity={snackbar.severity}
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+        >
           {snackbar.message}
         </Alert>
       </Snackbar>

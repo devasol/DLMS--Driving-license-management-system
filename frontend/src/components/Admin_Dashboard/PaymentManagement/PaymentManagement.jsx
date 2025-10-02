@@ -128,12 +128,9 @@ const PaymentManagement = () => {
       // Try to fetch from the real backend first
       console.log("🔄 Fetching all payments from backend...");
 
-      const response = await axios.get(
-        "http://localhost:5004/api/payments/all",
-        {
-          timeout: 10000,
-        }
-      );
+      const response = await axios.get("/api/payments/all", {
+        timeout: 10000,
+      });
 
       if (response.data.success) {
         setPayments(response.data.payments);
@@ -159,12 +156,9 @@ const PaymentManagement = () => {
             "🔄 /all route not found, falling back to pending payments"
           );
           try {
-            const fallbackResponse = await axios.get(
-              "http://localhost:5004/api/payments/pending",
-              {
-                timeout: 10000,
-              }
-            );
+            const fallbackResponse = await axios.get("/api/payments/pending", {
+              timeout: 10000,
+            });
             if (fallbackResponse.data.success) {
               setPayments(fallbackResponse.data.payments);
               setServerAvailable(true);
@@ -405,7 +399,7 @@ const PaymentManagement = () => {
       }
 
       const response = await axios.delete(
-        `http://localhost:5004/api/payments/delete/${selectedPayment._id}`,
+        `/api/payments/delete/${selectedPayment._1d}`,
         {
           data: { adminId },
           timeout: 10000,
@@ -491,7 +485,7 @@ const PaymentManagement = () => {
       }
 
       const response = await axios.put(
-        `http://localhost:5004/api/payments/reject/${selectedPayment._id}`,
+        `/api/payments/reject/${selectedPayment._id}`,
         {
           adminId,
           adminNotes: rejectReason,
@@ -541,9 +535,7 @@ const PaymentManagement = () => {
   const testPaymentData = async (paymentId) => {
     try {
       console.log("🧪 Testing payment data for:", paymentId);
-      const response = await axios.get(
-        `http://localhost:5004/api/payments/all`
-      );
+      const response = await axios.get(`/api/payments/all`);
       const payment = response.data.payments?.find((p) => p._id === paymentId);
       console.log("📋 Payment data found:", payment);
       return payment;
@@ -630,7 +622,7 @@ const PaymentManagement = () => {
       });
 
       const response = await axios.put(
-        `http://localhost:5004/api/payments/verify/${selectedPayment._id}`,
+        `/api/payments/verify/${selectedPayment._id}`,
         {
           adminId,
           adminNotes: adminNotes || "",
@@ -1353,7 +1345,7 @@ const PaymentManagement = () => {
                         startIcon={<ReceiptIcon />}
                         onClick={() =>
                           window.open(
-                            `http://localhost:5004/${selectedPayment.receiptImage}`,
+                            `/${selectedPayment.receiptImage}`,
                             "_blank"
                           )
                         }

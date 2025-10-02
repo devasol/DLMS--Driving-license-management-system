@@ -131,17 +131,13 @@ const LicenseView = ({ licenseNumber }) => {
     try {
       setLoading(true);
       const userId = localStorage.getItem("userId");
-      const response = await axios.get(
-        `http://localhost:5004/api/payments/license/${userId}`
-      );
+      const response = await axios.get(`/api/payments/license/${userId}`);
 
       if (response.data.success) {
         // Always fetch full user profile to ensure DOB/age/blood/address/photo are correct
         try {
           const uid = userId;
-          const userRes = await axios.get(
-            `http://localhost:5004/api/users/${uid}`
-          );
+          const userRes = await axios.get(`/api/users/${uid}`);
           // Merge any existing fields from license.userId (if populated) with user profile
           response.data.license.userId = {
             ...(response.data.license.userId || {}),

@@ -68,9 +68,7 @@ const TheoryExamResults = () => {
   const fetchTheoryExamResults = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        "http://localhost:5004/api/exams/results"
-      );
+      const response = await axios.get("/api/exams/results");
 
       // Filter only theory exam results
       const theoryResults = response.data.filter(
@@ -150,7 +148,7 @@ const TheoryExamResults = () => {
   const handleUpdateResult = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:5004/api/exams/results/${editingResult._id}`,
+        `/api/exams/results/${editingResult._id}`,
         editForm
       );
 
@@ -179,7 +177,7 @@ const TheoryExamResults = () => {
   const handleConfirmDelete = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:5004/api/exams/results/${selectedResult._id}`
+        `/api/exams/results/${selectedResult._id}`
       );
 
       if (response.data.success) {

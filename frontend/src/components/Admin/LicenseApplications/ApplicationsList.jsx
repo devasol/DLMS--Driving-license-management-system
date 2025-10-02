@@ -71,7 +71,7 @@ const ApplicationsList = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        "http://localhost:5004/api/license/admin/applications/pending"
+        "/api/license/admin/applications/pending"
       );
       setApplications(response.data);
       setFilteredApplications(response.data);
@@ -86,7 +86,7 @@ const ApplicationsList = () => {
   const handleViewApplication = async (applicationId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5004/api/license/admin/applications/${applicationId}`
+        `/api/license/admin/applications/${applicationId}`
       );
       setSelectedApplication(response.data);
       setOpenViewDialog(true);

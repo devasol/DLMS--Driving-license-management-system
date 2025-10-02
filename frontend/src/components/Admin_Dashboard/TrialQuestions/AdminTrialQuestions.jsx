@@ -73,9 +73,7 @@ const AdminTrialQuestions = () => {
   const fetchQuestions = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        "http://localhost:5004/api/trial/admin/questions"
-      );
+      const response = await axios.get("/api/trial/admin/questions");
       if (response.data.success) {
         setQuestions(response.data.questions);
       }
@@ -198,14 +196,11 @@ const AdminTrialQuestions = () => {
       let response;
       if (editingQuestion) {
         response = await axios.put(
-          `http://localhost:5004/api/trial/admin/questions/${editingQuestion._id}`,
+          `/api/trial/admin/questions/${editingQuestion._id}`,
           questionData
         );
       } else {
-        response = await axios.post(
-          "http://localhost:5004/api/trial/admin/questions",
-          questionData
-        );
+        response = await axios.post("/api/trial/admin/questions", questionData);
       }
 
       if (response.data.success) {
@@ -230,7 +225,7 @@ const AdminTrialQuestions = () => {
     if (window.confirm("Are you sure you want to delete this question?")) {
       try {
         const response = await axios.delete(
-          `http://localhost:5004/api/trial/admin/questions/${questionId}`
+          `/api/trial/admin/questions/${questionId}`
         );
         if (response.data.success) {
           showSnackbar("Question deleted successfully");

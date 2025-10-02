@@ -57,12 +57,16 @@ const PracticalExamApproval = () => {
 
   const fetchExamSchedules = async () => {
     try {
-      const response = await axios.get("http://localhost:5004/api/exams/schedules");
+      const response = await axios.get("/api/exams/schedules");
       console.log("API Response:", response.data); // Debug log
 
       // Handle different response structures
       let allExams = [];
-      if (response.data && response.data.data && Array.isArray(response.data.data)) {
+      if (
+        response.data &&
+        response.data.data &&
+        Array.isArray(response.data.data)
+      ) {
         allExams = response.data.data;
       } else if (response.data && Array.isArray(response.data)) {
         allExams = response.data;
@@ -85,7 +89,9 @@ const PracticalExamApproval = () => {
       console.error("Error fetching exam schedules:", error);
       setSnackbar({
         open: true,
-        message: "Error fetching exam schedules: " + (error.response?.data?.message || error.message),
+        message:
+          "Error fetching exam schedules: " +
+          (error.response?.data?.message || error.message),
         severity: "error",
       });
     }
@@ -93,19 +99,24 @@ const PracticalExamApproval = () => {
 
   const fetchPendingApprovalExams = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5004/api/exams/schedules/pending-approval"
-      );
+      const response = await axios.get("/api/exams/schedules/pending-approval");
       console.log("Pending Approval Response:", response.data); // Debug log
 
       // Handle different response structures
       let pendingExams = [];
-      if (response.data && response.data.data && Array.isArray(response.data.data)) {
+      if (
+        response.data &&
+        response.data.data &&
+        Array.isArray(response.data.data)
+      ) {
         pendingExams = response.data.data;
       } else if (response.data && Array.isArray(response.data)) {
         pendingExams = response.data;
       } else {
-        console.error("Unexpected pending approval response structure:", response.data);
+        console.error(
+          "Unexpected pending approval response structure:",
+          response.data
+        );
         pendingExams = [];
       }
 
@@ -119,7 +130,9 @@ const PracticalExamApproval = () => {
       console.error("Error fetching pending approval exams:", error);
       setSnackbar({
         open: true,
-        message: "Error fetching pending approval exams: " + (error.response?.data?.message || error.message),
+        message:
+          "Error fetching pending approval exams: " +
+          (error.response?.data?.message || error.message),
         severity: "error",
       });
     }
@@ -133,7 +146,7 @@ const PracticalExamApproval = () => {
   const handleApproveSchedule = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:5004/api/exams/schedules/${selectedItem._id}/approve`,
+        `/api/exams/schedules/${selectedItem._id}/approve`,
         { adminMessage }
       );
 
@@ -162,7 +175,7 @@ const PracticalExamApproval = () => {
   const handleRejectSchedule = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:5004/api/exams/schedules/${selectedItem._id}/reject`,
+        `/api/exams/schedules/${selectedItem._id}/reject`,
         { adminMessage }
       );
 
@@ -191,7 +204,7 @@ const PracticalExamApproval = () => {
   const handleApproveResult = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:5004/api/exams/schedules/${selectedItem._id}/approve-result`,
+        `/api/exams/schedules/${selectedItem._id}/approve-result`,
         { adminMessage }
       );
 
@@ -221,7 +234,7 @@ const PracticalExamApproval = () => {
   const handleRejectResult = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:5004/api/exams/schedules/${selectedItem._id}/reject-result`,
+        `/api/exams/schedules/${selectedItem._id}/reject-result`,
         { adminMessage }
       );
 
@@ -275,22 +288,26 @@ const PracticalExamApproval = () => {
         🚗 Practical Exam Management
       </Typography>
       <Typography variant="body1" color="text.secondary" gutterBottom>
-        Manage practical driving test schedules and approve exam results. Field tests are conducted at Ethiopian testing centers.
+        Manage practical driving test schedules and approve exam results. Field
+        tests are conducted at Ethiopian testing centers.
       </Typography>
 
       <Alert severity="info" sx={{ mt: 2, mb: 3 }}>
         <Typography variant="body2">
           <strong>📍 Field Testing Process:</strong>
           <br />
-          • Practical exams are conducted at physical testing locations (Kality, Mekelle, Dire Dawa, etc.)
+          • Practical exams are conducted at physical testing locations (Kality,
+          Mekelle, Dire Dawa, etc.)
           <br />
-          • Use the "Enter Result" button to input field test results after completion
+          • Use the "Enter Result" button to input field test results after
+          completion
           <br />
           • Results require admin approval before being finalized
           <br />
           • Passing score: 70% or above
           <br />
-          <strong>⏰ Flexible Timing:</strong> Users can take exams 2 hours before or 4 hours after scheduled time
+          <strong>⏰ Flexible Timing:</strong> Users can take exams 2 hours
+          before or 4 hours after scheduled time
         </Typography>
       </Alert>
 
@@ -313,7 +330,14 @@ const PracticalExamApproval = () => {
         {/* Tab 1: Scheduled Practical Exams */}
         {tabValue === 0 && (
           <Box sx={{ p: 3 }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                mb: 3,
+              }}
+            >
               <Typography variant="h6" gutterBottom>
                 Scheduled Practical Exams
               </Typography>
@@ -327,7 +351,7 @@ const PracticalExamApproval = () => {
             </Box>
 
             {examSchedules.length === 0 ? (
-              <Box sx={{ textAlign: 'center', py: 4 }}>
+              <Box sx={{ textAlign: "center", py: 4 }}>
                 <Typography variant="h6" color="text.secondary">
                   No practical exams scheduled
                 </Typography>
@@ -353,7 +377,11 @@ const PracticalExamApproval = () => {
                       <TableRow key={schedule._id}>
                         <TableCell>
                           <Box
-                            sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                            }}
                           >
                             <PersonIcon color="primary" />
                             <Box>
@@ -377,8 +405,12 @@ const PracticalExamApproval = () => {
                             {schedule.time}
                           </Typography>
                         </TableCell>
-                        <TableCell>{schedule.location || "Not specified"}</TableCell>
-                        <TableCell>{schedule.instructor || "To be assigned"}</TableCell>
+                        <TableCell>
+                          {schedule.location || "Not specified"}
+                        </TableCell>
+                        <TableCell>
+                          {schedule.instructor || "To be assigned"}
+                        </TableCell>
                         <TableCell>{getStatusChip(schedule.status)}</TableCell>
                         <TableCell>
                           {schedule.status === "scheduled" && (
@@ -414,15 +446,17 @@ const PracticalExamApproval = () => {
                               color="success"
                               startIcon={<AddIcon />}
                               onClick={() => {
-                                navigate(`/admin/practical-exams/result/${schedule._id}`);
+                                navigate(
+                                  `/admin/practical-exams/result/${schedule._id}`
+                                );
                               }}
                               sx={{
-                                fontWeight: 'bold',
+                                fontWeight: "bold",
                                 boxShadow: 2,
-                                '&:hover': {
+                                "&:hover": {
                                   boxShadow: 4,
-                                  transform: 'translateY(-1px)'
-                                }
+                                  transform: "translateY(-1px)",
+                                },
                               }}
                             >
                               📝 Add Field Test Result
@@ -441,7 +475,14 @@ const PracticalExamApproval = () => {
         {/* Tab 2: Pending Approval Exams */}
         {tabValue === 1 && (
           <Box sx={{ p: 3 }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                mb: 3,
+              }}
+            >
               <Typography variant="h6" gutterBottom>
                 Exams Pending Approval
               </Typography>
@@ -455,7 +496,7 @@ const PracticalExamApproval = () => {
             </Box>
 
             {pendingApprovalExams.length === 0 ? (
-              <Box sx={{ textAlign: 'center', py: 4 }}>
+              <Box sx={{ textAlign: "center", py: 4 }}>
                 <Typography variant="h6" color="text.secondary">
                   No exams pending approval
                 </Typography>
@@ -481,7 +522,11 @@ const PracticalExamApproval = () => {
                       <TableRow key={exam._id}>
                         <TableCell>
                           <Box
-                            sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                            }}
                           >
                             <PersonIcon color="primary" />
                             <Box>
@@ -506,14 +551,26 @@ const PracticalExamApproval = () => {
                           </Typography>
                         </TableCell>
                         <TableCell>
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                            }}
+                          >
                             <Typography variant="body2" fontWeight="bold">
                               {exam.examResult?.score || "Not recorded"}
                             </Typography>
                             {exam.examResult?.score && (
                               <Chip
-                                label={exam.examResult.score >= 70 ? "PASS" : "FAIL"}
-                                color={exam.examResult.score >= 70 ? "success" : "error"}
+                                label={
+                                  exam.examResult.score >= 70 ? "PASS" : "FAIL"
+                                }
+                                color={
+                                  exam.examResult.score >= 70
+                                    ? "success"
+                                    : "error"
+                                }
                                 size="small"
                               />
                             )}
@@ -523,7 +580,14 @@ const PracticalExamApproval = () => {
                           {exam.examResult?.evaluatedBy || "Not specified"}
                         </TableCell>
                         <TableCell>
-                          <Typography variant="body2" sx={{ maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                          <Typography
+                            variant="body2"
+                            sx={{
+                              maxWidth: 200,
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                            }}
+                          >
                             {exam.examResult?.notes || "No notes provided"}
                           </Typography>
                         </TableCell>
@@ -659,7 +723,9 @@ const PracticalExamApproval = () => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenApproveResultDialog(false)}>Cancel</Button>
+          <Button onClick={() => setOpenApproveResultDialog(false)}>
+            Cancel
+          </Button>
           <Button
             onClick={handleApproveResult}
             variant="contained"
@@ -696,7 +762,9 @@ const PracticalExamApproval = () => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenRejectResultDialog(false)}>Cancel</Button>
+          <Button onClick={() => setOpenRejectResultDialog(false)}>
+            Cancel
+          </Button>
           <Button
             onClick={handleRejectResult}
             variant="contained"
@@ -727,4 +795,3 @@ const PracticalExamApproval = () => {
 };
 
 export default PracticalExamApproval;
-

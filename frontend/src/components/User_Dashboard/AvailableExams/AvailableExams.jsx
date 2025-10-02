@@ -69,9 +69,7 @@ const AvailableExams = () => {
         return;
       }
 
-      const response = await axios.get(
-        `http://localhost:5004/api/exams/available/${userId}`
-      );
+      const response = await axios.get(`/api/exams/available/${userId}`);
 
       if (response.data.success) {
         setAvailableExams(response.data.exams);
@@ -91,9 +89,7 @@ const AvailableExams = () => {
       }
 
       console.log("🔍 Fetching exam results for user:", userId);
-      const response = await axios.get(
-        `http://localhost:5004/api/exams/results/user/${userId}`
-      );
+      const response = await axios.get(`/api/exams/results/user/${userId}`);
 
       console.log("📊 Exam results response:", response.data);
 
@@ -226,7 +222,7 @@ const AvailableExams = () => {
   const confirmCancelExam = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:5004/api/exams/schedules/${examToCancel._id}`
+        `/api/exams/schedules/${examToCancel._id}`
       );
 
       if (response.data.success) {
@@ -290,10 +286,9 @@ const AvailableExams = () => {
         return;
       }
 
-      const response = await axios.post(
-        "http://localhost:5004/api/exams/instant-theory",
-        { userId }
-      );
+      const response = await axios.post("/api/exams/instant-theory", {
+        userId,
+      });
 
       if (response.data.success) {
         setSnackbar({

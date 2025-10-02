@@ -156,9 +156,7 @@ const Support = () => {
       const userId = localStorage.getItem("userId");
       if (!userId) return;
 
-      const response = await fetch(
-        `http://localhost:5004/api/support/tickets/user/${userId}`
-      );
+      const response = await fetch(`/api/support/tickets/user/${userId}`);
       if (response.ok) {
         const data = await response.json();
         setTickets(data.tickets || []);
@@ -200,22 +198,19 @@ const Support = () => {
     try {
       const userId = localStorage.getItem("userId");
 
-      const response = await fetch(
-        "http://localhost:5004/api/support/tickets",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId,
-            subject: contactForm.subject,
-            category: contactForm.category,
-            priority: contactForm.priority,
-            message: contactForm.message,
-          }),
-        }
-      );
+      const response = await fetch("/api/support/tickets", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId,
+          subject: contactForm.subject,
+          category: contactForm.category,
+          priority: contactForm.priority,
+          message: contactForm.message,
+        }),
+      });
 
       if (response.ok) {
         const data = await response.json();

@@ -74,7 +74,7 @@ const UserDetails = ({ open, user, onClose, onDelete }) => {
       console.log("Fetching applications for user:", user._id);
 
       const response = await axios.get(
-        `http://localhost:5004/api/license/applications/user/${user._id}`
+        `/api/license/applications/user/${user._id}`
       );
 
       console.log("User applications response:", response.data);

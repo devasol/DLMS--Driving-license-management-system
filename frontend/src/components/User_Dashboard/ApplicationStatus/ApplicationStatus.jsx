@@ -85,9 +85,7 @@ const ApplicationStatus = ({ onClose, onCancel }) => {
 
       // Try the debug endpoint first (most reliable)
       try {
-        const response = await axios.get(
-          `http://localhost:5004/api/license/debug/user/${userId}`
-        );
+        const response = await axios.get(`/api/license/debug/user/${userId}`);
 
         console.log("🔍 License check response:", response.data);
 
@@ -101,8 +99,12 @@ const ApplicationStatus = ({ onClose, onCancel }) => {
             class: response.data.licenseClass,
             userName: response.data.userName,
             userEmail: response.data.userEmail,
-            issueDate: response.data.issueDate ? new Date(response.data.issueDate).toLocaleDateString() : "N/A",
-            expiryDate: response.data.expiryDate ? new Date(response.data.expiryDate).toLocaleDateString() : "N/A",
+            issueDate: response.data.issueDate
+              ? new Date(response.data.issueDate).toLocaleDateString()
+              : "N/A",
+            expiryDate: response.data.expiryDate
+              ? new Date(response.data.expiryDate).toLocaleDateString()
+              : "N/A",
           });
         } else {
           console.log("📋 User does not have a license");
@@ -134,7 +136,7 @@ const ApplicationStatus = ({ onClose, onCancel }) => {
       }
 
       const response = await axios.get(
-        `http://localhost:5004/api/license/applications/user/${userId}`
+        `/api/license/applications/user/${userId}`
       );
 
       if (response.data && response.data.length > 0) {
@@ -164,10 +166,7 @@ const ApplicationStatus = ({ onClose, onCancel }) => {
 
   useEffect(() => {
     const initializeData = async () => {
-      await Promise.all([
-        checkUserLicense(),
-        fetchApplicationStatus()
-      ]);
+      await Promise.all([checkUserLicense(), fetchApplicationStatus()]);
     };
 
     initializeData();
@@ -282,13 +281,15 @@ const ApplicationStatus = ({ onClose, onCancel }) => {
       </Box>
 
       {/* Congratulations Card */}
-      <Card sx={{
-        borderRadius: 3,
-        boxShadow: "0 8px 32px rgba(0,0,0,0.1)",
-        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        color: "white",
-        mb: 3
-      }}>
+      <Card
+        sx={{
+          borderRadius: 3,
+          boxShadow: "0 8px 32px rgba(0,0,0,0.1)",
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          color: "white",
+          mb: 3,
+        }}
+      >
         <CardContent sx={{ p: 4, textAlign: "center" }}>
           <Box sx={{ mb: 3 }}>
             <Typography variant="h3" sx={{ mb: 2 }}>
@@ -302,12 +303,14 @@ const ApplicationStatus = ({ onClose, onCancel }) => {
             </Typography>
           </Box>
 
-          <Box sx={{
-            backgroundColor: "rgba(255,255,255,0.1)",
-            borderRadius: 2,
-            p: 3,
-            backdropFilter: "blur(10px)"
-          }}>
+          <Box
+            sx={{
+              backgroundColor: "rgba(255,255,255,0.1)",
+              borderRadius: 2,
+              p: 3,
+              backdropFilter: "blur(10px)",
+            }}
+          >
             <Typography variant="h5" fontWeight="bold" gutterBottom>
               License Number: {userLicense?.number}
             </Typography>
@@ -321,7 +324,12 @@ const ApplicationStatus = ({ onClose, onCancel }) => {
       {/* License Details Card */}
       <Card sx={{ borderRadius: 3, boxShadow: "0 4px 20px rgba(0,0,0,0.1)" }}>
         <CardContent sx={{ p: 3 }}>
-          <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ color: "primary.main" }}>
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            gutterBottom
+            sx={{ color: "primary.main" }}
+          >
             Your License Details
           </Typography>
 
@@ -331,16 +339,44 @@ const ApplicationStatus = ({ onClose, onCancel }) => {
                 <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
                   License Information
                 </Typography>
-                <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
-                  <Typography variant="body2" color="text.secondary">License Number:</Typography>
-                  <Typography variant="body2" fontWeight="medium">{userLicense?.number}</Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    mb: 1,
+                  }}
+                >
+                  <Typography variant="body2" color="text.secondary">
+                    License Number:
+                  </Typography>
+                  <Typography variant="body2" fontWeight="medium">
+                    {userLicense?.number}
+                  </Typography>
                 </Box>
-                <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
-                  <Typography variant="body2" color="text.secondary">Class:</Typography>
-                  <Typography variant="body2" fontWeight="medium">{userLicense?.class}</Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    mb: 1,
+                  }}
+                >
+                  <Typography variant="body2" color="text.secondary">
+                    Class:
+                  </Typography>
+                  <Typography variant="body2" fontWeight="medium">
+                    {userLicense?.class}
+                  </Typography>
                 </Box>
-                <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
-                  <Typography variant="body2" color="text.secondary">Status:</Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    mb: 1,
+                  }}
+                >
+                  <Typography variant="body2" color="text.secondary">
+                    Status:
+                  </Typography>
                   <Chip
                     label={userLicense?.status}
                     color="success"
@@ -348,13 +384,27 @@ const ApplicationStatus = ({ onClose, onCancel }) => {
                     sx={{ fontWeight: "bold" }}
                   />
                 </Box>
-                <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
-                  <Typography variant="body2" color="text.secondary">Issue Date:</Typography>
-                  <Typography variant="body2" fontWeight="medium">{userLicense?.issueDate}</Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    mb: 1,
+                  }}
+                >
+                  <Typography variant="body2" color="text.secondary">
+                    Issue Date:
+                  </Typography>
+                  <Typography variant="body2" fontWeight="medium">
+                    {userLicense?.issueDate}
+                  </Typography>
                 </Box>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                  <Typography variant="body2" color="text.secondary">Expiry Date:</Typography>
-                  <Typography variant="body2" fontWeight="medium">{userLicense?.expiryDate}</Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Expiry Date:
+                  </Typography>
+                  <Typography variant="body2" fontWeight="medium">
+                    {userLicense?.expiryDate}
+                  </Typography>
                 </Box>
               </Box>
             </Grid>
@@ -364,19 +414,35 @@ const ApplicationStatus = ({ onClose, onCancel }) => {
                 <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
                   Holder Information
                 </Typography>
-                <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
-                  <Typography variant="body2" color="text.secondary">Full Name:</Typography>
-                  <Typography variant="body2" fontWeight="medium">{userLicense?.userName}</Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    mb: 1,
+                  }}
+                >
+                  <Typography variant="body2" color="text.secondary">
+                    Full Name:
+                  </Typography>
+                  <Typography variant="body2" fontWeight="medium">
+                    {userLicense?.userName}
+                  </Typography>
                 </Box>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                  <Typography variant="body2" color="text.secondary">Email:</Typography>
-                  <Typography variant="body2" fontWeight="medium">{userLicense?.userEmail}</Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Email:
+                  </Typography>
+                  <Typography variant="body2" fontWeight="medium">
+                    {userLicense?.userEmail}
+                  </Typography>
                 </Box>
               </Box>
             </Grid>
           </Grid>
 
-          <Box sx={{ display: "flex", gap: 2, mt: 3, justifyContent: "center" }}>
+          <Box
+            sx={{ display: "flex", gap: 2, mt: 3, justifyContent: "center" }}
+          >
             <Button
               variant="contained"
               color="primary"
@@ -408,10 +474,12 @@ const ApplicationStatus = ({ onClose, onCancel }) => {
           Important Notes:
         </Typography>
         <Typography variant="body2">
-          • Always carry your license while driving<br/>
-          • Your license is valid for 5 years from the issue date<br/>
-          • Remember to renew before the expiry date<br/>
-          • Follow all traffic rules and regulations
+          • Always carry your license while driving
+          <br />
+          • Your license is valid for 5 years from the issue date
+          <br />
+          • Remember to renew before the expiry date
+          <br />• Follow all traffic rules and regulations
         </Typography>
       </Alert>
     </Box>

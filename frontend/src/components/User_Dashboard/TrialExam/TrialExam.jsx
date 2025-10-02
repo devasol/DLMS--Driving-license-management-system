@@ -53,9 +53,7 @@ const TrialExam = ({ onClose }) => {
   const fetchQuestions = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        "http://localhost:5004/api/trial/questions?limit=20"
-      );
+      const response = await axios.get("/api/trial/questions?limit=20");
       if (response.data.success) {
         setQuestions(response.data.questions);
         setTimeStarted(new Date());
@@ -113,10 +111,7 @@ const TrialExam = ({ onClose }) => {
         timeCompleted: new Date().toISOString(),
       };
 
-      const response = await axios.post(
-        "http://localhost:5004/api/trial/submit",
-        submissionData
-      );
+      const response = await axios.post("/api/trial/submit", submissionData);
 
       if (response.data.success) {
         setResult(response.data.result);

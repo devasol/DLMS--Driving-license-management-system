@@ -74,9 +74,7 @@ const LicenseReplacement = () => {
       console.log("🔍 Checking replacement status for user:", userId);
 
       // Check if user has any renewal applications with "lost" reason
-      const response = await axios.get(
-        `http://localhost:5004/api/renewals/user/${userId}`
-      );
+      const response = await axios.get(`/api/renewals/user/${userId}`);
 
       console.log("📋 Renewal applications:", response.data);
 
@@ -97,14 +95,25 @@ const LicenseReplacement = () => {
           setReplacementStatus(latestReplacement);
 
           // Check if the latest replacement is approved and has a new license issued
-          if (latestReplacement.status === "approved" && latestReplacement.newLicenseIssued) {
-            console.log("✅ Found approved replacement with new license:", latestReplacement.newLicenseNumber);
+          if (
+            latestReplacement.status === "approved" &&
+            latestReplacement.newLicenseIssued
+          ) {
+            console.log(
+              "✅ Found approved replacement with new license:",
+              latestReplacement.newLicenseNumber
+            );
             setHasApprovedReplacement(true);
 
             // Get the replaced license information
             await getReplacedLicense(userId);
           } else {
-            console.log("📋 Replacement status:", latestReplacement.status, "License issued:", latestReplacement.newLicenseIssued);
+            console.log(
+              "📋 Replacement status:",
+              latestReplacement.status,
+              "License issued:",
+              latestReplacement.newLicenseIssued
+            );
             setHasApprovedReplacement(false);
           }
         } else {
@@ -129,9 +138,7 @@ const LicenseReplacement = () => {
       console.log("🔍 Getting replaced license for user:", userId);
 
       // Try the debug endpoint first
-      const response = await axios.get(
-        `http://localhost:5004/api/license/debug/user/${userId}`
-      );
+      const response = await axios.get(`/api/license/debug/user/${userId}`);
 
       console.log("🎫 License response:", response.data);
 
@@ -142,8 +149,12 @@ const LicenseReplacement = () => {
           class: response.data.licenseClass,
           userName: response.data.userName,
           userEmail: response.data.userEmail,
-          issueDate: response.data.issueDate ? new Date(response.data.issueDate).toLocaleDateString() : "N/A",
-          expiryDate: response.data.expiryDate ? new Date(response.data.expiryDate).toLocaleDateString() : "N/A",
+          issueDate: response.data.issueDate
+            ? new Date(response.data.issueDate).toLocaleDateString()
+            : "N/A",
+          expiryDate: response.data.expiryDate
+            ? new Date(response.data.expiryDate).toLocaleDateString()
+            : "N/A",
         });
       }
     } catch (error) {
@@ -163,7 +174,13 @@ const LicenseReplacement = () => {
     const file = e.target.files[0];
     if (file) {
       // Validate file type
-      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf'];
+      const allowedTypes = [
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
+        "image/gif",
+        "application/pdf",
+      ];
       if (!allowedTypes.includes(file.type)) {
         setMessage({
           type: "error",
@@ -188,12 +205,13 @@ const LicenseReplacement = () => {
       setMessage({ type: "", text: "" });
 
       // Create preview for images
-      if (file.type.startsWith('image/')) {
+      if (file.type.startsWith("image/")) {
         const reader = new FileReader();
-        reader.onload = (e) => setFilePreviews((prev) => ({
-          ...prev,
-          [documentType]: e.target.result,
-        }));
+        reader.onload = (e) =>
+          setFilePreviews((prev) => ({
+            ...prev,
+            [documentType]: e.target.result,
+          }));
         reader.readAsDataURL(file);
       } else {
         setFilePreviews((prev) => ({
@@ -205,15 +223,30 @@ const LicenseReplacement = () => {
   };
 
   const validateForm = () => {
-    const requiredFields = ['name', 'email', 'password', 'nationalId', 'policeReportNumber', 'lossDate', 'lossLocation', 'lossCircumstances'];
-    const requiredDocuments = ['nationalIdDocument', 'policeReport', 'affidavit'];
+    const requiredFields = [
+      "name",
+      "email",
+      "password",
+      "nationalId",
+      "policeReportNumber",
+      "lossDate",
+      "lossLocation",
+      "lossCircumstances",
+    ];
+    const requiredDocuments = [
+      "nationalIdDocument",
+      "policeReport",
+      "affidavit",
+    ];
 
     // Check required fields
     for (const field of requiredFields) {
       if (!formData[field]) {
         setMessage({
           type: "error",
-          text: `Please fill in the ${field.replace(/([A-Z])/g, ' $1').toLowerCase()} field`,
+          text: `Please fill in the ${field
+            .replace(/([A-Z])/g, " $1")
+            .toLowerCase()} field`,
         });
         return false;
       }
@@ -224,7 +257,9 @@ const LicenseReplacement = () => {
       if (!documents[doc]) {
         setMessage({
           type: "error",
-          text: `Please upload the ${doc.replace(/([A-Z])/g, ' $1').toLowerCase()} document`,
+          text: `Please upload the ${doc
+            .replace(/([A-Z])/g, " $1")
+            .toLowerCase()} document`,
         });
         return false;
       }
@@ -252,7 +287,7 @@ const LicenseReplacement = () => {
       formDataToSend.append("email", formData.email);
       formDataToSend.append("password", formData.password);
       formDataToSend.append("renewalReason", "lost"); // Set as lost license
-      
+
       // Add additional replacement-specific data as notes
       const replacementNotes = {
         nationalId: formData.nationalId,
@@ -267,7 +302,7 @@ const LicenseReplacement = () => {
       formDataToSend.append("licenseDocument", documents.policeReport);
 
       const response = await axios.post(
-        "http://localhost:5004/api/renewals/submit",
+        "/api/renewals/submit",
         formDataToSend,
         {
           headers: {
@@ -304,7 +339,9 @@ const LicenseReplacement = () => {
       console.error("Error submitting replacement application:", error);
       setMessage({
         type: "error",
-        text: error.response?.data?.message || "Error submitting replacement application",
+        text:
+          error.response?.data?.message ||
+          "Error submitting replacement application",
       });
     } finally {
       setLoading(false);
@@ -353,13 +390,15 @@ const LicenseReplacement = () => {
         </Paper>
 
         {/* Congratulations Card */}
-        <Card sx={{
-          borderRadius: 3,
-          boxShadow: "0 8px 32px rgba(0,0,0,0.1)",
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-          color: "white",
-          mb: 3
-        }}>
+        <Card
+          sx={{
+            borderRadius: 3,
+            boxShadow: "0 8px 32px rgba(0,0,0,0.1)",
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            color: "white",
+            mb: 3,
+          }}
+        >
           <CardContent sx={{ p: 4, textAlign: "center" }}>
             <Box sx={{ mb: 3 }}>
               <Typography variant="h3" sx={{ mb: 2 }}>
@@ -369,16 +408,19 @@ const LicenseReplacement = () => {
                 Your License Has Been Replaced!
               </Typography>
               <Typography variant="h6" sx={{ opacity: 0.9 }}>
-                Congratulations! Your replacement application has been approved and your new license is ready.
+                Congratulations! Your replacement application has been approved
+                and your new license is ready.
               </Typography>
             </Box>
 
-            <Box sx={{
-              backgroundColor: "rgba(255,255,255,0.1)",
-              borderRadius: 2,
-              p: 3,
-              backdropFilter: "blur(10px)"
-            }}>
+            <Box
+              sx={{
+                backgroundColor: "rgba(255,255,255,0.1)",
+                borderRadius: 2,
+                p: 3,
+                backdropFilter: "blur(10px)",
+              }}
+            >
               <Typography variant="h5" fontWeight="bold" gutterBottom>
                 New License Number: {replacedLicense?.number}
               </Typography>
@@ -425,7 +467,8 @@ const LicenseReplacement = () => {
                 License Replacement Application
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                Please provide all required information and documents to apply for a replacement license.
+                Please provide all required information and documents to apply
+                for a replacement license.
               </Typography>
 
               <Alert severity="info" sx={{ mb: 3 }}>
@@ -433,10 +476,12 @@ const LicenseReplacement = () => {
                   Before You Begin:
                 </Typography>
                 <Typography variant="body2">
-                  • File a police report for your lost license<br/>
-                  • Prepare a notarized affidavit of loss<br/>
-                  • Have your national ID and recent photo ready<br/>
-                  • Ensure all documents are clear and legible
+                  • File a police report for your lost license
+                  <br />
+                  • Prepare a notarized affidavit of loss
+                  <br />
+                  • Have your national ID and recent photo ready
+                  <br />• Ensure all documents are clear and legible
                 </Typography>
               </Alert>
 
@@ -447,7 +492,12 @@ const LicenseReplacement = () => {
               )}
 
               <form onSubmit={handleSubmit}>
-                <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ mt: 3, mb: 2 }}>
+                <Typography
+                  variant="h6"
+                  fontWeight="bold"
+                  gutterBottom
+                  sx={{ mt: 3, mb: 2 }}
+                >
                   Personal Information
                 </Typography>
                 <Grid container spacing={3}>
@@ -502,7 +552,12 @@ const LicenseReplacement = () => {
 
                 <Divider sx={{ my: 3 }} />
 
-                <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ mb: 2 }}>
+                <Typography
+                  variant="h6"
+                  fontWeight="bold"
+                  gutterBottom
+                  sx={{ mb: 2 }}
+                >
                   Loss Information
                 </Typography>
                 <Grid container spacing={3}>
@@ -561,7 +616,12 @@ const LicenseReplacement = () => {
 
                 <Divider sx={{ my: 3 }} />
 
-                <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ mb: 2 }}>
+                <Typography
+                  variant="h6"
+                  fontWeight="bold"
+                  gutterBottom
+                  sx={{ mb: 2 }}
+                >
                   Required Documents
                 </Typography>
 
@@ -569,19 +629,27 @@ const LicenseReplacement = () => {
                   {/* National ID Document */}
                   <Grid item xs={12} sm={6}>
                     <Box sx={{ mb: 2 }}>
-                      <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+                      <Typography
+                        variant="subtitle1"
+                        fontWeight="bold"
+                        gutterBottom
+                      >
                         National ID Document *
                       </Typography>
-                      <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ mb: 2 }}
+                      >
                         Upload a clear copy of your national ID
                       </Typography>
 
                       <input
                         accept="image/*,.pdf"
-                        style={{ display: 'none' }}
+                        style={{ display: "none" }}
                         id="national-id-upload"
                         type="file"
-                        onChange={handleFileChange('nationalIdDocument')}
+                        onChange={handleFileChange("nationalIdDocument")}
                       />
                       <label htmlFor="national-id-upload">
                         <Button
@@ -599,14 +667,31 @@ const LicenseReplacement = () => {
                             width: "100%",
                           }}
                         >
-                          {documents.nationalIdDocument ? "Change National ID" : "Upload National ID"}
+                          {documents.nationalIdDocument
+                            ? "Change National ID"
+                            : "Upload National ID"}
                         </Button>
                       </label>
 
                       {documents.nationalIdDocument && (
-                        <Box sx={{ mt: 2, p: 2, border: "1px solid #e0e0e0", borderRadius: 2 }}>
-                          <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
-                            {documents.nationalIdDocument.type === "application/pdf" ? (
+                        <Box
+                          sx={{
+                            mt: 2,
+                            p: 2,
+                            border: "1px solid #e0e0e0",
+                            borderRadius: 2,
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                              mb: 1,
+                            }}
+                          >
+                            {documents.nationalIdDocument.type ===
+                            "application/pdf" ? (
                               <PdfIcon color="error" />
                             ) : (
                               <ImageIcon color="primary" />
@@ -616,7 +701,13 @@ const LicenseReplacement = () => {
                             </Typography>
                           </Box>
                           <Typography variant="caption" color="text.secondary">
-                            Size: {(documents.nationalIdDocument.size / 1024 / 1024).toFixed(2)} MB
+                            Size:{" "}
+                            {(
+                              documents.nationalIdDocument.size /
+                              1024 /
+                              1024
+                            ).toFixed(2)}{" "}
+                            MB
                           </Typography>
 
                           {filePreviews.nationalIdDocument && (
@@ -641,19 +732,27 @@ const LicenseReplacement = () => {
                   {/* Police Report */}
                   <Grid item xs={12} sm={6}>
                     <Box sx={{ mb: 2 }}>
-                      <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+                      <Typography
+                        variant="subtitle1"
+                        fontWeight="bold"
+                        gutterBottom
+                      >
                         Police Report *
                       </Typography>
-                      <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ mb: 2 }}
+                      >
                         Upload the original police report for lost license
                       </Typography>
 
                       <input
                         accept="image/*,.pdf"
-                        style={{ display: 'none' }}
+                        style={{ display: "none" }}
                         id="police-report-upload"
                         type="file"
-                        onChange={handleFileChange('policeReport')}
+                        onChange={handleFileChange("policeReport")}
                       />
                       <label htmlFor="police-report-upload">
                         <Button
@@ -671,14 +770,31 @@ const LicenseReplacement = () => {
                             width: "100%",
                           }}
                         >
-                          {documents.policeReport ? "Change Police Report" : "Upload Police Report"}
+                          {documents.policeReport
+                            ? "Change Police Report"
+                            : "Upload Police Report"}
                         </Button>
                       </label>
 
                       {documents.policeReport && (
-                        <Box sx={{ mt: 2, p: 2, border: "1px solid #e0e0e0", borderRadius: 2 }}>
-                          <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
-                            {documents.policeReport.type === "application/pdf" ? (
+                        <Box
+                          sx={{
+                            mt: 2,
+                            p: 2,
+                            border: "1px solid #e0e0e0",
+                            borderRadius: 2,
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                              mb: 1,
+                            }}
+                          >
+                            {documents.policeReport.type ===
+                            "application/pdf" ? (
                               <PdfIcon color="error" />
                             ) : (
                               <ImageIcon color="primary" />
@@ -688,7 +804,13 @@ const LicenseReplacement = () => {
                             </Typography>
                           </Box>
                           <Typography variant="caption" color="text.secondary">
-                            Size: {(documents.policeReport.size / 1024 / 1024).toFixed(2)} MB
+                            Size:{" "}
+                            {(
+                              documents.policeReport.size /
+                              1024 /
+                              1024
+                            ).toFixed(2)}{" "}
+                            MB
                           </Typography>
 
                           {filePreviews.policeReport && (
@@ -713,19 +835,27 @@ const LicenseReplacement = () => {
                   {/* Affidavit */}
                   <Grid item xs={12} sm={6}>
                     <Box sx={{ mb: 2 }}>
-                      <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+                      <Typography
+                        variant="subtitle1"
+                        fontWeight="bold"
+                        gutterBottom
+                      >
                         Affidavit of Loss *
                       </Typography>
-                      <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ mb: 2 }}
+                      >
                         Upload notarized affidavit stating the loss
                       </Typography>
 
                       <input
                         accept="image/*,.pdf"
-                        style={{ display: 'none' }}
+                        style={{ display: "none" }}
                         id="affidavit-upload"
                         type="file"
-                        onChange={handleFileChange('affidavit')}
+                        onChange={handleFileChange("affidavit")}
                       />
                       <label htmlFor="affidavit-upload">
                         <Button
@@ -743,13 +873,29 @@ const LicenseReplacement = () => {
                             width: "100%",
                           }}
                         >
-                          {documents.affidavit ? "Change Affidavit" : "Upload Affidavit"}
+                          {documents.affidavit
+                            ? "Change Affidavit"
+                            : "Upload Affidavit"}
                         </Button>
                       </label>
 
                       {documents.affidavit && (
-                        <Box sx={{ mt: 2, p: 2, border: "1px solid #e0e0e0", borderRadius: 2 }}>
-                          <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
+                        <Box
+                          sx={{
+                            mt: 2,
+                            p: 2,
+                            border: "1px solid #e0e0e0",
+                            borderRadius: 2,
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                              mb: 1,
+                            }}
+                          >
                             {documents.affidavit.type === "application/pdf" ? (
                               <PdfIcon color="error" />
                             ) : (
@@ -760,7 +906,11 @@ const LicenseReplacement = () => {
                             </Typography>
                           </Box>
                           <Typography variant="caption" color="text.secondary">
-                            Size: {(documents.affidavit.size / 1024 / 1024).toFixed(2)} MB
+                            Size:{" "}
+                            {(documents.affidavit.size / 1024 / 1024).toFixed(
+                              2
+                            )}{" "}
+                            MB
                           </Typography>
 
                           {filePreviews.affidavit && (
@@ -785,19 +935,27 @@ const LicenseReplacement = () => {
                   {/* Passport Photo */}
                   <Grid item xs={12} sm={6}>
                     <Box sx={{ mb: 2 }}>
-                      <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+                      <Typography
+                        variant="subtitle1"
+                        fontWeight="bold"
+                        gutterBottom
+                      >
                         Passport Photo (Optional)
                       </Typography>
-                      <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ mb: 2 }}
+                      >
                         Upload a recent passport-size photo
                       </Typography>
 
                       <input
                         accept="image/*"
-                        style={{ display: 'none' }}
+                        style={{ display: "none" }}
                         id="passport-photo-upload"
                         type="file"
-                        onChange={handleFileChange('passportPhoto')}
+                        onChange={handleFileChange("passportPhoto")}
                       />
                       <label htmlFor="passport-photo-upload">
                         <Button
@@ -815,20 +973,42 @@ const LicenseReplacement = () => {
                             width: "100%",
                           }}
                         >
-                          {documents.passportPhoto ? "Change Photo" : "Upload Photo"}
+                          {documents.passportPhoto
+                            ? "Change Photo"
+                            : "Upload Photo"}
                         </Button>
                       </label>
 
                       {documents.passportPhoto && (
-                        <Box sx={{ mt: 2, p: 2, border: "1px solid #e0e0e0", borderRadius: 2 }}>
-                          <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
+                        <Box
+                          sx={{
+                            mt: 2,
+                            p: 2,
+                            border: "1px solid #e0e0e0",
+                            borderRadius: 2,
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                              mb: 1,
+                            }}
+                          >
                             <ImageIcon color="primary" />
                             <Typography variant="body2" fontWeight="bold">
                               {documents.passportPhoto.name}
                             </Typography>
                           </Box>
                           <Typography variant="caption" color="text.secondary">
-                            Size: {(documents.passportPhoto.size / 1024 / 1024).toFixed(2)} MB
+                            Size:{" "}
+                            {(
+                              documents.passportPhoto.size /
+                              1024 /
+                              1024
+                            ).toFixed(2)}{" "}
+                            MB
                           </Typography>
 
                           {filePreviews.passportPhoto && (
@@ -857,7 +1037,9 @@ const LicenseReplacement = () => {
                     variant="contained"
                     size="large"
                     disabled={loading}
-                    startIcon={loading ? <CircularProgress size={20} /> : <SendIcon />}
+                    startIcon={
+                      loading ? <CircularProgress size={20} /> : <SendIcon />
+                    }
                     sx={{
                       py: 1.5,
                       px: 4,
@@ -866,7 +1048,9 @@ const LicenseReplacement = () => {
                       fontSize: "1.1rem",
                     }}
                   >
-                    {loading ? "Submitting..." : "Submit Replacement Application"}
+                    {loading
+                      ? "Submitting..."
+                      : "Submit Replacement Application"}
                   </Button>
                 </Grid>
               </form>
@@ -894,7 +1078,8 @@ const LicenseReplacement = () => {
                   <strong>Step 4:</strong> Admin will review your application
                 </Typography>
                 <Typography variant="body2" sx={{ mb: 2 }}>
-                  <strong>Step 5:</strong> Upon approval, your new license will be issued
+                  <strong>Step 5:</strong> Upon approval, your new license will
+                  be issued
                 </Typography>
               </Box>
             </CardContent>
@@ -924,7 +1109,9 @@ const LicenseReplacement = () => {
 
           <Card elevation={2} sx={{ mt: 2 }}>
             <CardContent>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
+              <Box
+                sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}
+              >
                 <WarningIcon color="warning" />
                 <Typography variant="h6" fontWeight="bold">
                   Important Notes

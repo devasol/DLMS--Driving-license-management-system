@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Card,
@@ -30,8 +30,8 @@ import {
   Alert,
   CircularProgress,
   Tooltip,
-  Badge
-} from '@mui/material';
+  Badge,
+} from "@mui/material";
 import {
   Add,
   Edit,
@@ -43,10 +43,10 @@ import {
   Category,
   Schedule,
   Image,
-  Close
-} from '@mui/icons-material';
-import { motion } from 'framer-motion';
-import axios from 'axios';
+  Close,
+} from "@mui/icons-material";
+import { motion } from "framer-motion";
+import axios from "axios";
 
 const NewsManagement = () => {
   const [news, setNews] = useState([]);
@@ -54,19 +54,19 @@ const NewsManagement = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [editingNews, setEditingNews] = useState(null);
   const [formData, setFormData] = useState({
-    title: '',
-    content: '',
-    summary: '',
-    category: 'general',
-    priority: 'medium',
-    tags: '',
-    publishDate: '',
-    expiryDate: '',
+    title: "",
+    content: "",
+    summary: "",
+    category: "general",
+    priority: "medium",
+    tags: "",
+    publishDate: "",
+    expiryDate: "",
     isSticky: false,
     allowComments: true,
     notifyUsers: false,
-    targetAudience: 'all',
-    status: 'published'
+    targetAudience: "all",
+    status: "published",
   });
   const [selectedFile, setSelectedFile] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -74,20 +74,20 @@ const NewsManagement = () => {
   const [success, setSuccess] = useState(null);
 
   const categories = [
-    { value: 'general', label: 'General' },
-    { value: 'announcement', label: 'Announcement' },
-    { value: 'policy', label: 'Policy Update' },
-    { value: 'exam', label: 'Exam News' },
-    { value: 'license', label: 'License Update' },
-    { value: 'traffic', label: 'Traffic News' },
-    { value: 'emergency', label: 'Emergency' }
+    { value: "general", label: "General" },
+    { value: "announcement", label: "Announcement" },
+    { value: "policy", label: "Policy Update" },
+    { value: "exam", label: "Exam News" },
+    { value: "license", label: "License Update" },
+    { value: "traffic", label: "Traffic News" },
+    { value: "emergency", label: "Emergency" },
   ];
 
   const priorities = [
-    { value: 'low', label: 'Low', color: '#4caf50' },
-    { value: 'medium', label: 'Medium', color: '#ff9800' },
-    { value: 'high', label: 'High', color: '#f44336' },
-    { value: 'urgent', label: 'Urgent', color: '#9c27b0' }
+    { value: "low", label: "Low", color: "#4caf50" },
+    { value: "medium", label: "Medium", color: "#ff9800" },
+    { value: "high", label: "High", color: "#f44336" },
+    { value: "urgent", label: "Urgent", color: "#9c27b0" },
   ];
 
   useEffect(() => {
@@ -99,34 +99,44 @@ const NewsManagement = () => {
       setLoading(true);
       setError(null);
 
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
 
       if (!token) {
-        setError('No authentication token found. Please log in as admin.');
+        setError("No authentication token found. Please log in as admin.");
         return;
       }
 
-      const response = await axios.get('http://localhost:5004/api/news/admin/all', {
-        headers: { Authorization: `Bearer ${token}` }
+      const response = await axios.get("/api/news/admin/all", {
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (response.data.success) {
         setNews(response.data.news);
       } else {
-        setError('Failed to fetch news: ' + (response.data.message || 'Unknown error'));
+        setError(
+          "Failed to fetch news: " + (response.data.message || "Unknown error")
+        );
       }
     } catch (error) {
-      console.error('Error fetching news:', error);
+      console.error("Error fetching news:", error);
 
       if (error.response?.status === 401) {
-        setError('Authentication failed. Please log in as admin again.');
-        localStorage.removeItem('token'); // Clear invalid token
+        setError("Authentication failed. Please log in as admin again.");
+        localStorage.removeItem("token"); // Clear invalid token
       } else if (error.response?.status === 403) {
-        setError('Access denied. Admin privileges required.');
-      } else if (error.code === 'ECONNREFUSED' || error.message.includes('Network Error')) {
-        setError('Cannot connect to server. Please ensure the backend is running.');
+        setError("Access denied. Admin privileges required.");
+      } else if (
+        error.code === "ECONNREFUSED" ||
+        error.message.includes("Network Error")
+      ) {
+        setError(
+          "Cannot connect to server. Please ensure the backend is running."
+        );
       } else {
-        setError('Failed to fetch news: ' + (error.response?.data?.message || error.message));
+        setError(
+          "Failed to fetch news: " +
+            (error.response?.data?.message || error.message)
+        );
       }
     } finally {
       setLoading(false);
@@ -137,47 +147,47 @@ const NewsManagement = () => {
     try {
       setSubmitting(true);
       setError(null);
-      
-      const token = localStorage.getItem('token');
+
+      const token = localStorage.getItem("token");
       const formDataToSend = new FormData();
-      
+
       // Add all form fields
-      Object.keys(formData).forEach(key => {
-        if (formData[key] !== null && formData[key] !== '') {
+      Object.keys(formData).forEach((key) => {
+        if (formData[key] !== null && formData[key] !== "") {
           formDataToSend.append(key, formData[key]);
         }
       });
-      
+
       // Add file if selected
       if (selectedFile) {
-        formDataToSend.append('featuredImage', selectedFile);
+        formDataToSend.append("featuredImage", selectedFile);
       }
-      
-      const url = editingNews 
-        ? `http://localhost:5004/api/news/admin/${editingNews._id}`
-        : 'http://localhost:5004/api/news/admin/create';
-      
-      const method = editingNews ? 'put' : 'post';
-      
+
+      const url = editingNews
+        ? `/api/news/admin/${editingNews._id}`
+        : "/api/news/admin/create";
+
+      const method = editingNews ? "put" : "post";
+
       const response = await axios[method](url, formDataToSend, {
-        headers: { 
+        headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data'
-        }
+          "Content-Type": "multipart/form-data",
+        },
       });
-      
+
       if (response.data.success) {
         const successMessage = editingNews
-          ? '🎉 Congratulations! News article updated successfully!'
-          : '🎉 Congratulations! News article created successfully!';
+          ? "🎉 Congratulations! News article updated successfully!"
+          : "🎉 Congratulations! News article created successfully!";
         setSuccess(successMessage);
         setOpenDialog(false);
         resetForm();
         fetchNews();
       }
     } catch (error) {
-      console.error('Error saving news:', error);
-      setError(error.response?.data?.message || 'Failed to save news');
+      console.error("Error saving news:", error);
+      setError(error.response?.data?.message || "Failed to save news");
     } finally {
       setSubmitting(false);
     }
@@ -191,82 +201,91 @@ const NewsManagement = () => {
       summary: newsItem.summary,
       category: newsItem.category,
       priority: newsItem.priority,
-      tags: newsItem.tags?.join(', ') || '',
-      publishDate: newsItem.publishDate ? new Date(newsItem.publishDate).toISOString().slice(0, 16) : '',
-      expiryDate: newsItem.expiryDate ? new Date(newsItem.expiryDate).toISOString().slice(0, 16) : '',
+      tags: newsItem.tags?.join(", ") || "",
+      publishDate: newsItem.publishDate
+        ? new Date(newsItem.publishDate).toISOString().slice(0, 16)
+        : "",
+      expiryDate: newsItem.expiryDate
+        ? new Date(newsItem.expiryDate).toISOString().slice(0, 16)
+        : "",
       isSticky: newsItem.isSticky,
       allowComments: newsItem.allowComments,
       notifyUsers: newsItem.notifyUsers,
       targetAudience: newsItem.targetAudience,
-      status: newsItem.status
+      status: newsItem.status,
     });
     setOpenDialog(true);
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this news article?')) return;
-    
+    if (!window.confirm("Are you sure you want to delete this news article?"))
+      return;
+
     try {
-      const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5004/api/news/admin/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
+      const token = localStorage.getItem("token");
+      await axios.delete(`/api/news/admin/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
-      
-      setSuccess('🗑️ News article deleted successfully!');
+
+      setSuccess("🗑️ News article deleted successfully!");
       fetchNews();
     } catch (error) {
-      console.error('Error deleting news:', error);
-      setError('Failed to delete news');
+      console.error("Error deleting news:", error);
+      setError("Failed to delete news");
     }
   };
 
   const resetForm = () => {
     setFormData({
-      title: '',
-      content: '',
-      summary: '',
-      category: 'general',
-      priority: 'medium',
-      tags: '',
-      publishDate: '',
-      expiryDate: '',
+      title: "",
+      content: "",
+      summary: "",
+      category: "general",
+      priority: "medium",
+      tags: "",
+      publishDate: "",
+      expiryDate: "",
       isSticky: false,
       allowComments: true,
       notifyUsers: false,
-      targetAudience: 'all',
-      status: 'published'
+      targetAudience: "all",
+      status: "published",
     });
     setSelectedFile(null);
     setEditingNews(null);
   };
 
   const formatDate = (date) => {
-    return new Date(date).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    return new Date(date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'published': return 'success';
-      case 'draft': return 'warning';
-      case 'archived': return 'default';
-      default: return 'default';
+      case "published":
+        return "success";
+      case "draft":
+        return "warning";
+      case "archived":
+        return "default";
+      default:
+        return "default";
     }
   };
 
   const getPriorityColor = (priority) => {
-    const priorityObj = priorities.find(p => p.value === priority);
-    return priorityObj?.color || '#666';
+    const priorityObj = priorities.find((p) => p.value === priority);
+    return priorityObj?.color || "#666";
   };
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
+      <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
         <CircularProgress />
       </Box>
     );
@@ -281,12 +300,18 @@ const NewsManagement = () => {
           p: 3,
           mb: 3,
           borderRadius: 3,
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          color: 'white'
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          color: "white",
         }}
       >
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <TrendingUp sx={{ fontSize: 40 }} />
             <Box>
               <Typography variant="h4" fontWeight="bold">
@@ -296,7 +321,8 @@ const NewsManagement = () => {
                 Create and manage news articles for users
               </Typography>
               <Typography variant="body2" sx={{ mt: 1, opacity: 0.9 }}>
-                💡 Tip: Set status to "Published" for articles to appear in user news feed
+                💡 Tip: Set status to "Published" for articles to appear in user
+                news feed
               </Typography>
             </Box>
           </Box>
@@ -308,16 +334,14 @@ const NewsManagement = () => {
               setOpenDialog(true);
             }}
             sx={{
-              backgroundColor: 'rgba(255,255,255,0.2)',
-              '&:hover': { backgroundColor: 'rgba(255,255,255,0.3)' }
+              backgroundColor: "rgba(255,255,255,0.2)",
+              "&:hover": { backgroundColor: "rgba(255,255,255,0.3)" },
             }}
           >
             Create News
           </Button>
         </Box>
       </Paper>
-
-
 
       {/* Alerts */}
       {error && (
@@ -327,7 +351,11 @@ const NewsManagement = () => {
       )}
 
       {success && (
-        <Alert severity="success" sx={{ mb: 3 }} onClose={() => setSuccess(null)}>
+        <Alert
+          severity="success"
+          sx={{ mb: 3 }}
+          onClose={() => setSuccess(null)}
+        >
           {success}
         </Alert>
       )}
@@ -336,14 +364,28 @@ const NewsManagement = () => {
       <TableContainer component={Paper} sx={{ borderRadius: 3 }}>
         <Table>
           <TableHead>
-            <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
-              <TableCell><strong>Title</strong></TableCell>
-              <TableCell><strong>Category</strong></TableCell>
-              <TableCell><strong>Priority</strong></TableCell>
-              <TableCell><strong>Status</strong></TableCell>
-              <TableCell><strong>Views</strong></TableCell>
-              <TableCell><strong>Created</strong></TableCell>
-              <TableCell><strong>Actions</strong></TableCell>
+            <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
+              <TableCell>
+                <strong>Title</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Category</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Priority</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Status</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Views</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Created</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Actions</strong>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -363,26 +405,28 @@ const NewsManagement = () => {
                   <Chip label={item.category} size="small" variant="outlined" />
                 </TableCell>
                 <TableCell>
-                  <Chip 
-                    label={item.priority.toUpperCase()} 
+                  <Chip
+                    label={item.priority.toUpperCase()}
                     size="small"
-                    sx={{ 
+                    sx={{
                       backgroundColor: getPriorityColor(item.priority),
-                      color: 'white',
-                      fontWeight: 'bold'
+                      color: "white",
+                      fontWeight: "bold",
                     }}
                   />
                 </TableCell>
                 <TableCell>
-                  <Chip 
-                    label={item.status.toUpperCase()} 
+                  <Chip
+                    label={item.status.toUpperCase()}
                     color={getStatusColor(item.status)}
                     size="small"
                   />
                 </TableCell>
                 <TableCell>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Visibility sx={{ fontSize: 16, color: 'text.secondary' }} />
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    <Visibility
+                      sx={{ fontSize: 16, color: "text.secondary" }}
+                    />
                     {item.views || 0}
                   </Box>
                 </TableCell>
@@ -392,14 +436,18 @@ const NewsManagement = () => {
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Box sx={{ display: 'flex', gap: 1 }}>
+                  <Box sx={{ display: "flex", gap: 1 }}>
                     <Tooltip title="Edit">
                       <IconButton size="small" onClick={() => handleEdit(item)}>
                         <Edit />
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Delete">
-                      <IconButton size="small" color="error" onClick={() => handleDelete(item._id)}>
+                      <IconButton
+                        size="small"
+                        color="error"
+                        onClick={() => handleDelete(item._id)}
+                      >
                         <Delete />
                       </IconButton>
                     </Tooltip>
@@ -412,7 +460,7 @@ const NewsManagement = () => {
       </TableContainer>
 
       {news.length === 0 && (
-        <Paper sx={{ p: 4, textAlign: 'center', borderRadius: 3, mt: 3 }}>
+        <Paper sx={{ p: 4, textAlign: "center", borderRadius: 3, mt: 3 }}>
           <Typography variant="h6" color="text.secondary" gutterBottom>
             📰 No news articles yet
           </Typography>
@@ -429,13 +477,19 @@ const NewsManagement = () => {
         maxWidth="md"
         fullWidth
         PaperProps={{
-          sx: { borderRadius: 3 }
+          sx: { borderRadius: 3 },
         }}
       >
         <DialogTitle sx={{ pb: 1 }}>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
             <Typography variant="h6" fontWeight="bold">
-              {editingNews ? 'Edit News Article' : 'Create News Article'}
+              {editingNews ? "Edit News Article" : "Create News Article"}
             </Typography>
             <IconButton onClick={() => setOpenDialog(false)}>
               <Close />
@@ -451,7 +505,9 @@ const NewsManagement = () => {
                 fullWidth
                 label="Title"
                 value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
                 required
               />
             </Grid>
@@ -464,7 +520,9 @@ const NewsManagement = () => {
                 multiline
                 rows={2}
                 value={formData.summary}
-                onChange={(e) => setFormData({ ...formData, summary: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, summary: e.target.value })
+                }
                 helperText="Brief description shown in news feed"
                 required
               />
@@ -478,7 +536,9 @@ const NewsManagement = () => {
                 multiline
                 rows={6}
                 value={formData.content}
-                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, content: e.target.value })
+                }
                 required
               />
             </Grid>
@@ -490,7 +550,9 @@ const NewsManagement = () => {
                 <Select
                   value={formData.category}
                   label="Category"
-                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, category: e.target.value })
+                  }
                 >
                   {categories.map((cat) => (
                     <MenuItem key={cat.value} value={cat.value}>
@@ -507,17 +569,21 @@ const NewsManagement = () => {
                 <Select
                   value={formData.priority}
                   label="Priority"
-                  onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, priority: e.target.value })
+                  }
                 >
                   {priorities.map((priority) => (
                     <MenuItem key={priority.value} value={priority.value}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                      >
                         <Box
                           sx={{
                             width: 12,
                             height: 12,
-                            borderRadius: '50%',
-                            backgroundColor: priority.color
+                            borderRadius: "50%",
+                            backgroundColor: priority.color,
                           }}
                         />
                         {priority.label}
@@ -534,7 +600,9 @@ const NewsManagement = () => {
                 fullWidth
                 label="Tags"
                 value={formData.tags}
-                onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, tags: e.target.value })
+                }
                 helperText="Separate tags with commas"
               />
             </Grid>
@@ -546,7 +614,9 @@ const NewsManagement = () => {
                 label="Publish Date"
                 type="datetime-local"
                 value={formData.publishDate}
-                onChange={(e) => setFormData({ ...formData, publishDate: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, publishDate: e.target.value })
+                }
                 InputLabelProps={{ shrink: true }}
                 helperText="Leave empty for immediate publish"
               />
@@ -558,7 +628,9 @@ const NewsManagement = () => {
                 label="Expiry Date"
                 type="datetime-local"
                 value={formData.expiryDate}
-                onChange={(e) => setFormData({ ...formData, expiryDate: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, expiryDate: e.target.value })
+                }
                 InputLabelProps={{ shrink: true }}
                 helperText="Leave empty for no expiry"
               />
@@ -571,11 +643,19 @@ const NewsManagement = () => {
                 <Select
                   value={formData.status}
                   label="Status"
-                  onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, status: e.target.value })
+                  }
                 >
-                  <MenuItem value="draft">📝 Draft (Not visible to users)</MenuItem>
-                  <MenuItem value="published">✅ Published (Visible in news feed)</MenuItem>
-                  <MenuItem value="archived">📦 Archived (Hidden from users)</MenuItem>
+                  <MenuItem value="draft">
+                    📝 Draft (Not visible to users)
+                  </MenuItem>
+                  <MenuItem value="published">
+                    ✅ Published (Visible in news feed)
+                  </MenuItem>
+                  <MenuItem value="archived">
+                    📦 Archived (Hidden from users)
+                  </MenuItem>
                 </Select>
                 <FormHelperText>
                   Only "Published" articles appear in the user news feed
@@ -589,7 +669,9 @@ const NewsManagement = () => {
                 <Select
                   value={formData.targetAudience}
                   label="Target Audience"
-                  onChange={(e) => setFormData({ ...formData, targetAudience: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, targetAudience: e.target.value })
+                  }
                 >
                   <MenuItem value="all">All Users</MenuItem>
                   <MenuItem value="applicants">Applicants</MenuItem>
@@ -601,12 +683,19 @@ const NewsManagement = () => {
 
             {/* Featured Image */}
             <Grid item xs={12}>
-              <Box sx={{ border: '2px dashed #ddd', borderRadius: 2, p: 3, textAlign: 'center' }}>
+              <Box
+                sx={{
+                  border: "2px dashed #ddd",
+                  borderRadius: 2,
+                  p: 3,
+                  textAlign: "center",
+                }}
+              >
                 <input
                   type="file"
                   accept="image/*"
                   onChange={(e) => setSelectedFile(e.target.files[0])}
-                  style={{ display: 'none' }}
+                  style={{ display: "none" }}
                   id="featured-image-upload"
                 />
                 <label htmlFor="featured-image-upload">
@@ -629,12 +718,14 @@ const NewsManagement = () => {
 
             {/* Options */}
             <Grid item xs={12}>
-              <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
+              <Box sx={{ display: "flex", gap: 3, flexWrap: "wrap" }}>
                 <FormControlLabel
                   control={
                     <Switch
                       checked={formData.isSticky}
-                      onChange={(e) => setFormData({ ...formData, isSticky: e.target.checked })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, isSticky: e.target.checked })
+                      }
                     />
                   }
                   label="Sticky (Pin to top)"
@@ -643,7 +734,12 @@ const NewsManagement = () => {
                   control={
                     <Switch
                       checked={formData.allowComments}
-                      onChange={(e) => setFormData({ ...formData, allowComments: e.target.checked })}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          allowComments: e.target.checked,
+                        })
+                      }
                     />
                   }
                   label="Allow Comments"
@@ -652,7 +748,12 @@ const NewsManagement = () => {
                   control={
                     <Switch
                       checked={formData.notifyUsers}
-                      onChange={(e) => setFormData({ ...formData, notifyUsers: e.target.checked })}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          notifyUsers: e.target.checked,
+                        })
+                      }
                     />
                   }
                   label="Notify Users"
@@ -663,16 +764,21 @@ const NewsManagement = () => {
         </DialogContent>
 
         <DialogActions sx={{ p: 3, pt: 1 }}>
-          <Button onClick={() => setOpenDialog(false)}>
-            Cancel
-          </Button>
+          <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
           <Button
             variant="contained"
             onClick={handleSubmit}
-            disabled={submitting || !formData.title || !formData.content || !formData.summary}
-            startIcon={submitting ? <CircularProgress size={20} /> : <Publish />}
+            disabled={
+              submitting ||
+              !formData.title ||
+              !formData.content ||
+              !formData.summary
+            }
+            startIcon={
+              submitting ? <CircularProgress size={20} /> : <Publish />
+            }
           >
-            {submitting ? 'Saving...' : (editingNews ? 'Update' : 'Create')}
+            {submitting ? "Saving..." : editingNews ? "Update" : "Create"}
           </Button>
         </DialogActions>
       </Dialog>

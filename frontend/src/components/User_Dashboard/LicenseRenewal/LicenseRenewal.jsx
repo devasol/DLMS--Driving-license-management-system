@@ -60,9 +60,7 @@ const LicenseRenewal = () => {
       console.log("🔍 Checking renewal status for user:", userId);
 
       // Check if user has any renewal applications
-      const response = await axios.get(
-        `http://localhost:5004/api/renewals/user/${userId}`
-      );
+      const response = await axios.get(`/api/renewals/user/${userId}`);
 
       console.log("📋 Renewal applications:", response.data);
 
@@ -77,14 +75,25 @@ const LicenseRenewal = () => {
         setRenewalStatus(latestRenewal);
 
         // Check if the latest renewal is approved and has a new license issued
-        if (latestRenewal.status === "approved" && latestRenewal.newLicenseIssued) {
-          console.log("✅ Found approved renewal with new license:", latestRenewal.newLicenseNumber);
+        if (
+          latestRenewal.status === "approved" &&
+          latestRenewal.newLicenseIssued
+        ) {
+          console.log(
+            "✅ Found approved renewal with new license:",
+            latestRenewal.newLicenseNumber
+          );
           setHasApprovedRenewal(true);
 
           // Get the renewed license information
           await getRenewedLicense(userId);
         } else {
-          console.log("📋 Renewal status:", latestRenewal.status, "License issued:", latestRenewal.newLicenseIssued);
+          console.log(
+            "📋 Renewal status:",
+            latestRenewal.status,
+            "License issued:",
+            latestRenewal.newLicenseIssued
+          );
           setHasApprovedRenewal(false);
         }
       } else {
@@ -105,9 +114,7 @@ const LicenseRenewal = () => {
       console.log("🔍 Getting renewed license for user:", userId);
 
       // Try the debug endpoint first
-      const response = await axios.get(
-        `http://localhost:5004/api/license/debug/user/${userId}`
-      );
+      const response = await axios.get(`/api/license/debug/user/${userId}`);
 
       console.log("🎫 License response:", response.data);
 
@@ -118,8 +125,12 @@ const LicenseRenewal = () => {
           class: response.data.licenseClass,
           userName: response.data.userName,
           userEmail: response.data.userEmail,
-          issueDate: response.data.issueDate ? new Date(response.data.issueDate).toLocaleDateString() : "N/A",
-          expiryDate: response.data.expiryDate ? new Date(response.data.expiryDate).toLocaleDateString() : "N/A",
+          issueDate: response.data.issueDate
+            ? new Date(response.data.issueDate).toLocaleDateString()
+            : "N/A",
+          expiryDate: response.data.expiryDate
+            ? new Date(response.data.expiryDate).toLocaleDateString()
+            : "N/A",
         });
       }
     } catch (error) {
@@ -139,7 +150,13 @@ const LicenseRenewal = () => {
     const file = e.target.files[0];
     if (file) {
       // Validate file type
-      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf'];
+      const allowedTypes = [
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
+        "image/gif",
+        "application/pdf",
+      ];
       if (!allowedTypes.includes(file.type)) {
         setMessage({
           type: "error",
@@ -161,7 +178,7 @@ const LicenseRenewal = () => {
       setMessage({ type: "", text: "" });
 
       // Create preview for images
-      if (file.type.startsWith('image/')) {
+      if (file.type.startsWith("image/")) {
         const reader = new FileReader();
         reader.onload = (e) => setFilePreview(e.target.result);
         reader.readAsDataURL(file);
@@ -198,7 +215,7 @@ const LicenseRenewal = () => {
       formDataToSend.append("licenseDocument", licenseFile);
 
       const response = await axios.post(
-        "http://localhost:5004/api/renewals/submit",
+        "/api/renewals/submit",
         formDataToSend,
         {
           headers: {
@@ -225,7 +242,9 @@ const LicenseRenewal = () => {
       console.error("Error submitting renewal application:", error);
       setMessage({
         type: "error",
-        text: error.response?.data?.message || "Error submitting renewal application",
+        text:
+          error.response?.data?.message ||
+          "Error submitting renewal application",
       });
     } finally {
       setLoading(false);
@@ -265,13 +284,15 @@ const LicenseRenewal = () => {
       </Paper>
 
       {/* Congratulations Card */}
-      <Card sx={{
-        borderRadius: 3,
-        boxShadow: "0 8px 32px rgba(0,0,0,0.1)",
-        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        color: "white",
-        mb: 3
-      }}>
+      <Card
+        sx={{
+          borderRadius: 3,
+          boxShadow: "0 8px 32px rgba(0,0,0,0.1)",
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          color: "white",
+          mb: 3,
+        }}
+      >
         <CardContent sx={{ p: 4, textAlign: "center" }}>
           <Box sx={{ mb: 3 }}>
             <Typography variant="h3" sx={{ mb: 2 }}>
@@ -281,16 +302,19 @@ const LicenseRenewal = () => {
               Your License Has Been Renewed!
             </Typography>
             <Typography variant="h6" sx={{ opacity: 0.9 }}>
-              Congratulations! Your renewal application has been approved and your new license is ready.
+              Congratulations! Your renewal application has been approved and
+              your new license is ready.
             </Typography>
           </Box>
 
-          <Box sx={{
-            backgroundColor: "rgba(255,255,255,0.1)",
-            borderRadius: 2,
-            p: 3,
-            backdropFilter: "blur(10px)"
-          }}>
+          <Box
+            sx={{
+              backgroundColor: "rgba(255,255,255,0.1)",
+              borderRadius: 2,
+              p: 3,
+              backdropFilter: "blur(10px)",
+            }}
+          >
             <Typography variant="h5" fontWeight="bold" gutterBottom>
               New License Number: {renewedLicense?.number}
             </Typography>
@@ -304,7 +328,12 @@ const LicenseRenewal = () => {
       {/* License Details Card */}
       <Card sx={{ borderRadius: 3, boxShadow: "0 4px 20px rgba(0,0,0,0.1)" }}>
         <CardContent sx={{ p: 3 }}>
-          <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ color: "primary.main" }}>
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            gutterBottom
+            sx={{ color: "primary.main" }}
+          >
             Your Renewed License Details
           </Typography>
 
@@ -314,16 +343,44 @@ const LicenseRenewal = () => {
                 <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
                   License Information
                 </Typography>
-                <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
-                  <Typography variant="body2" color="text.secondary">License Number:</Typography>
-                  <Typography variant="body2" fontWeight="medium">{renewedLicense?.number}</Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    mb: 1,
+                  }}
+                >
+                  <Typography variant="body2" color="text.secondary">
+                    License Number:
+                  </Typography>
+                  <Typography variant="body2" fontWeight="medium">
+                    {renewedLicense?.number}
+                  </Typography>
                 </Box>
-                <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
-                  <Typography variant="body2" color="text.secondary">Class:</Typography>
-                  <Typography variant="body2" fontWeight="medium">{renewedLicense?.class}</Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    mb: 1,
+                  }}
+                >
+                  <Typography variant="body2" color="text.secondary">
+                    Class:
+                  </Typography>
+                  <Typography variant="body2" fontWeight="medium">
+                    {renewedLicense?.class}
+                  </Typography>
                 </Box>
-                <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
-                  <Typography variant="body2" color="text.secondary">Status:</Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    mb: 1,
+                  }}
+                >
+                  <Typography variant="body2" color="text.secondary">
+                    Status:
+                  </Typography>
                   <Chip
                     label={renewedLicense?.status}
                     color="success"
@@ -331,13 +388,27 @@ const LicenseRenewal = () => {
                     sx={{ fontWeight: "bold" }}
                   />
                 </Box>
-                <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
-                  <Typography variant="body2" color="text.secondary">Issue Date:</Typography>
-                  <Typography variant="body2" fontWeight="medium">{renewedLicense?.issueDate}</Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    mb: 1,
+                  }}
+                >
+                  <Typography variant="body2" color="text.secondary">
+                    Issue Date:
+                  </Typography>
+                  <Typography variant="body2" fontWeight="medium">
+                    {renewedLicense?.issueDate}
+                  </Typography>
                 </Box>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                  <Typography variant="body2" color="text.secondary">Expiry Date:</Typography>
-                  <Typography variant="body2" fontWeight="medium">{renewedLicense?.expiryDate}</Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Expiry Date:
+                  </Typography>
+                  <Typography variant="body2" fontWeight="medium">
+                    {renewedLicense?.expiryDate}
+                  </Typography>
                 </Box>
               </Box>
             </Grid>
@@ -347,16 +418,38 @@ const LicenseRenewal = () => {
                 <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
                   Holder Information
                 </Typography>
-                <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
-                  <Typography variant="body2" color="text.secondary">Full Name:</Typography>
-                  <Typography variant="body2" fontWeight="medium">{renewedLicense?.userName}</Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    mb: 1,
+                  }}
+                >
+                  <Typography variant="body2" color="text.secondary">
+                    Full Name:
+                  </Typography>
+                  <Typography variant="body2" fontWeight="medium">
+                    {renewedLicense?.userName}
+                  </Typography>
                 </Box>
-                <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
-                  <Typography variant="body2" color="text.secondary">Email:</Typography>
-                  <Typography variant="body2" fontWeight="medium">{renewedLicense?.userEmail}</Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    mb: 1,
+                  }}
+                >
+                  <Typography variant="body2" color="text.secondary">
+                    Email:
+                  </Typography>
+                  <Typography variant="body2" fontWeight="medium">
+                    {renewedLicense?.userEmail}
+                  </Typography>
                 </Box>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                  <Typography variant="body2" color="text.secondary">Renewal Status:</Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Renewal Status:
+                  </Typography>
                   <Chip
                     label="APPROVED"
                     color="success"
@@ -368,7 +461,9 @@ const LicenseRenewal = () => {
             </Grid>
           </Grid>
 
-          <Box sx={{ display: "flex", gap: 2, mt: 3, justifyContent: "center" }}>
+          <Box
+            sx={{ display: "flex", gap: 2, mt: 3, justifyContent: "center" }}
+          >
             <Button
               variant="contained"
               color="primary"
@@ -399,10 +494,12 @@ const LicenseRenewal = () => {
           Important Notes:
         </Typography>
         <Typography variant="body2">
-          • Your renewed license is now active and valid<br/>
-          • The new expiry date extends your license validity by 5 years<br/>
-          • Always carry your license while driving<br/>
-          • You can download a digital copy of your license above
+          • Your renewed license is now active and valid
+          <br />
+          • The new expiry date extends your license validity by 5 years
+          <br />
+          • Always carry your license while driving
+          <br />• You can download a digital copy of your license above
         </Typography>
       </Alert>
     </Box>
@@ -454,7 +551,8 @@ const LicenseRenewal = () => {
                 Renewal Application Form
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                Please fill in your details to submit a license renewal application.
+                Please fill in your details to submit a license renewal
+                application.
               </Typography>
 
               {message.text && (
@@ -503,16 +601,25 @@ const LicenseRenewal = () => {
                   </Grid>
                   <Grid item xs={12}>
                     <Box sx={{ mb: 2 }}>
-                      <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+                      <Typography
+                        variant="subtitle1"
+                        fontWeight="bold"
+                        gutterBottom
+                      >
                         Current License Document *
                       </Typography>
-                      <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                        Upload a clear photo or scan of your current driving license (JPEG, PNG, GIF, or PDF)
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ mb: 2 }}
+                      >
+                        Upload a clear photo or scan of your current driving
+                        license (JPEG, PNG, GIF, or PDF)
                       </Typography>
 
                       <input
                         accept="image/*,.pdf"
-                        style={{ display: 'none' }}
+                        style={{ display: "none" }}
                         id="license-file-upload"
                         type="file"
                         onChange={handleFileChange}
@@ -532,13 +639,29 @@ const LicenseRenewal = () => {
                             mb: 2,
                           }}
                         >
-                          {licenseFile ? "Change License Document" : "Upload License Document"}
+                          {licenseFile
+                            ? "Change License Document"
+                            : "Upload License Document"}
                         </Button>
                       </label>
 
                       {licenseFile && (
-                        <Box sx={{ mt: 2, p: 2, border: "1px solid #e0e0e0", borderRadius: 2 }}>
-                          <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
+                        <Box
+                          sx={{
+                            mt: 2,
+                            p: 2,
+                            border: "1px solid #e0e0e0",
+                            borderRadius: 2,
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                              mb: 1,
+                            }}
+                          >
                             {licenseFile.type === "application/pdf" ? (
                               <PdfIcon color="error" />
                             ) : (
@@ -549,7 +672,8 @@ const LicenseRenewal = () => {
                             </Typography>
                           </Box>
                           <Typography variant="caption" color="text.secondary">
-                            Size: {(licenseFile.size / 1024 / 1024).toFixed(2)} MB
+                            Size: {(licenseFile.size / 1024 / 1024).toFixed(2)}{" "}
+                            MB
                           </Typography>
 
                           {filePreview && (
@@ -579,8 +703,12 @@ const LicenseRenewal = () => {
                         onChange={handleInputChange}
                         label="Renewal Reason"
                       >
-                        <MenuItem value="expiring">License Expiring Soon</MenuItem>
-                        <MenuItem value="expired">License Already Expired</MenuItem>
+                        <MenuItem value="expiring">
+                          License Expiring Soon
+                        </MenuItem>
+                        <MenuItem value="expired">
+                          License Already Expired
+                        </MenuItem>
                         <MenuItem value="damaged">License Damaged</MenuItem>
                         <MenuItem value="lost">License Lost/Stolen</MenuItem>
                       </Select>
@@ -592,7 +720,9 @@ const LicenseRenewal = () => {
                       variant="contained"
                       size="large"
                       disabled={loading}
-                      startIcon={loading ? <CircularProgress size={20} /> : <SendIcon />}
+                      startIcon={
+                        loading ? <CircularProgress size={20} /> : <SendIcon />
+                      }
                       sx={{
                         py: 1.5,
                         px: 4,
@@ -618,13 +748,15 @@ const LicenseRenewal = () => {
               </Typography>
               <Box sx={{ mt: 2 }}>
                 <Typography variant="body2" sx={{ mb: 2 }}>
-                  <strong>Step 1:</strong> Fill out the renewal form with your details
+                  <strong>Step 1:</strong> Fill out the renewal form with your
+                  details
                 </Typography>
                 <Typography variant="body2" sx={{ mb: 2 }}>
                   <strong>Step 2:</strong> Admin will review your application
                 </Typography>
                 <Typography variant="body2" sx={{ mb: 2 }}>
-                  <strong>Step 3:</strong> Upon approval, your new license will be issued
+                  <strong>Step 3:</strong> Upon approval, your new license will
+                  be issued
                 </Typography>
                 <Typography variant="body2" sx={{ mb: 2 }}>
                   <strong>Step 4:</strong> Download your renewed license

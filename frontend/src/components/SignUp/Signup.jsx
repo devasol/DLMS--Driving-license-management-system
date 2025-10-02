@@ -138,10 +138,9 @@ const Signup = () => {
 
       try {
         // Check main server
-        const mainHealthCheck = await axios.get(
-          "http://localhost:5004/api/health",
-          { timeout: 3000 }
-        );
+        const mainHealthCheck = await axios.get("/api/health", {
+          timeout: 3000,
+        });
         mainServerRunning = mainHealthCheck.data.status === "ok";
         console.log(
           "Main server status:",
@@ -162,7 +161,7 @@ const Signup = () => {
       // Use only the working endpoint with email verification
       const endpoints = [
         {
-          url: "http://localhost:5004/api/auth/users/signup",
+          url: "/api/auth/users/signup",
           server: "main-auth",
           available: mainServerRunning,
           data: {

@@ -163,12 +163,9 @@ const ConductExam = () => {
   const fetchExamData = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(
-        `http://localhost:5004/api/exams/schedules/${examId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await axios.get(`/api/exams/schedules/${examId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setExamData(response.data);
       setExamResult((prev) => ({
         ...prev,
@@ -267,7 +264,7 @@ const ConductExam = () => {
 
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        `http://localhost:5004/api/exams/schedules/${examId}/complete-examiner`,
+        `/api/exams/schedules/${examId}/complete-examiner`,
         submissionData,
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -32,11 +32,14 @@ import authRoutesAlt from "./routes/authRoutes.js";
 import trafficPoliceRoutes from "./routes/trafficPoliceRoutes.js";
 import ActivityLogger from "./utils/activityLogger.js";
 
-// Load environment variables
-dotenv.config({ path: "./backend/.env" });
+// Load environment variables from the backend folder's .env
+// server.js already lives in the backend folder, so a plain config() is correct.
+dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+// Many frontend components expect the backend to run on 5004 in development.
+// Default to 5004 to avoid connection errors when frontend is hardcoded to that port.
+const PORT = process.env.PORT || 5004;
 
 // Performance and security middleware
 app.use(compression()); // Enable gzip compression
@@ -52,6 +55,8 @@ const defaultAllowedOrigins = [
   "http://localhost:3000",
   "http://localhost:5173",
   "http://localhost:5174",
+  // Add the backend dev port used by the frontend code
+  "http://localhost:5004",
   "https://dlms-skjh.onrender.com",
 ];
 

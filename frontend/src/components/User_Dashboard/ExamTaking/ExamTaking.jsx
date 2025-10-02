@@ -36,7 +36,11 @@ import axios from "axios";
 import { format } from "date-fns";
 
 const ExamTaking = ({ examId, onExamComplete, onClose }) => {
-  console.log("🔄 ExamTaking component mounted/re-rendered with props:", { examId, onClose: !!onClose, onExamComplete: !!onExamComplete });
+  console.log("🔄 ExamTaking component mounted/re-rendered with props:", {
+    examId,
+    onClose: !!onClose,
+    onExamComplete: !!onExamComplete,
+  });
 
   const [exam, setExam] = useState(null);
   const [questions, setQuestions] = useState([]);
@@ -74,12 +78,16 @@ const ExamTaking = ({ examId, onExamComplete, onClose }) => {
 
   // Auto-mark correct answers for testing
   useEffect(() => {
-    if (examStarted && questions.length > 0 && answers[currentQuestion] === undefined) {
+    if (
+      examStarted &&
+      questions.length > 0 &&
+      answers[currentQuestion] === undefined
+    ) {
       const currentQ = questions[currentQuestion];
       if (currentQ?.correctAnswer !== undefined) {
-        setAnswers(prev => ({
+        setAnswers((prev) => ({
           ...prev,
-          [currentQuestion]: currentQ.correctAnswer
+          [currentQuestion]: currentQ.correctAnswer,
         }));
       }
     }
@@ -90,9 +98,7 @@ const ExamTaking = ({ examId, onExamComplete, onClose }) => {
       setLoading(true);
       console.log("🔍 Fetching exam info for ID:", examId);
 
-      const response = await axios.get(
-        `http://localhost:5004/api/exams/schedules/${examId}`
-      );
+      const response = await axios.get(`/api/exams/schedules/${examId}`);
 
       console.log("📋 Exam info response:", response.data);
 
@@ -125,10 +131,15 @@ const ExamTaking = ({ examId, onExamComplete, onClose }) => {
   const fetchExam = async (selectedLanguage = "english") => {
     try {
       setLoading(true);
-      console.log("📝 Fetching exam questions for ID:", examId, "Language:", selectedLanguage);
+      console.log(
+        "📝 Fetching exam questions for ID:",
+        examId,
+        "Language:",
+        selectedLanguage
+      );
 
       const response = await axios.get(
-        `http://localhost:5004/api/exams/take/${examId}?language=${selectedLanguage}`
+        `/api/exams/take/${examId}?language=${selectedLanguage}`
       );
 
       console.log("📋 Exam questions response:", response.data);
@@ -137,9 +148,15 @@ const ExamTaking = ({ examId, onExamComplete, onClose }) => {
         setExam(response.data.exam);
         setQuestions(response.data.questions);
         setLanguage(selectedLanguage);
-        console.log("✅ Exam data loaded successfully. Questions:", response.data.questions.length);
+        console.log(
+          "✅ Exam data loaded successfully. Questions:",
+          response.data.questions.length
+        );
       } else {
-        console.error("❌ Failed to fetch exam questions:", response.data.message);
+        console.error(
+          "❌ Failed to fetch exam questions:",
+          response.data.message
+        );
       }
     } catch (error) {
       console.error("❌ Error fetching exam:", error);
@@ -155,7 +172,11 @@ const ExamTaking = ({ examId, onExamComplete, onClose }) => {
 
   const handleStartExam = () => {
     console.log("🚀 Starting exam...");
-    console.log("Current state before start:", { examStarted, loading, examCompleted });
+    console.log("Current state before start:", {
+      examStarted,
+      loading,
+      examCompleted,
+    });
 
     // Prevent any default behavior that might cause navigation
     try {
@@ -202,20 +223,17 @@ const ExamTaking = ({ examId, onExamComplete, onClose }) => {
         answersCount: answersArray.length,
         timeSpent: Math.floor(timeSpent / 60),
         language,
-        answers: answersArray
+        answers: answersArray,
       });
 
-      const response = await axios.post(
-        `http://localhost:5004/api/exams/take/${examId}/submit`,
-        {
-          userId,
-          userName,
-          answers: answersArray,
-          timeSpent: Math.floor(timeSpent / 60), // Convert to minutes
-          language,
-          cancelled: false,
-        }
-      );
+      const response = await axios.post(`/api/exams/take/${examId}/submit`, {
+        userId,
+        userName,
+        answers: answersArray,
+        timeSpent: Math.floor(timeSpent / 60), // Convert to minutes
+        language,
+        cancelled: false,
+      });
 
       console.log("📊 Exam submission response:", response.data);
 
@@ -234,7 +252,9 @@ const ExamTaking = ({ examId, onExamComplete, onClose }) => {
         }, 1000);
       } else {
         console.error("❌ Exam submission failed:", response.data.message);
-        alert("Failed to submit exam: " + (response.data.message || "Unknown error"));
+        alert(
+          "Failed to submit exam: " + (response.data.message || "Unknown error")
+        );
       }
     } catch (error) {
       console.error("❌ Error submitting exam:", error);
@@ -247,17 +267,14 @@ const ExamTaking = ({ examId, onExamComplete, onClose }) => {
       const userId = localStorage.getItem("userId");
       const userName = localStorage.getItem("userName") || "Unknown User";
 
-      const response = await axios.post(
-        `http://localhost:5004/api/exams/take/${examId}/submit`,
-        {
-          userId,
-          userName,
-          answers: [],
-          timeSpent: Math.floor(timeSpent / 60),
-          language,
-          cancelled: true,
-        }
-      );
+      const response = await axios.post(`/api/exams/take/${examId}/submit`, {
+        userId,
+        userName,
+        answers: [],
+        timeSpent: Math.floor(timeSpent / 60),
+        language,
+        cancelled: true,
+      });
 
       if (response.data.success) {
         setExamCompleted(true);
@@ -294,7 +311,7 @@ const ExamTaking = ({ examId, onExamComplete, onClose }) => {
   };
 
   // Debug logging (only in development)
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === "development") {
     console.log("🔍 ExamTaking render state:", {
       loading,
       examStarted,
@@ -302,7 +319,7 @@ const ExamTaking = ({ examId, onExamComplete, onClose }) => {
       showLanguageDialog,
       hasExam: !!exam,
       hasQuestions: questions.length > 0,
-      examId
+      examId,
     });
   }
 
@@ -346,7 +363,9 @@ const ExamTaking = ({ examId, onExamComplete, onClose }) => {
             background: examResult.passed
               ? "linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%)"
               : "linear-gradient(135deg, #ffebee 0%, #fce4ec 100%)",
-            border: examResult.passed ? "2px solid #4caf50" : "2px solid #f44336"
+            border: examResult.passed
+              ? "2px solid #4caf50"
+              : "2px solid #f44336",
           }}
         >
           {/* Success/Failure Icon */}
@@ -381,7 +400,13 @@ const ExamTaking = ({ examId, onExamComplete, onClose }) => {
           {/* Detailed Statistics */}
           <Grid container spacing={3} sx={{ mb: 4 }}>
             <Grid item xs={12} md={4}>
-              <Card sx={{ p: 2, textAlign: "center", bgcolor: "background.default" }}>
+              <Card
+                sx={{
+                  p: 2,
+                  textAlign: "center",
+                  bgcolor: "background.default",
+                }}
+              >
                 <Typography variant="h4" fontWeight="bold" color="primary.main">
                   {examResult.correctAnswers}
                 </Typography>
@@ -391,7 +416,13 @@ const ExamTaking = ({ examId, onExamComplete, onClose }) => {
               </Card>
             </Grid>
             <Grid item xs={12} md={4}>
-              <Card sx={{ p: 2, textAlign: "center", bgcolor: "background.default" }}>
+              <Card
+                sx={{
+                  p: 2,
+                  textAlign: "center",
+                  bgcolor: "background.default",
+                }}
+              >
                 <Typography variant="h4" fontWeight="bold" color="text.primary">
                   {examResult.totalQuestions}
                 </Typography>
@@ -401,7 +432,13 @@ const ExamTaking = ({ examId, onExamComplete, onClose }) => {
               </Card>
             </Grid>
             <Grid item xs={12} md={4}>
-              <Card sx={{ p: 2, textAlign: "center", bgcolor: "background.default" }}>
+              <Card
+                sx={{
+                  p: 2,
+                  textAlign: "center",
+                  bgcolor: "background.default",
+                }}
+              >
                 <Typography variant="h4" fontWeight="bold" color="info.main">
                   {formatTime(timeSpent)}
                 </Typography>
@@ -416,10 +453,14 @@ const ExamTaking = ({ examId, onExamComplete, onClose }) => {
           <Grid container spacing={2} sx={{ mb: 3, textAlign: "left" }}>
             <Grid item xs={12} md={6}>
               <Typography variant="body1" sx={{ mb: 1 }}>
-                <strong>Exam Type:</strong> {exam.examType === "theory" ? "Theory (Written)" : "Practical (Road Test)"}
+                <strong>Exam Type:</strong>{" "}
+                {exam.examType === "theory"
+                  ? "Theory (Written)"
+                  : "Practical (Road Test)"}
               </Typography>
               <Typography variant="body1" sx={{ mb: 1 }}>
-                <strong>Language:</strong> {language === "english" ? "🇺🇸 English" : "🇪🇹 አማርኛ"}
+                <strong>Language:</strong>{" "}
+                {language === "english" ? "🇺🇸 English" : "🇪🇹 አማርኛ"}
               </Typography>
             </Grid>
             <Grid item xs={12} md={6}>
@@ -448,7 +489,14 @@ const ExamTaking = ({ examId, onExamComplete, onClose }) => {
           </Alert>
 
           {/* Action Buttons */}
-          <Box sx={{ display: "flex", gap: 2, justifyContent: "center", flexWrap: "wrap" }}>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 2,
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
             <Button
               variant="contained"
               onClick={onClose}
@@ -497,7 +545,7 @@ const ExamTaking = ({ examId, onExamComplete, onClose }) => {
                   py: 3,
                   fontSize: "1.1rem",
                   borderWidth: 2,
-                  "&:hover": { borderWidth: 2 }
+                  "&:hover": { borderWidth: 2 },
                 }}
               >
                 🇺🇸 English
@@ -513,7 +561,7 @@ const ExamTaking = ({ examId, onExamComplete, onClose }) => {
                   py: 3,
                   fontSize: "1.1rem",
                   borderWidth: 2,
-                  "&:hover": { borderWidth: 2 }
+                  "&:hover": { borderWidth: 2 },
                 }}
               >
                 🇪🇹 አማርኛ (Amharic)
@@ -657,7 +705,8 @@ const ExamTaking = ({ examId, onExamComplete, onClose }) => {
         <Alert severity="error">
           Question data not available. Please refresh and try again.
           <br />
-          Debug: Current Question Index = {currentQuestion}, Total Questions = {questions.length}
+          Debug: Current Question Index = {currentQuestion}, Total Questions ={" "}
+          {questions.length}
         </Alert>
       </Box>
     );
@@ -729,7 +778,11 @@ const ExamTaking = ({ examId, onExamComplete, onClose }) => {
 
         <FormControl component="fieldset" fullWidth>
           <RadioGroup
-            value={answers[currentQuestion] !== undefined ? answers[currentQuestion].toString() : ""}
+            value={
+              answers[currentQuestion] !== undefined
+                ? answers[currentQuestion].toString()
+                : ""
+            }
             onChange={(e) =>
               handleAnswerChange(currentQuestion, parseInt(e.target.value))
             }
@@ -745,43 +798,58 @@ const ExamTaking = ({ examId, onExamComplete, onClose }) => {
                   control={
                     <Radio
                       sx={{
-                        pointerEvents: 'auto',
-                        '&:hover': {
-                          backgroundColor: 'rgba(25, 118, 210, 0.04)'
-                        }
+                        pointerEvents: "auto",
+                        "&:hover": {
+                          backgroundColor: "rgba(25, 118, 210, 0.04)",
+                        },
                       }}
                     />
                   }
                   label={
-                    <Typography variant="body1" sx={{ py: 1, cursor: 'pointer' }}>
+                    <Typography
+                      variant="body1"
+                      sx={{ py: 1, cursor: "pointer" }}
+                    >
                       {String.fromCharCode(65 + index)}. {option}
                     </Typography>
                   }
                   sx={{
                     mb: 1,
                     p: 2,
-                    border: isCorrectAnswer ? "2px solid #4caf50" : "1px solid #e0e0e0",
+                    border: isCorrectAnswer
+                      ? "2px solid #4caf50"
+                      : "1px solid #e0e0e0",
                     borderRadius: 1,
-                    cursor: 'pointer',
-                    pointerEvents: 'auto',
-                    backgroundColor: isCorrectAnswer ? "#e8f5e9" : "transparent",
+                    cursor: "pointer",
+                    pointerEvents: "auto",
+                    backgroundColor: isCorrectAnswer
+                      ? "#e8f5e9"
+                      : "transparent",
                     "&:hover": {
                       backgroundColor: isCorrectAnswer ? "#c8e6c9" : "#f5f5f5",
-                      borderColor: isCorrectAnswer ? "#4caf50" : "#1976d2"
+                      borderColor: isCorrectAnswer ? "#4caf50" : "#1976d2",
                     },
                     "&.Mui-checked": {
-                      backgroundColor: isSelected ? (isCorrectAnswer ? "#a5d6a7" : "#e3f2fd") : "transparent",
-                      borderColor: isSelected ? (isCorrectAnswer ? "#4caf50" : "#1976d2") : "inherit"
+                      backgroundColor: isSelected
+                        ? isCorrectAnswer
+                          ? "#a5d6a7"
+                          : "#e3f2fd"
+                        : "transparent",
+                      borderColor: isSelected
+                        ? isCorrectAnswer
+                          ? "#4caf50"
+                          : "#1976d2"
+                        : "inherit",
                     },
                     // Ensure the entire area is clickable
                     "& .MuiFormControlLabel-label": {
-                      width: '100%',
-                      cursor: 'pointer'
-                    }
+                      width: "100%",
+                      cursor: "pointer",
+                    },
                   }}
                   onClick={(e) => {
                     // Ensure clicking anywhere on the option selects it
-                    if (e.target.type !== 'radio') {
+                    if (e.target.type !== "radio") {
                       handleAnswerChange(currentQuestion, index);
                     }
                   }}
@@ -868,21 +936,27 @@ const ExamTaking = ({ examId, onExamComplete, onClose }) => {
       </Dialog>
 
       {/* Cancel Confirmation Dialog */}
-      <Dialog open={showCancelDialog} onClose={() => setShowCancelDialog(false)}>
-        <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      <Dialog
+        open={showCancelDialog}
+        onClose={() => setShowCancelDialog(false)}
+      >
+        <DialogTitle sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <CancelIcon color="error" />
           Cancel Exam?
         </DialogTitle>
         <DialogContent>
           <Typography>
-            Are you sure you want to cancel this exam? Your progress will be lost and this will be recorded as a cancelled attempt.
+            Are you sure you want to cancel this exam? Your progress will be
+            lost and this will be recorded as a cancelled attempt.
           </Typography>
           <Alert severity="warning" sx={{ mt: 2 }}>
             <strong>Warning:</strong> This action cannot be undone.
           </Alert>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setShowCancelDialog(false)}>No, Continue</Button>
+          <Button onClick={() => setShowCancelDialog(false)}>
+            No, Continue
+          </Button>
           <Button onClick={handleCancelExam} color="error" variant="contained">
             Yes, Cancel Exam
           </Button>

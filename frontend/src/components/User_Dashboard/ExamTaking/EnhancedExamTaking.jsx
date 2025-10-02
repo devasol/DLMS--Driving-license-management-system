@@ -59,7 +59,7 @@ const EnhancedExamTaking = ({ examId, onComplete, onCancel }) => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `http://localhost:5004/api/exams/take/${examId}?language=${selectedLanguage}`
+        `/api/exams/take/${examId}?language=${selectedLanguage}`
       );
 
       if (response.data.success) {
@@ -108,21 +108,18 @@ const EnhancedExamTaking = ({ examId, onComplete, onCancel }) => {
       const userName = localStorage.getItem("userName") || "Unknown User";
 
       // Convert answers to array format
-      const answersArray = questions.map((question) => 
-        answers[question._id] || 0
+      const answersArray = questions.map(
+        (question) => answers[question._id] || 0
       );
 
-      const response = await axios.post(
-        `http://localhost:5004/api/exams/take/${examId}/submit`,
-        {
-          userId,
-          userName,
-          answers: answersArray,
-          timeSpent: Math.floor(timeSpent / 60), // Convert to minutes
-          language,
-          cancelled: false,
-        }
-      );
+      const response = await axios.post(`/api/exams/take/${examId}/submit`, {
+        userId,
+        userName,
+        answers: answersArray,
+        timeSpent: Math.floor(timeSpent / 60), // Convert to minutes
+        language,
+        cancelled: false,
+      });
 
       if (response.data.success) {
         setExamResult(response.data.result);
@@ -144,17 +141,14 @@ const EnhancedExamTaking = ({ examId, onComplete, onCancel }) => {
       const userId = localStorage.getItem("userId");
       const userName = localStorage.getItem("userName") || "Unknown User";
 
-      const response = await axios.post(
-        `http://localhost:5004/api/exams/${examId}/submit`,
-        {
-          userId,
-          userName,
-          answers: [],
-          timeSpent: Math.floor(timeSpent / 60),
-          language,
-          cancelled: true,
-        }
-      );
+      const response = await axios.post(`/api/exams/${examId}/submit`, {
+        userId,
+        userName,
+        answers: [],
+        timeSpent: Math.floor(timeSpent / 60),
+        language,
+        cancelled: true,
+      });
 
       if (response.data.success) {
         onCancel && onCancel();
@@ -245,15 +239,21 @@ const EnhancedExamTaking = ({ examId, onComplete, onCancel }) => {
       </Dialog>
 
       {/* Cancel Confirmation Dialog */}
-      <Dialog open={showCancelDialog} onClose={() => setShowCancelDialog(false)}>
+      <Dialog
+        open={showCancelDialog}
+        onClose={() => setShowCancelDialog(false)}
+      >
         <DialogTitle>Cancel Exam?</DialogTitle>
         <DialogContent>
           <Typography>
-            Are you sure you want to cancel this exam? Your progress will be lost.
+            Are you sure you want to cancel this exam? Your progress will be
+            lost.
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setShowCancelDialog(false)}>No, Continue</Button>
+          <Button onClick={() => setShowCancelDialog(false)}>
+            No, Continue
+          </Button>
           <Button onClick={handleCancelExam} color="error" variant="contained">
             Yes, Cancel Exam
           </Button>
@@ -263,11 +263,11 @@ const EnhancedExamTaking = ({ examId, onComplete, onCancel }) => {
       {/* Result Dialog */}
       <Dialog open={showResultDialog} disableEscapeKeyDown>
         <DialogTitle sx={{ textAlign: "center" }}>
-          <CheckIcon 
-            sx={{ 
-              mr: 1, 
-              color: examResult?.passed ? "success.main" : "error.main" 
-            }} 
+          <CheckIcon
+            sx={{
+              mr: 1,
+              color: examResult?.passed ? "success.main" : "error.main",
+            }}
           />
           Exam Results
         </DialogTitle>
@@ -277,16 +277,17 @@ const EnhancedExamTaking = ({ examId, onComplete, onCancel }) => {
               <Typography variant="h4" sx={{ mb: 2 }}>
                 {examResult.score}%
               </Typography>
-              <Alert 
-                severity={examResult.passed ? "success" : "error"} 
+              <Alert
+                severity={examResult.passed ? "success" : "error"}
                 sx={{ mb: 2 }}
               >
-                {examResult.passed 
-                  ? "🎉 Congratulations! You passed the exam!" 
+                {examResult.passed
+                  ? "🎉 Congratulations! You passed the exam!"
                   : "😔 You didn't pass. You need at least 74% to pass."}
               </Alert>
               <Typography variant="body1">
-                Correct Answers: {examResult.correctAnswers} / {examResult.totalQuestions}
+                Correct Answers: {examResult.correctAnswers} /{" "}
+                {examResult.totalQuestions}
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 Time Spent: {formatTime(timeSpent)}
@@ -295,8 +296,8 @@ const EnhancedExamTaking = ({ examId, onComplete, onCancel }) => {
           )}
         </DialogContent>
         <DialogActions>
-          <Button 
-            onClick={() => onComplete && onComplete(examResult)} 
+          <Button
+            onClick={() => onComplete && onComplete(examResult)}
             variant="contained"
             fullWidth
           >
@@ -311,12 +312,10 @@ const EnhancedExamTaking = ({ examId, onComplete, onCancel }) => {
           <Paper sx={{ p: 2, mb: 3 }}>
             <Grid container alignItems="center" spacing={2}>
               <Grid item xs={12} md={4}>
-                <Typography variant="h6">
-                  📝 Theory Exam
-                </Typography>
-                <Chip 
-                  label={language === "english" ? "🇺🇸 English" : "🇪🇹 አማርኛ"} 
-                  size="small" 
+                <Typography variant="h6">📝 Theory Exam</Typography>
+                <Chip
+                  label={language === "english" ? "🇺🇸 English" : "🇪🇹 አማርኛ"}
+                  size="small"
                 />
               </Grid>
               <Grid item xs={12} md={4}>
@@ -331,9 +330,9 @@ const EnhancedExamTaking = ({ examId, onComplete, onCancel }) => {
                 <Typography variant="body2">
                   Progress: {getAnsweredCount()} / {questions.length} answered
                 </Typography>
-                <LinearProgress 
-                  variant="determinate" 
-                  value={getProgress()} 
+                <LinearProgress
+                  variant="determinate"
+                  value={getProgress()}
                   sx={{ mt: 1 }}
                 />
               </Grid>
@@ -354,7 +353,7 @@ const EnhancedExamTaking = ({ examId, onComplete, onCancel }) => {
                 <FormControl component="fieldset">
                   <RadioGroup
                     value={answers[currentQuestion._id] || ""}
-                    onChange={(e) => 
+                    onChange={(e) =>
                       handleAnswerChange(currentQuestion._id, e.target.value)
                     }
                   >
@@ -404,10 +403,7 @@ const EnhancedExamTaking = ({ examId, onComplete, onCancel }) => {
                   Submit Exam
                 </Button>
               ) : (
-                <Button
-                  onClick={handleNextQuestion}
-                  variant="contained"
-                >
+                <Button onClick={handleNextQuestion} variant="contained">
                   Next
                 </Button>
               )}
@@ -425,10 +421,10 @@ const EnhancedExamTaking = ({ examId, onComplete, onCancel }) => {
                   <Button
                     size="small"
                     variant={
-                      index === currentQuestionIndex 
-                        ? "contained" 
-                        : answers[questions[index]._id] !== undefined 
-                        ? "outlined" 
+                      index === currentQuestionIndex
+                        ? "contained"
+                        : answers[questions[index]._id] !== undefined
+                        ? "outlined"
                         : "text"
                     }
                     onClick={() => setCurrentQuestionIndex(index)}

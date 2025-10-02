@@ -22,9 +22,7 @@ const AdminExams = () => {
   useEffect(() => {
     const fetchExams = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:5004/api/admin/exams"
-        );
+        const response = await axios.get("/api/admin/exams");
         setExams(response.data);
         setLoading(false);
       } catch (err) {
