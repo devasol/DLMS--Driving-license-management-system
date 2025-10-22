@@ -94,6 +94,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { styled, keyframes } from "@mui/system";
 // Performance optimizations applied via CSS classes
 import axios from "axios";
+import { API_BASE } from "../../../config/api";
 import LicenseApplication from "../LicenseApplication/LicenseApplication";
 import ExamSchedule from "../ExamSchedule/ExamSchedule";
 import ApplicationStatus from "../ApplicationStatus/ApplicationStatus";
@@ -874,7 +875,7 @@ const Dashboard = () => {
   const handleRenewalSubmit = async () => {
     try {
       const response = await axios.post(
-        "https://dlms-driving-license-management-system-v1.onrender.com/api/license/renew",
+  `${API_BASE.replace(/\/$/, "")}/license/renew`,
         renewalData
       );
       if (response.data.success) {
@@ -998,7 +999,7 @@ const Dashboard = () => {
   const cancelApplication = async (applicationId) => {
     try {
       const response = await axios.delete(
-        `https://dlms-driving-license-management-system-v1.onrender.com/api/license/applications/${applicationId}`
+  `${API_BASE.replace(/\/$/, "")}/license/applications/${applicationId}`
       );
 
       if (response.data && response.data.success) {

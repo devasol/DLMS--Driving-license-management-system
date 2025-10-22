@@ -33,6 +33,7 @@ import {
   People as PeopleIcon,
 } from "@mui/icons-material";
 import axios from "axios";
+import { API_BASE } from "../../../config/api";
 
 const AdminTrialResults = () => {
   const [results, setResults] = useState([]);
@@ -61,9 +62,7 @@ const AdminTrialResults = () => {
 
   const handleViewResult = async (resultId) => {
     try {
-      const response = await axios.get(
-        `https://dlms-driving-license-management-system-v1.onrender.com/api/trial/admin/results/${resultId}`
-      );
+      const response = await axios.get(`${API_BASE}/trial/admin/results/${resultId}`);
       if (response.data.success) {
         setSelectedResult(response.data.result);
         setOpenDialog(true);
@@ -230,7 +229,7 @@ const AdminTrialResults = () => {
                         <Avatar
                           src={
                             result.userId?.profilePicture
-                              ? `https://dlms-driving-license-management-system-v1.onrender.com/api/users/profile-picture/${result.userId.profilePicture}`
+                              ? `${API_BASE}/users/profile-picture/${result.userId.profilePicture}`
                               : undefined
                           }
                           sx={{ mr: 2, width: 40, height: 40 }}
@@ -334,10 +333,10 @@ const AdminTrialResults = () => {
               <Card sx={{ mb: 3 }}>
                 <CardContent>
                   <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-                    <Avatar
+                      <Avatar
                       src={
                         selectedResult.userId?.profilePicture
-                          ? `https://dlms-driving-license-management-system-v1.onrender.com/api/users/profile-picture/${selectedResult.userId.profilePicture}`
+                          ? `${API_BASE}/users/profile-picture/${selectedResult.userId.profilePicture}`
                           : undefined
                       }
                       sx={{ mr: 2, width: 60, height: 60 }}

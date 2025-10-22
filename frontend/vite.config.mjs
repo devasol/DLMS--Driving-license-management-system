@@ -13,14 +13,16 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target:
-          "https://dlms-driving-license-management-system-v1.onrender.com",
+        target: process.env.VITE_API_URL
+          ? process.env.VITE_API_URL.replace(/\/api\/?$/, "")
+          : "https://dlms-driving-license-management-system-v1.onrender.com",
         changeOrigin: true,
         secure: false,
       },
       "/uploads": {
-        target:
-          "https://dlms-driving-license-management-system-v1.onrender.com",
+        target: process.env.VITE_API_URL
+          ? process.env.VITE_API_URL.replace(/\/api\/?$/, "")
+          : "https://dlms-driving-license-management-system-v1.onrender.com",
         changeOrigin: true,
         secure: false,
       },

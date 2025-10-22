@@ -42,16 +42,21 @@ const Signin = () => {
 
     try {
       // Determine if this is an admin login based on email pattern
+      const email = (formData.email || "").trim();
       const isAdminLogin =
-        formData.email.toLowerCase().includes("admin") ||
-        formData.email.toLowerCase().includes("administrator");
+        email.toLowerCase().includes("admin") ||
+        email.toLowerCase().includes("administrator");
 
       const loginData = {
-        ...formData,
-        isAdmin: isAdminLogin,
+        email,
+        password: formData.password,
       };
 
-      const { data } = await authAPI.login(loginData);
+      // Use adminLogin helper for admin-like accounts to prefer admin-specific route
+      const response = isAdminLogin
+        ? await authAPI.adminLogin(loginData)
+        : await authAPI.login(loginData);
+      const { data } = response;
 
       // Success
       localStorage.setItem("token", data.token);
@@ -82,10 +87,21 @@ const Signin = () => {
         }
       }, 1000);
     } catch (error) {
-      // Suppress console noise and show a clean message
-      setAlertMessage(
-        error.response?.data?.message || "Network error. Please try again."
-      );
+      // Log full error for debugging
+      console.error("Login error:", error?.response || error);
+
+      const serverMessage = error?.response?.data?.message;
+      const status = error?.response?.status;
+
+      // Show more helpful messages based on status
+      if (status === 401) {
+        setAlertMessage(serverMessage || "Invalid email or password");
+      } else if (status >= 400 && status < 500) {
+        setAlertMessage(serverMessage || "Invalid request. Please check your input.");
+      } else {
+        setAlertMessage(serverMessage || "Network/server error. Please try again later.");
+      }
+
       setShowAlert(true);
     } finally {
       setIsLoading(false);

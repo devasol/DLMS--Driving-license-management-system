@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/system";
 import axios from "axios";
+import { API_BASE } from "../../../config/api";
 import { Upload, Description, Delete } from "@mui/icons-material";
 import {
   List,
@@ -346,16 +347,13 @@ const LicenseApplication = () => {
         );
 
         // Add notification for successful application
-        await axios.post(
-          "https://dlms-driving-license-management-system-v1.onrender.com/api/notifications",
-          {
-            user_id: userId,
-            title: "License Application Submitted",
-            message:
-              "Your driving license application has been submitted successfully. We will review it shortly.",
-            type: "success",
-          }
-        );
+        await axios.post(`${API_BASE.replace(/\/$/, "")}/notifications`, {
+          user_id: userId,
+          title: "License Application Submitted",
+          message:
+            "Your driving license application has been submitted successfully. We will review it shortly.",
+          type: "success",
+        });
 
         // Reset form after successful submission
         setFormData({

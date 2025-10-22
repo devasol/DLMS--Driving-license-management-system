@@ -30,6 +30,7 @@ import {
   Search as SearchIcon,
 } from "@mui/icons-material";
 import axios from "axios";
+import { API_BASE } from "../../../config/api";
 import { format } from "date-fns";
 
 const ApplicationsList = () => {
@@ -121,7 +122,7 @@ const ApplicationsList = () => {
   const handleUpdateStatus = async () => {
     try {
       await axios.patch(
-        `https://dlms-driving-license-management-system-v1.onrender.com/api/license/admin/applications/${selectedApplication._id}/status`,
+        `${API_BASE}/license/admin/applications/${selectedApplication._id}/status`,
         {
           ...statusUpdate,
           adminId,
@@ -147,10 +148,7 @@ const ApplicationsList = () => {
 
   const handleMarkUnderReview = async (applicationId) => {
     try {
-      await axios.patch(
-        `https://dlms-driving-license-management-system-v1.onrender.com/api/license/admin/applications/${applicationId}/review`,
-        { adminId }
-      );
+      await axios.patch(`${API_BASE}/license/admin/applications/${applicationId}/review`, { adminId });
 
       // Update local state
       setApplications((prev) =>

@@ -41,6 +41,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/system";
 import axios from "axios";
+import { API_BASE } from "../../../config/api";
 import { format } from "date-fns";
 
 const StatusCard = styled(Card)(({ theme, status }) => ({
@@ -198,7 +199,7 @@ const ApplicationStatus = ({ onClose, onCancel }) => {
 
   const handleDownloadDocument = (document) => {
     console.log("Downloading document:", document);
-    const downloadUrl = `https://dlms-driving-license-management-system-v1.onrender.com/api/license/documents/${document.filename}`;
+  const downloadUrl = `${API_BASE.replace(/\/$/, "")}/license/documents/${document.filename}`;
     console.log("Download URL:", downloadUrl);
     const link = document.createElement("a");
     link.href = downloadUrl;
@@ -223,7 +224,7 @@ const ApplicationStatus = ({ onClose, onCancel }) => {
   };
 
   const getDocumentUrl = (filename) => {
-    return `https://dlms-driving-license-management-system-v1.onrender.com/api/license/documents/${filename}`;
+  return `${API_BASE.replace(/\/$/, "")}/license/documents/${filename}`;
   };
 
   const getStatusColor = (status) => {

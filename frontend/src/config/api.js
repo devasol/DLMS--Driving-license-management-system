@@ -3,12 +3,16 @@ import axios from "axios";
 // Toggle API debug logs via env flag. Default: silent (no console noise).
 const DEBUG = import.meta.env.VITE_API_DEBUG === "true";
 
+// Determine API base: prefer explicit VITE_API_URL, otherwise default to
+// the requested production URL. For local development you can set
+// VITE_API_URL to "/api" so the dev server proxy is used.
+export const API_BASE =
+  import.meta.env.VITE_API_URL ||
+  "https://dlms-driving-license-management-system-v1.onrender.com/api";
+
 // Create axios instance with default configuration
 const api = axios.create({
-  // Use VITE_API_URL when provided (e.g. production). During local dev we
-  // want requests to be relative so Vite's proxy (configured in
-  // frontend/vite.config.mjs) forwards /api requests to the backend.
-  baseURL: import.meta.env.VITE_API_URL || "/api",
+  baseURL: API_BASE,
   timeout: 15000, // Increased timeout for better reliability
   headers: {
     "Content-Type": "application/json",
@@ -69,13 +73,14 @@ api.interceptors.response.use(
     }
 
     // Handle specific error cases
+
     if (error.response?.status === 401) {
-      // Unauthorized - clear token and redirect to login
+      // Unauthorized - clear token but do NOT auto-redirect.
+      // Let the caller decide how to handle 401 so UI can show messages.
       localStorage.removeItem("token");
       localStorage.removeItem("userRole");
       localStorage.removeItem("userId");
       localStorage.removeItem("userName");
-      window.location.href = "/signin";
     }
 
     return Promise.reject(error);

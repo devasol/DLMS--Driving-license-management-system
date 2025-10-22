@@ -45,6 +45,7 @@ import {
   LocalHospital,
 } from "@mui/icons-material";
 import axios from "axios";
+import { API_BASE } from "../../../config/api";
 import { format } from "date-fns";
 
 const UserDetails = ({ open, user, onClose, onDelete }) => {
@@ -115,13 +116,13 @@ const UserDetails = ({ open, user, onClose, onDelete }) => {
 
   const handleViewDocument = (document) => {
     console.log("Viewing document:", document);
-    const documentUrl = `https://dlms-driving-license-management-system-v1.onrender.com/api/license/documents/${document.filename}`;
+  const documentUrl = `${API_BASE}/license/documents/${document.filename}`;
     window.open(documentUrl, "_blank");
   };
 
   const handleDownloadDocument = (document) => {
     console.log("Downloading document:", document);
-    const downloadUrl = `https://dlms-driving-license-management-system-v1.onrender.com/api/license/documents/${document.filename}`;
+  const downloadUrl = `${API_BASE}/license/documents/${document.filename}`;
     const link = document.createElement("a");
     link.href = downloadUrl;
     link.download = document.originalName || document.filename;
@@ -164,10 +165,10 @@ const UserDetails = ({ open, user, onClose, onDelete }) => {
                   alignItems: "center",
                 }}
               >
-                <Avatar
+                    <Avatar
                   src={
                     user?.profilePicture
-                      ? `https://dlms-driving-license-management-system-v1.onrender.com/api/users/profile-picture/${user.profilePicture}`
+                      ? `${API_BASE}/users/profile-picture/${user.profilePicture}`
                       : undefined
                   }
                   sx={{
