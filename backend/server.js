@@ -58,6 +58,7 @@ const defaultAllowedOrigins = [
   // Add the backend dev port used by the frontend code
   "http://localhost:5004",
   "https://dlms-skjh.onrender.com",
+  process.env.FRONTEND_URL,
 ];
 
 const envAllowed = [];

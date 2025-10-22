@@ -8,6 +8,7 @@ const connectDB = async () => {
       process.env.MONGODB_URI || "mongodb://localhost:27017/dlms";
     console.log("Attempting to connect to MongoDB...");
     console.log("Connection string:", MONGODB_URI);
+    console.log("Database name from URI:", MONGODB_URI.split('/').pop().split('?')[0]);
 
     // Set mongoose options for better performance and stability
     const options = {
