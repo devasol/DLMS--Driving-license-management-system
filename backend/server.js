@@ -51,41 +51,8 @@ app.use(
 ); // Basic security headers
 
 // CORS configuration (allow local dev and deployed frontend)
-const defaultAllowedOrigins = [
-  "http://localhost:3000",
-  "http://localhost:5173",
-  "http://localhost:5174",
-  // Add the backend dev port used by the frontend code
-  "http://localhost:5004",
-  "https://dlms-skjh.onrender.com",
-  process.env.FRONTEND_URL,
-];
-
-const envAllowed = [];
-if (process.env.FRONTEND_URL) envAllowed.push(process.env.FRONTEND_URL.trim());
-if (process.env.FRONTEND_URLS) {
-  envAllowed.push(
-    ...process.env.FRONTEND_URLS.split(",")
-      .map((s) => s.trim())
-      .filter(Boolean)
-  );
-}
-
-const allowedOrigins = Array.from(
-  new Set([...defaultAllowedOrigins, ...envAllowed])
-);
-
 const corsOptions = {
-  origin: (origin, callback) => {
-    // Allow requests with no origin (e.g., mobile apps, curl)
-    if (!origin) return callback(null, true);
-    const normalized = origin.replace(/\/$/, "");
-    const isAllowed = allowedOrigins.some(
-      (o) => o.replace(/\/$/, "") === normalized
-    );
-    if (isAllowed) return callback(null, true);
-    return callback(new Error(`Not allowed by CORS: ${origin}`));
-  },
+  origin: "*", // Allow all origins
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
