@@ -422,20 +422,30 @@ const Header = () => {
   useEffect(() => {
     const updateBodyPadding = () => {
       if (document.body) {
-        let headerHeight = '0px';
+        // Calculate header height based on actual visible elements
+        let headerHeight = 0;
         
-        // Check if we're on a smaller screen where banner should be hidden
-        const isSmallScreen = window.innerWidth <= 768;
-        
-        if (isSmallScreen) {
-          // On small screens, banner is effectively hidden, only main header height
-          headerHeight = hideBanner ? '60px' : '116px'; // 60px for mobile main header, 116px for banner + main header
+        // On mobile screens, use different calculations
+        if (window.innerWidth <= 768) {
+          if (!hideBanner) {
+            // Mobile with banner visible: banner height + main header height
+            headerHeight = 56 + 60; // 56px banner + 60px mobile main header
+          } else {
+            // Mobile with banner hidden: just main header height
+            headerHeight = 60; // 60px mobile main header
+          }
         } else {
-          // On larger screens, normal behavior
-          headerHeight = hideBanner ? '72px' : '136px'; // 72px collapsed, 136px expanded (56+80)
+          // Desktop calculations
+          if (!hideBanner) {
+            // Desktop with banner visible: banner height + main header height
+            headerHeight = 56 + 80; // 56px banner + 80px desktop main header
+          } else {
+            // Desktop with banner hidden: just main header height
+            headerHeight = 72; // 72px collapsed main header
+          }
         }
         
-        document.body.style.paddingTop = headerHeight;
+        document.body.style.paddingTop = `${headerHeight}px`;
         document.body.style.boxSizing = 'border-box';
       }
     };
@@ -443,21 +453,16 @@ const Header = () => {
     // Initial update
     updateBodyPadding();
 
-    // Update on window resize and scroll
+    // Update on window resize
     window.addEventListener('resize', updateBodyPadding);
-    const onScroll = () => {
-      const scrolled = window.scrollY || document.documentElement.scrollTop;
-      const newHideBanner = scrolled > 20;
-      if (newHideBanner !== hideBanner) {
-        setTimeout(updateBodyPadding, 0); // Allow state update to happen first
-      }
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
+    
+    // Update when hideBanner state changes
+    const timer = setTimeout(updateBodyPadding, 0);
 
     // Cleanup
     return () => {
       window.removeEventListener('resize', updateBodyPadding);
-      window.removeEventListener('scroll', onScroll);
+      clearTimeout(timer);
       if (document.body) {
         document.body.style.paddingTop = '';
         document.body.style.boxSizing = '';
