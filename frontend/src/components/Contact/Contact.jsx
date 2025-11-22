@@ -110,19 +110,19 @@ const Contact = () => {
       gradient: "linear-gradient(135deg, #f093fb, #f5576c)",
       available: t("contactPage.responseTime") || "Response within 2 hours",
     },
-    {
-      icon: faMapMarkerAlt,
-      title: t("contactPage.visitUs") || "Visit Us",
-      description:
-        t("contactPage.visitUsDesc") || "Come to our office location",
-      value:
-        t("contactPage.address") ||
-        "Ministry of Transport, Addis Ababa, Ethiopia",
-      action: "#",
-      color: "#4facfe",
-      gradient: "linear-gradient(135deg, #4facfe, #00f2fe)",
-      available: t("contactPage.officeHours") || "Mon-Fri 9AM-6PM",
-    },
+    // {
+    //   icon: faMapMarkerAlt,
+    //   title: t("contactPage.visitUs") || "Visit Us",
+    //   description:
+    //     t("contactPage.visitUsDesc") || "Come to our office location",
+    //   value:
+    //     t("contactPage.address") ||
+    //     "Ministry of Transport, Addis Ababa, Ethiopia",
+    //   action: "#",
+    //   color: "#4facfe",
+    //   gradient: "linear-gradient(135deg, #4facfe, #00f2fe)",
+    //   available: t("contactPage.officeHours") || "Mon-Fri 9AM-6PM",
+    // },
     {
       icon: faComments,
       title: t("contactPage.liveChat") || "Live Chat",
@@ -165,13 +165,13 @@ const Contact = () => {
         t("contactPage.expertSupportDesc") ||
         "Trained professionals ready to help",
     },
-    {
-      icon: faGlobe,
-      title: t("contactPage.multiLanguage") || "Multi-language",
-      description:
-        t("contactPage.multiLanguageDesc") ||
-        "Support available in multiple languages",
-    },
+    // {
+    //   icon: faGlobe,
+    //   title: t("contactPage.multiLanguage") || "Multi-language",
+    //   description:
+    //     t("contactPage.multiLanguageDesc") ||
+    //     "Support available in multiple languages",
+    // },
   ];
 
   const handleInputChange = (e) => {
