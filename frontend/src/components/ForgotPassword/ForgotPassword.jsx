@@ -357,31 +357,12 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div
-      className={styles.container}
-      style={{
-        position: "fixed",
-        inset: 0,
-        display: "grid",
-        placeItems: "center",
-        padding: 20,
-        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        zIndex: 2147483000,
-      }}
-    >
+    <div className={styles.container}>
       <div className={styles.themeToggle}>
         <ThemeToggle />
       </div>
 
-      <div
-        className={styles.formContainer}
-        style={{
-          background: "#ffffff",
-          opacity: 1,
-          display: "block",
-          zIndex: 2147483600,
-        }}
-      >
+      <div className={styles.formContainer}>
         <div className={styles.header}>
           <Link to="/" className={styles.homeLink}>
             <FaArrowLeft /> Back to Home
