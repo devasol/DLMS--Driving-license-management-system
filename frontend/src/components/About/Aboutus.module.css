@@ -6,7 +6,6 @@
   position: relative;
   overflow-x: hidden;
   transition: all 0.3s ease;
-  padding-top: 120px; /* Added top padding to account for fixed header */
 }
 
 /* Hero Section - Consistent with Services/Contact */
