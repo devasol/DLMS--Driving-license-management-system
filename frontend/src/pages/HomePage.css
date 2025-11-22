@@ -31,13 +31,18 @@
   }
 }
 
-/* Seamless section transitions with amazing spacing */
+/* Reduced spacing between sections */
 .homepage-container > * {
   margin-top: 0;
-  margin-bottom: 0;
+  margin-bottom: 1rem; /* Small gap between sections */
 }
 
-/* Ensure first element after header has no additional spacing */
+/* Ensure first element after header has appropriate spacing */
 .homepage-container > *:first-child {
   margin-top: 0 !important;
+}
+
+/* Remove margin from the last element */
+.homepage-container > *:last-child {
+  margin-bottom: 0;
 }

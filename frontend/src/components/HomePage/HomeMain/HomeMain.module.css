@@ -8,7 +8,7 @@
   overflow: hidden;
   cursor: crosshair;
   margin-top: 0;
-  padding-top: 1rem; /* Reduced from 3rem to reduce gap */
+  padding-top: 0; /* Removed to rely on heroSection alignment for vertical centering */
 }
 
 /* Interactive Background */
@@ -293,16 +293,17 @@
 .mainContent {
   position: relative;
   z-index: 5;
-  margin: 0 200px;
+  margin: 0 100px;
+  width: 100%; /* Ensure full width for centering */
 }
 
 /* Hero Section */
 .heroSection {
   min-height: 100vh;
   display: flex;
-  align-items: flex-start; /* Place content near the top to remove excessive space */
+  align-items: center; /* Center content vertically */
   justify-content: center;
-  padding: 1rem; /* Reduced from 2rem to reduce gap */
+  padding: 0; /* Minimal vertical padding */
   position: relative;
 }
 
@@ -311,8 +312,9 @@
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  gap: 2rem; /* Reduced gap for more compact layout */
   align-items: center;
+  margin-top: -200px;
 }
 
 .heroText {
@@ -581,7 +583,7 @@
 
 /* Features Section */
 .featuresSection {
-  padding: 4rem 2rem;
+  padding: 0.5rem 0.5rem; /* Further reduced for minimal layout */
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
 }
@@ -734,7 +736,7 @@
 /* Responsive Design */
 @media (max-width: 1200px) {
   .mainContent {
-    margin: 0 150px;
+    margin: 0 20px; /* Further reduced margin for minimal layout */
   }
 
   .licenseLeft {
@@ -756,7 +758,7 @@
 
 @media (max-width: 768px) {
   .mainContent {
-    margin: 0 20px;
+    margin: 0 15px; /* Slightly increased for better mobile spacing */
   }
 
   .licenseContainer {
@@ -774,7 +776,7 @@
   }
   .heroContent {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 1rem; /* Reduced gap for more compact mobile layout */
     text-align: center;
   }
 
@@ -798,26 +800,27 @@
 
 @media (max-width: 480px) {
   .heroSection {
-    padding: 1rem;
+    padding: 0; /* Minimal vertical padding for mobile */
   }
 
   .heroTitle {
-    font-size: 2rem;
+    font-size: 1.8rem; /* Slightly reduced for compactness */
   }
 
   .heroSubtitle {
-    font-size: 1rem;
+    font-size: 0.9rem; /* Slightly reduced for compactness */
   }
 
   .heroButtons {
     flex-direction: column;
     align-items: center;
+    gap: 0.5rem; /* Reduced gap between buttons */
   }
 
   .primaryButton,
   .secondaryButton {
-    padding: 0.75rem 1.5rem;
-    font-size: 0.9rem;
+    padding: 0.6rem 1.2rem; /* Slightly reduced padding */
+    font-size: 0.85rem; /* Slightly reduced font size */
     width: 100%;
     max-width: 250px;
   }
@@ -825,11 +828,11 @@
   .licenseCard {
     width: 280px;
     height: 180px;
-    padding: 1rem;
+    padding: 0.8rem; /* Slightly reduced padding */
   }
 
   .featuresSection {
-    padding: 2rem 1rem;
+    padding: 1rem 0.5rem; /* Further reduced for compactness */
   }
 
   .featureIcon {
