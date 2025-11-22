@@ -8,7 +8,7 @@ const DEBUG = import.meta.env.VITE_API_DEBUG === "true";
 // VITE_API_URL to "/api" so the dev server proxy is used.
 export const API_BASE =
   import.meta.env.VITE_API_URL ||
-  "https://dlms-driving-license-management-system.onrender.com";
+  "https://dlms-driving-license-management-system.onrender.com/api";
 
 // Create axios instance with default configuration
 const api = axios.create({
