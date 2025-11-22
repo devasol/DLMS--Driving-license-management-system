@@ -418,6 +418,33 @@ const Header = () => {
     </div>
   );
 
+  // Add spacing to the body to account for the fixed header
+  useEffect(() => {
+    const updateBodyPadding = () => {
+      if (document.body) {
+        // Calculate header height based on banner visibility
+        const headerHeight = hideBanner ? '72px' : '136px'; // main header collapsed height or expanded height
+        document.body.style.paddingTop = headerHeight;
+        document.body.style.boxSizing = 'border-box';
+      }
+    };
+
+    // Initial update
+    updateBodyPadding();
+
+    // Update on window resize
+    window.addEventListener('resize', updateBodyPadding);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', updateBodyPadding);
+      if (document.body) {
+        document.body.style.paddingTop = '';
+        document.body.style.boxSizing = '';
+      }
+    };
+  }, [hideBanner]);
+
   return createPortal(headerMarkup, document.body);
 };
 

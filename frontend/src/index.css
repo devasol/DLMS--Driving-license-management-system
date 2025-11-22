@@ -295,9 +295,3 @@ a {
 button {
   cursor: pointer;
 }
-
-/* Responsive header padding - removed since handled per component */
-/* Global header spacer utility for pages that need it */
-.header-spacer {
-  height: 120px; /* match banner + header height */
-}
