@@ -7,20 +7,27 @@
   font-family: var(--font-body);
   transition: all var(--transition-normal);
   overflow-x: hidden;
-  /* Spacer so content doesn't sit under the fixed header (banner + header) */
-  padding-top: 144px; /* 56 (banner) + 80 (header) + small buffer */
+  /* Minimal padding since body padding already accounts for header */
+  padding-top: 0px;
 }
 
-/* Adjust spacer for smaller screens where the header is shorter */
+/* Adjust spacer for desktop where the banner might be visible */
+@media (min-width: 769px) {
+  .homepage-container {
+    padding-top: 0px; /* No additional padding needed since body is already padded */
+  }
+}
+
+/* No extra padding on medium screens */
 @media (max-width: 768px) {
   .homepage-container {
-    padding-top: 120px; /* 56 (banner) + 60 (header) approx */
+    padding-top: 0px; /* No additional padding needed since body is already padded */
   }
 }
 
 @media (max-width: 480px) {
   .homepage-container {
-    padding-top: 104px; /* slightly smaller on very small screens */
+    padding-top: 0px; /* No additional padding needed since body is already padded */
   }
 }
 
@@ -28,4 +35,9 @@
 .homepage-container > * {
   margin-top: 0;
   margin-bottom: 0;
+}
+
+/* Ensure first element after header has no additional spacing */
+.homepage-container > *:first-child {
+  margin-top: 0 !important;
 }

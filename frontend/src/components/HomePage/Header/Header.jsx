@@ -33,12 +33,31 @@ const Header = () => {
   const [hideBanner, setHideBanner] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => {
+    // Initialize hideBanner based on screen size and scroll position
+    const checkScreenSizeAndScroll = () => {
+      const isSmallScreen = window.innerWidth <= 768;
       const scrolled = window.scrollY || document.documentElement.scrollTop;
-      setHideBanner(scrolled > 20); // hide after 20px scroll
+      setHideBanner(isSmallScreen || scrolled > 20); // hide on small screens or after 20px scroll
     };
+
+    // Set initial state based on screen size
+    checkScreenSizeAndScroll();
+
+    const onScroll = () => {
+      const isSmallScreen = window.innerWidth <= 768;
+      const scrolled = window.scrollY || document.documentElement.scrollTop;
+      setHideBanner(isSmallScreen || scrolled > 20); // hide on small screens or after 20px scroll
+    };
+
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    
+    // Listen to resize events to handle screen size changes
+    window.addEventListener('resize', checkScreenSizeAndScroll);
+    
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener('resize', checkScreenSizeAndScroll);
+    };
   }, []);
 
   // Auto-close menu when resizing above mobile breakpoint
@@ -425,15 +444,10 @@ const Header = () => {
         // Calculate header height based on actual visible elements
         let headerHeight = 0;
         
-        // On mobile screens, use different calculations
+        // On mobile screens, banner is hidden by default
         if (window.innerWidth <= 768) {
-          if (!hideBanner) {
-            // Mobile with banner visible: banner height + main header height
-            headerHeight = 56 + 60; // 56px banner + 60px mobile main header
-          } else {
-            // Mobile with banner hidden: just main header height
-            headerHeight = 60; // 60px mobile main header
-          }
+          // Mobile calculations - banner is hidden by default on mobile
+          headerHeight = 60; // 60px mobile main header
         } else {
           // Desktop calculations
           if (!hideBanner) {
