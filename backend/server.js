@@ -270,11 +270,47 @@ app.get("/api/db-status", async (req, res) => {
 
 // The catch-all route is handled by the frontend serving below
 
-// Connect to MongoDB and start server
+// Build frontend before starting server (in production)
 const startServer = async () => {
   try {
     // Ensure upload directories exist
     ensureUploadsDirectories();
+
+    // In production, ensure frontend is built before starting server
+    if (process.env.NODE_ENV === 'production') {
+      console.log('🏗️  Production mode detected');
+      console.log('📁 Checking for frontend build...');
+      
+      const frontendDistPath = join(__dirname, '..', 'frontend', 'dist');
+      if (!fs.existsSync(frontendDistPath)) {
+        console.log('⚠️  Frontend build not found, attempting to build...');
+        try {
+          const { execSync } = await import('child_process');
+          const frontendPath = join(__dirname, '..', 'frontend');
+          
+          // Change to frontend directory and build
+          console.log('🔧 Installing frontend dependencies and building...');
+          execSync('npm install', { 
+            cwd: frontendPath,
+            stdio: 'pipe'  // Use pipe to capture output
+          });
+          
+          console.log('🔧 Running frontend build...');
+          execSync('npm run build', { 
+            cwd: frontendPath,
+            stdio: 'pipe'  // Use pipe to capture output
+          });
+          
+          console.log('✅ Frontend build completed successfully');
+        } catch (buildError) {
+          console.error('❌ Frontend build failed:', buildError.message);
+          console.error('❌ Error output:', buildError.stderr?.toString() || 'No stderr');
+          console.log('⚠️  Attempting to continue server start...');
+        }
+      } else {
+        console.log('✅ Frontend build found at:', frontendDistPath);
+      }
+    }
 
     // Connect to MongoDB - but make it optional for static file serving
     try {
@@ -288,10 +324,14 @@ const startServer = async () => {
 
     // Start the main server
     app.listen(PORT, () => {
-      console.log(`Main server running on port ${PORT}`);
+      console.log(`🚀 Server running on port ${PORT}`);
+      console.log(`🌐 API available at: http://localhost:${PORT}/api`);
+      if (fs.existsSync(join(__dirname, '..', 'frontend', 'dist'))) {
+        console.log(`🌐 Frontend available at: http://localhost:${PORT}`);
+      }
     });
   } catch (error) {
-    console.error("Failed to start server:", error);
+    console.error("❌ Failed to start server:", error);
     process.exit(1);
   }
 };

@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: dlms-app
+    env: node
+    region: oregon
+    buildCommand: ./render-build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        fromDatabase:
+          name: dlms-db
+          property: connectionString
+      - key: FRONTEND_URL
+        sync: false  # This should be set to the frontend URL in Render dashboard if needed
+
+databases:
+  - name: dlms-db
+    region: oregon
+    plan: free
