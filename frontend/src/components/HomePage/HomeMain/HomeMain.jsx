@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -17,32 +17,12 @@ import { motion } from "framer-motion";
 
 const HomeMain = () => {
   const { t } = useLanguage();
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [systemStats, setSystemStats] = useState({
     totalApplications: 0,
     passedExams: 0,
     issuedLicenses: 0,
     activeUsers: 0,
   });
-  const containerRef = useRef(null);
-
-  // Mouse tracking effect for interactive background
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      if (containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width) * 100;
-        const y = ((e.clientY - rect.top) / rect.height) * 100;
-        setMousePosition({ x, y });
-      }
-    };
-
-    const container = containerRef.current;
-    if (container) {
-      container.addEventListener("mousemove", handleMouseMove);
-      return () => container.removeEventListener("mousemove", handleMouseMove);
-    }
-  }, []);
 
   // Fetch system statistics
   useEffect(() => {
@@ -67,96 +47,11 @@ const HomeMain = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Statistics Display component
-  const StatisticsDisplay = ({ stat, value, icon, label, side }) => (
-    <div className={`${styles.statisticsDisplay} ${styles[`stats${side}`]}`}>
-      <div className={styles.statsFace}>
-        <div className={styles.statsIcon}>
-          <FontAwesomeIcon icon={icon} />
-        </div>
-        <div className={styles.statsValue}>
-          <span>{value.toLocaleString()}</span>
-        </div>
-        <div className={styles.statsLabel}>
-          <small>{label}</small>
-        </div>
-        <div className={styles.statsProgress}>
-          <div
-            className={styles.progressBar}
-            style={{
-              width: `${Math.min((value / 5000) * 100, 100)}%`,
-              background: `linear-gradient(45deg, #4ecdc4, #45b7d1)`,
-            }}
-          />
-        </div>
-      </div>
-    </div>
-  );
-
-  // License Card component
-  const LicenseCard = ({ side, type, count }) => (
-    <div className={`${styles.licenseContainer} ${styles[`license${side}`]}`}>
-      <div className={styles.licenseCard}>
-        <div className={styles.licenseHeader}>
-          <FontAwesomeIcon icon={faIdCard} className={styles.licenseIcon} />
-          <span className={styles.licenseTitle}>Ethiopian Driving License</span>
-        </div>
-
-        <div className={styles.licenseBody}>
-          <div className={styles.licenseType}>
-            <span className={styles.typeLabel}>Class:</span>
-            <span className={styles.typeValue}>{type}</span>
-          </div>
-
-          <div className={styles.licenseStats}>
-            <div className={styles.statItem}>
-              <FontAwesomeIcon icon={faClipboardCheck} />
-              <span>{count.toLocaleString()}</span>
-              <small>Issued</small>
-            </div>
-          </div>
-
-          <div className={styles.licenseFeatures}>
-            <div className={styles.feature}>✓ Digital Verification</div>
-            <div className={styles.feature}>✓ QR Code Security</div>
-            <div className={styles.feature}>✓ Online Renewal</div>
-          </div>
-        </div>
-
-        <div className={styles.licenseFooter}>
-          <div className={styles.validityBadge}>
-            <span>Valid & Secure</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
   return (
-    <div ref={containerRef} className={styles.container}>
+    <div className={styles.container}>
       {/* Interactive Background */}
       <div className={styles.interactiveBackground}>
-        <div
-          className={styles.mouseFollower}
-          style={{
-            left: `${mousePosition.x}%`,
-            top: `${mousePosition.y}%`,
-          }}
-        />
-
-        {/* Animated particles */}
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className={styles.particle}
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${3 + Math.random() * 4}s`,
-            }}
-          />
-        ))}
+        <div className={styles.backgroundOverlay}></div>
       </div>
 
       {/* Main Content */}
@@ -186,9 +81,6 @@ const HomeMain = () => {
                 <Link
                   to="/services"
                   className={styles.primaryButton}
-                  onClick={(e) => {
-                    console.log("Services button clicked!");
-                  }}
                 >
                   <FontAwesomeIcon icon={faRocket} />
                   {t("home.exploreServices") || "Explore Services"}
@@ -196,9 +88,6 @@ const HomeMain = () => {
                 <Link
                   to="/user-manual"
                   className={styles.secondaryButton}
-                  onClick={(e) => {
-                    console.log("User Manual button clicked!");
-                  }}
                 >
                   <FontAwesomeIcon icon={faFileAlt} />
                   {t("home.userManual") || "User Manual"}
@@ -239,32 +128,6 @@ const HomeMain = () => {
                 </div>
               </motion.div>
             </motion.div>
-
-            <motion.div
-              className={styles.heroImage}
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.25, duration: 0.6 }}
-            >
-              <div className={styles.licenseCard}>
-                <div className={styles.cardHeader}>
-                  <div className={styles.cardLogo}>
-                    <FontAwesomeIcon icon={faShieldAlt} />
-                  </div>
-                  <div className={styles.cardTitle}>
-                    {t("home.drivingLicense") || "DRIVING LICENSE"}
-                  </div>
-                </div>
-                <div className={styles.cardBody}>
-                  <div className={styles.cardPhoto}></div>
-                  <div className={styles.cardInfo}>
-                    <div className={styles.cardLine}></div>
-                    <div className={styles.cardLine}></div>
-                    <div className={styles.cardLine}></div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
           </div>
         </motion.div>
 
@@ -278,12 +141,13 @@ const HomeMain = () => {
             viewport={{ once: true, amount: 0.2 }}
           >
             <motion.div
-              className={styles.featureCard}
+              className={`${styles.featureCard} ${styles.hoverLift}`}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
-              whileHover={{ y: -6, scale: 1.02 }}
+              whileHover={{ y: -8, scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
               <div className={styles.featureIcon}>
                 <FontAwesomeIcon icon={faClock} />
@@ -296,12 +160,13 @@ const HomeMain = () => {
             </motion.div>
 
             <motion.div
-              className={styles.featureCard}
+              className={`${styles.featureCard} ${styles.hoverLift}`}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
               viewport={{ once: true }}
-              whileHover={{ y: -6, scale: 1.02 }}
+              whileHover={{ y: -8, scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
               <div className={styles.featureIcon}>
                 <FontAwesomeIcon icon={faShieldAlt} />
@@ -314,12 +179,13 @@ const HomeMain = () => {
             </motion.div>
 
             <motion.div
-              className={styles.featureCard}
+              className={`${styles.featureCard} ${styles.hoverLift}`}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
               viewport={{ once: true }}
-              whileHover={{ y: -6, scale: 1.02 }}
+              whileHover={{ y: -8, scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
               <div className={styles.featureIcon}>
                 <FontAwesomeIcon icon={faUsers} />
@@ -332,12 +198,13 @@ const HomeMain = () => {
             </motion.div>
 
             <motion.div
-              className={styles.featureCard}
+              className={`${styles.featureCard} ${styles.hoverLift}`}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
               viewport={{ once: true }}
-              whileHover={{ y: -6, scale: 1.02 }}
+              whileHover={{ y: -8, scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
               <div className={styles.featureIcon}>
                 <FontAwesomeIcon icon={faGraduationCap} />
