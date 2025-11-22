@@ -32,6 +32,11 @@ import authRoutesAlt from "./routes/authRoutes.js";
 import trafficPoliceRoutes from "./routes/trafficPoliceRoutes.js";
 import ActivityLogger from "./utils/activityLogger.js";
 
+// For serving frontend static files in production
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+import fs from "fs";
+
 // Load environment variables from the backend folder's .env
 // server.js already lives in the backend folder, so a plain config() is correct.
 dotenv.config();
@@ -107,6 +112,57 @@ app.use(
     },
   })
 );
+
+// Serve frontend static files (for both development and production)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// In production (deployed), serve from dist directory; otherwise serve from regular frontend
+const frontendDir = process.env.NODE_ENV === 'production' 
+  ? join(__dirname, '..', 'frontend', 'dist') // Production build path
+  : join(__dirname, '..', 'frontend', 'dist'); // Development - use dist since we already built
+
+// Log the frontend directory for debugging
+console.log(`📁 Frontend directory: ${frontendDir}`);
+console.log(`📁 Directory exists for static files: ${fs.existsSync(frontendDir)}`);
+
+// Serve static files from the frontend build directory BEFORE API routes
+app.use(express.static(frontendDir, {
+  // Set correct MIME types for static assets
+  setHeaders: (res, filePath) => {
+    const ext = path.extname(filePath).toLowerCase();
+    if (ext === '.css') {
+      res.setHeader('Content-Type', 'text/css; charset=UTF-8');
+    } else if (ext === '.js') {
+      res.setHeader('Content-Type', 'application/javascript; charset=UTF-8');
+    } else if (ext === '.json') {
+      res.setHeader('Content-Type', 'application/json; charset=UTF-8');
+    } else if (ext === '.png') {
+      res.setHeader('Content-Type', 'image/png');
+    } else if (ext === '.jpg' || ext === '.jpeg') {
+      res.setHeader('Content-Type', 'image/jpeg');
+    } else if (ext === '.gif') {
+      res.setHeader('Content-Type', 'image/gif');
+    } else if (ext === '.svg') {
+      res.setHeader('Content-Type', 'image/svg+xml');
+    } else if (ext === '.ico') {
+      res.setHeader('Content-Type', 'image/x-icon');
+    }
+    console.log(`📁 Serving static file: ${filePath} with content-type: ${res.getHeader('Content-Type')}`);
+  }
+}));
+
+// Serve index.html for all other routes (for React Router) - this should be LAST
+app.get('*', (req, res) => {
+  const indexPath = join(frontendDir, 'index.html');
+  console.log(`📁 Request for SPA fallback: ${req.originalUrl}, serving: ${indexPath}`);
+  res.sendFile(indexPath, (err) => {
+    if (err) {
+      console.error(`📁 Error sending index.html:`, err);
+      res.status(404).send('Page not found');
+    }
+  });
+});
 
 // Optimized request logging (only in development)
 if (process.env.NODE_ENV !== "production") {
@@ -186,30 +242,7 @@ app.get("/api/db-status", async (req, res) => {
 
 // Auth routes are handled by the mounted auth route modules above
 
-// Add a catch-all route for debugging
-app.use("*", (req, res) => {
-  res.status(404).json({
-    message: "Route not found",
-    requestedUrl: req.originalUrl,
-    availableRoutes: [
-      "/api",
-      "/api/health",
-      "/api/db-status",
-      "/api/auth/login",
-      "/api/auth/register",
-      "/api/admin/*",
-      "/api/users/*",
-      "/api/license/*",
-      "/api/exams/*",
-      "/api/trial/*",
-      "/api/payments/*",
-      "/api/renewals/*",
-      "/api/notifications/*",
-      "/api/feedbacks/*",
-      "/api/contact/*",
-    ],
-  });
-});
+// The catch-all route is handled by the frontend serving below
 
 // Connect to MongoDB and start server
 const startServer = async () => {
@@ -217,9 +250,15 @@ const startServer = async () => {
     // Ensure upload directories exist
     ensureUploadsDirectories();
 
-    // Connect to MongoDB
-    const dbConnection = await connectDB();
-    app.locals.dbConnection = dbConnection;
+    // Connect to MongoDB - but make it optional for static file serving
+    try {
+      const dbConnection = await connectDB();
+      app.locals.dbConnection = dbConnection;
+      console.log('✅ MongoDB connected successfully');
+    } catch (dbError) {
+      console.warn('⚠️  MongoDB connection failed:', dbError.message);
+      console.log('⚠️  Server starting without DB connection (may affect API functionality)');
+    }
 
     // Start the main server
     app.listen(PORT, () => {

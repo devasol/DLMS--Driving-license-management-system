@@ -4,6 +4,8 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
+    "prebuild": "node build-frontend.js",
+    "build": "node server.js",
     "start": "node server.js",
     "dev": "nodemon server.js",
     "init-db": "node scripts/initDatabase.js",

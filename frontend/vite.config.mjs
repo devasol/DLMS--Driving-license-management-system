@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
+  base: "./", // Use relative paths for deployment
   css: {
     modules: {
       // Enable CSS modules
@@ -34,6 +35,8 @@ export default defineConfig({
     host: true, // Allow external connections
   },
   build: {
+    outDir: "dist", // Output directory
+    assetsDir: "assets", // Assets directory
     // Enhanced build optimizations for better performance
     rollupOptions: {
       output: {
@@ -51,6 +54,10 @@ export default defineConfig({
           // Router
           router: ["react-router-dom"],
         },
+        // Use hash-based naming to prevent cache issues
+        entryFileNames: "assets/[name]-[hash].js",
+        chunkFileNames: "assets/[name]-[hash].js",
+        assetFileNames: "assets/[name]-[hash].[ext]"
       },
     },
     chunkSizeWarningLimit: 1000,
@@ -65,6 +72,9 @@ export default defineConfig({
     },
     // Enable source maps for debugging
     sourcemap: false, // Disable in production for smaller bundle
+    // Ensure proper static asset handling
+    copyPublicDir: true,
+    manifest: false, // Don't generate manifest
   },
   optimizeDeps: {
     // Pre-bundle dependencies for faster dev server startup
