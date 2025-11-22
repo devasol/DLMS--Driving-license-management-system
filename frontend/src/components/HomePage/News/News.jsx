@@ -145,10 +145,51 @@ const News = () => {
                     src={news.image}
                     alt={news.header}
                     onError={(e) => {
-                      // Switch to fallback image silently
-                      if (!e.target.src.includes("aadvlca.com")) {
-                        e.target.src =
-                          "https://www.aadvlca.com/assets/uploads/media-uploader/71725703020.jpg";
+                      e.target.style.display = 'none';
+                      const placeholderContainer = e.target.parentElement;
+                      if (placeholderContainer && !placeholderContainer.querySelector('.news-placeholder')) {
+                        // Create SVG placeholder directly in the container
+                        const variant = Math.floor(Math.random() * 3) + 1;
+                        const colors = [
+                          { primary: '#667eea', secondary: '#764ba2' }, // Blue-purple
+                          { primary: '#38b2ac', secondary: '#319795' }, // Teal
+                          { primary: '#ed8936', secondary: '#dd6b20' }  // Orange
+                        ];
+                        const color = colors[variant - 1];
+                        
+                        const svgPlaceholder = `
+                        <svg width="100%" height="100%" viewBox="0 0 300 200" class="${styles.newsPlaceholder}" style="border-radius: 8px;">
+                          <defs>
+                            <linearGradient id="newsGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                              <stop offset="0%" stop-color="${color.primary}" />
+                              <stop offset="100%" stop-color="${color.secondary}" />
+                            </linearGradient>
+                            <radialGradient id="newsRadial" cx="50%" cy="50%">
+                              <stop offset="0%" stop-color="rgba(255,255,255,0.2)" />
+                              <stop offset="100%" stop-color="rgba(255,255,255,0)" />
+                            </radialGradient>
+                          </defs>
+                          <rect width="300" height="200" fill="url(#newsGradient)" />
+                          <circle cx="50" cy="50" r="30" fill="url(#newsRadial)" opacity="0.3" />
+                          <circle cx="250" cy="150" r="40" fill="url(#newsRadial)" opacity="0.2" />
+                          <g>
+                            <rect x="110" y="70" width="80" height="60" fill="white" rx="4" opacity="0.9" />
+                            <rect x="115" y="75" width="70" height="4" fill="#4a5568" />
+                            <rect x="115" y="85" width="50" height="2" fill="#4a5568" opacity="0.7" />
+                            <rect x="115" y="90" width="60" height="2" fill="#4a5568" opacity="0.7" />
+                            <rect x="115" y="95" width="45" height="2" fill="#4a5568" opacity="0.7" />
+                            <rect x="115" y="105" width="25" height="20" fill="${color.primary}" opacity="0.3" rx="2" />
+                            <rect x="145" y="105" width="35" height="2" fill="#4a5568" opacity="0.5" />
+                            <rect x="145" y="110" width="30" height="2" fill="#4a5568" opacity="0.5" />
+                            <rect x="145" y="115" width="35" height="2" fill="#4a5568" opacity="0.5" />
+                            <rect x="145" y="120" width="25" height="2" fill="#4a5568" opacity="0.5" />
+                          </g>
+                          <text x="150" y="45" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="12" font-weight="bold" font-family="Arial, sans-serif">
+                            NEWS
+                          </text>
+                        </svg>`;
+                        
+                        placeholderContainer.innerHTML = svgPlaceholder;
                       }
                     }}
                   />
