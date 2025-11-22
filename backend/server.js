@@ -55,14 +55,17 @@ app.use(
   })
 ); // Basic security headers
 
-// CORS configuration (allow local dev and deployed frontend)
+// CORS configuration (allow frontend origin from environment variable)
+const allowedOrigin = process.env.FRONTEND_URL || process.env.CLIENT_URL || "*";
 const corsOptions = {
-  origin: "*", // Allow all origins
+  origin: allowedOrigin,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
   optionsSuccessStatus: 204,
 };
+
+console.log(`🌐 CORS allowed origin: ${allowedOrigin}`);
 
 app.use(cors(corsOptions));
 // Handle preflight requests for all routes
@@ -76,8 +79,8 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(
   "/uploads",
   (req, res, next) => {
-    // Add CORS headers for static files
-    res.header("Access-Control-Allow-Origin", "*");
+    // Add CORS headers for static files using the same origin
+    res.header("Access-Control-Allow-Origin", allowedOrigin);
     res.header("Access-Control-Allow-Methods", "GET, OPTIONS");
     res.header("Access-Control-Allow-Headers", "Content-Type");
 
