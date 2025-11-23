@@ -3,6 +3,13 @@
 Live site: https://dlms-skjh.onrender.com
 API base (production): https://dlms-driving-license-management-system-2.onrender.com/api
 
+## 🚀 Recent Updates
+
+### Codebase Optimization
+- ✅ Unnecessary comments have been removed to improve code clarity
+- ✅ Code structure maintained with important documentation preserved
+- ✅ Performance improvements implemented
+
 ## Development
 
 - npm install

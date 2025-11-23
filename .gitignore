@@ -58,3 +58,4 @@ coverage/
 .vercel/
 .netlify/
 
+remove-comments.js

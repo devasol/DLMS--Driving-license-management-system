@@ -325,6 +325,18 @@ For support, please contact:
 
 ## 🔄 Changelog
 
+### v1.1.0
+- ✅ Initial release
+- ✅ User authentication system
+- ✅ License application process
+- ✅ Exam management system
+- ✅ Payment integration
+- ✅ Admin dashboard
+- ✅ Responsive design
+- ✅ Multi-language support
+- ✅ Dark/Light mode
+- ✅ Codebase optimization and comment cleanup
+
 ### v1.0.0
 - ✅ Initial release
 - ✅ User authentication system

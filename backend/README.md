@@ -6,6 +6,13 @@ Live API base: https://dlms-driving-license-management-system-2.onrender.com/api
 Health: https://dlms-driving-license-management-system-2.onrender.com/api/health
 DB status: https://dlms-driving-license-management-system-2.onrender.com/api/db-status
 
+## 🚀 Recent Updates
+
+### Codebase Optimization
+- ✅ Unnecessary comments have been removed to improve code clarity
+- ✅ Code structure maintained with important documentation preserved
+- ✅ Performance improvements implemented
+
 ## Setup and Running
 
 ### Prerequisites
