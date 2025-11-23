@@ -6,7 +6,8 @@ const DEBUG = import.meta.env.VITE_API_DEBUG === "true";
 // Determine API base: prefer explicit VITE_API_URL, otherwise default to
 // the requested production URL. For local development you can set
 // VITE_API_URL to "/api" so the dev server proxy is used.
-export const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5004";
+export const API_BASE =
+  import.meta.env.VITE_API_URL || "http://localhost:5004/api";
 
 // Create axios instance with default configuration
 const api = axios.create({

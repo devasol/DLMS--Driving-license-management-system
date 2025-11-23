@@ -389,8 +389,9 @@
   }
 
   .featureCard {
-    min-width: 250px;
-    padding: 2rem 1.5rem;
+    min-width: 220px; /* Reduced min-width for better responsiveness */
+    padding: 1.8rem 1.2rem;
+    height: 240px; /* Reduced height for better fit */
   }
 }
 
@@ -425,18 +426,63 @@
 
   .featuresGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* More flexible min-width */
+    gap: 1.2rem; /* Slightly reduced gap for better fit */
     overflow-x: visible;
+    justify-items: center; /* Center items in grid */
+    align-items: center; /* Center items vertically */
+    text-align: center; /* Center text */
   }
 
   .featureCard {
     min-width: unset;
     margin: 0;
+    padding: 1.5rem 1rem; /* Adjusted padding for mobile */
+    height: 220px; /* Adjusted height for mobile */
+    flex: 1 1 auto; /* Better flex behavior */
+    justify-self: center; /* Center card in grid cell */
+    align-self: center; /* Center card vertically */
+    width: 100%; /* Ensure full width of grid cell */
+    max-width: 320px; /* Limit width for better centering */
   }
 
   .featuresSection {
     padding: 3rem 1.5rem;
+  }
+  
+  /* Center alignment improvements for mobile */
+  .mainContent {
+    padding: 0 1.5rem;
+  }
+  
+  .heroContent {
+    text-align: center;
+    align-items: center;
+  }
+  
+  .statItem {
+    justify-content: center;
+  }
+  
+  .featureIcon {
+    font-size: 2rem; /* Slightly smaller icon for mobile */
+    margin: 0.3rem auto 0.5rem auto; /* Center with margin */
+    justify-self: center; /* Center icon */
+    align-self: center; /* Center icon */
+  }
+  
+  .featureCard h3 {
+    font-size: 1.15rem; /* Slightly smaller heading for mobile */
+    margin: 0.2rem 0 0.5rem 0;
+    text-align: center; /* Center heading */
+    justify-self: center; /* Center in flex/grid */
+    align-self: center; /* Center vertically */
+  }
+  
+  .featureCard p {
+    font-size: 0.8rem; /* Slightly smaller text for mobile */
+    padding: 0 0.2rem;
+    text-align: center; /* Center text */
   }
 }
 
@@ -457,12 +503,16 @@
   }
 
   .featuresGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Single column on very small screens */
+    gap: 1rem; /* Reduced gap for small screens */
+    justify-items: center; /* Center items in grid */
+    align-items: center; /* Center items vertically */
+    text-align: center; /* Center text */
   }
 
   .featureCard {
-    min-height: auto;
-    padding: 1.8rem 1.5rem;
+    min-height: 180px; /* Reduced height for very small screens */
+    padding: 1.2rem 1rem; /* Reduced padding */
   }
 
   .primaryButton,
@@ -470,6 +520,95 @@
     min-width: 240px;
     padding: 0.8rem 1.5rem;
     font-size: 1rem;
+  }
+  
+  /* Additional responsive improvements */
+  .mainContent {
+    padding: 0 1rem;
+  }
+  
+  .interactiveStats {
+    gap: 0.8rem;
+  }
+  
+  .statItem {
+    font-size: 1rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  
+  /* Enhanced responsiveness for feature cards on very small screens */
+  .featureCard {
+    height: auto; /* Auto height on very small screens */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-self: center; /* Center card in grid cell */
+    align-self: center; /* Center card vertically */
+    width: 100%; /* Ensure full width of grid cell */
+    max-width: 300px; /* Limit width on small screens */
+  }
+  
+  .featureIcon {
+    font-size: 1.8rem; /* Smaller icons */
+    margin: 0.2rem auto 0.4rem auto; /* Center with margin */
+    justify-self: center; /* Center icon */
+    align-self: center; /* Center icon */
+  }
+  
+  .featureCard h3 {
+    font-size: 1.1rem; /* Smaller headings */
+    margin: 0.2rem 0 0.4rem 0;
+    text-align: center; /* Center heading */
+    justify-self: center; /* Center in flex/grid */
+    align-self: center; /* Center vertically */
+  }
+  
+  .featureCard p {
+    font-size: 0.75rem; /* Smaller text */
+    line-height: 1.3; /* Tighter line height */
+    text-align: center; /* Center text */
+  }
+}
+
+/* Extra small screens (320px and below) */
+@media (max-width: 320px) {
+  .featuresGrid {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+    justify-items: center; /* Center items in grid */
+    align-items: center; /* Center items vertically */
+    text-align: center; /* Center text */
+  }
+  
+  .featureCard {
+    padding: 1rem 0.8rem;
+    min-height: 160px;
+    justify-self: center; /* Center card in grid cell */
+    align-self: center; /* Center card vertically */
+    width: 100%; /* Ensure full width of grid cell */
+    max-width: 280px; /* Limit width on very small screens */
+  }
+  
+  .featureIcon {
+    font-size: 1.6rem;
+    justify-self: center; /* Center icon */
+    align-self: center; /* Center icon */
+    margin: 0.2rem auto 0.4rem auto; /* Center with margin */
+  }
+  
+  .featureCard h3 {
+    font-size: 1rem;
+    text-align: center; /* Center heading */
+    justify-self: center; /* Center in flex/grid */
+    align-self: center; /* Center vertically */
+  }
+  
+  .featureCard p {
+    font-size: 0.7rem;
+    padding: 0 0.1rem;
+    text-align: center; /* Center text */
   }
 }
 

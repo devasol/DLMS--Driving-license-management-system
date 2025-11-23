@@ -46,3 +46,35 @@
 .homepage-container > *:last-child {
   margin-bottom: 0;
 }
+
+/* RESPONSIVE DESIGN IMPROVEMENTS */
+/* Center components on smaller screens */
+@media (max-width: 768px) {
+  .homepage-container > * {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  /* Allow some components to maintain their layout */
+  .homepage-container .heroButtons,
+  .homepage-container .interactiveStats {
+    justify-content: center;
+  }
+}
+
+/* Center content in specific components on small screens */
+@media (max-width: 768px) {
+  .homepage-container .heroText,
+  .homepage-container section,
+  .homepage-container .content,
+  .homepage-container .container,
+  .homepage-container .grid,
+  .homepage-container .card,
+  .homepage-container .row {
+    text-align: center !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+}

@@ -246,159 +246,169 @@ const Header = () => {
           </div>
         </NavLink>
 
-        <div
-          id="primary-navigation"
-          role="navigation"
-          aria-label="Primary"
-          className={`${styles.links} ${menuOpen ? styles.show : ""}`}
-        >
-          <NavLink
-            to="/"
-            end
-            onClick={() => setMenuOpen(false)}
-            className={({ isActive }) => (isActive ? styles.active : "")}
+        <div className={styles.navigationDesktop}>
+          <div
+            id="primary-navigation"
+            role="navigation"
+            aria-label="Primary"
+            className={`${styles.links} ${menuOpen ? styles.show : ""}`}
           >
-            {t("nav.home") || "HOME"}
-          </NavLink>
-          <NavLink
-            to="/services"
-            onClick={() => setMenuOpen(false)}
-            className={({ isActive }) => (isActive ? styles.active : "")}
-          >
-            {t("nav.services") || "SERVICES"}
-          </NavLink>
-          <NavLink
-            to="/about"
-            onClick={() => setMenuOpen(false)}
-            className={({ isActive }) => (isActive ? styles.active : "")}
-          >
-            {t("nav.about") || "ABOUT"}
-          </NavLink>
-          <NavLink
-            to="/news"
-            onClick={() => setMenuOpen(false)}
-            className={({ isActive }) => (isActive ? styles.active : "")}
-          >
-            {t("nav.news") || "NEWS"}
-          </NavLink>
-          <NavLink
-            to="/contact"
-            onClick={() => setMenuOpen(false)}
-            className={({ isActive }) => (isActive ? styles.active : "")}
-          >
-            {t("nav.contact") || "CONTACT"}
-          </NavLink>
+            <NavLink
+              to="/"
+              end
+              onClick={() => setMenuOpen(false)}
+              className={({ isActive }) => (isActive ? styles.active : "")}
+            >
+              {t("nav.home") || "HOME"}
+            </NavLink>
+            <NavLink
+              to="/services"
+              onClick={() => setMenuOpen(false)}
+              className={({ isActive }) => (isActive ? styles.active : "")}
+            >
+              {t("nav.services") || "SERVICES"}
+            </NavLink>
+            <NavLink
+              to="/about"
+              onClick={() => setMenuOpen(false)}
+              className={({ isActive }) => (isActive ? styles.active : "")}
+            >
+              {t("nav.about") || "ABOUT"}
+            </NavLink>
+            <NavLink
+              to="/news"
+              onClick={() => setMenuOpen(false)}
+              className={({ isActive }) => (isActive ? styles.active : "")}
+            >
+              {t("nav.news") || "NEWS"}
+            </NavLink>
+            <NavLink
+              to="/contact"
+              onClick={() => setMenuOpen(false)}
+              className={({ isActive }) => (isActive ? styles.active : "")}
+            >
+              {t("nav.contact") || "CONTACT"}
+            </NavLink>
+          </div>
         </div>
 
         <div className={styles.right_section}>
-          <LanguageSwitcher />
-          <ThemeToggle />
-          <SearchBar />
-          {!userName ? (
-            <NavLink to="/signin">
-              <button className={styles.login}>
-                {t("nav.login") || "LOGIN"}{" "}
-                <FontAwesomeIcon icon={faRightToBracket} />
-              </button>
-            </NavLink>
-          ) : (
-            <div className={styles.userSection}>
-              {/* Notification Bell */}
-              <div className={styles.notificationSection}>
-                <button
-                  className={styles.notificationBell}
-                  onClick={toggleNotifications}
-                  title="Notifications"
-                >
-                  <FontAwesomeIcon icon={faBell} />
-                  {unreadCount > 0 && (
-                    <span className={styles.notificationBadge}>
-                      {unreadCount > 99 ? "99+" : unreadCount}
-                    </span>
-                  )}
+          {/* Desktop components - hidden on mobile */}
+          <div className={styles.desktopComponents}>
+            <LanguageSwitcher />
+            <ThemeToggle />
+            <SearchBar />
+          </div>
+          
+          {/* User section for desktop - hidden on mobile */}
+          <div className={styles.desktopUserSection}>
+            {!userName ? (
+              <NavLink to="/signin">
+                <button className={styles.login}>
+                  {t("nav.login") || "LOGIN"}{" "}
+                  <FontAwesomeIcon icon={faRightToBracket} />
                 </button>
-
-                {/* Notification Dropdown */}
-                {showNotifications && (
-                  <div className={styles.notificationDropdown}>
-                    <div className={styles.notificationHeader}>
-                      <h4>Notifications</h4>
-                      <span className={styles.notificationCount}>
-                        {unreadCount} unread
+              </NavLink>
+            ) : (
+              <div className={styles.userSection}>
+                {/* Notification Bell */}
+                <div className={styles.notificationSection}>
+                  <button
+                    className={styles.notificationBell}
+                    onClick={toggleNotifications}
+                    title="Notifications"
+                  >
+                    <FontAwesomeIcon icon={faBell} />
+                    {unreadCount > 0 && (
+                      <span className={styles.notificationBadge}>
+                        {unreadCount > 99 ? "99+" : unreadCount}
                       </span>
-                    </div>
-                    <div className={styles.notificationList}>
-                      {notifications.length > 0 ? (
-                        notifications.slice(0, 5).map((notification) => (
-                          <div
-                            key={notification._id}
-                            className={`${styles.notificationItem} ${
-                              !notification.seen ? styles.unread : ""
-                            }`}
-                            onClick={() =>
-                              markNotificationAsSeen(notification._id)
-                            }
-                          >
-                            <div className={styles.notificationContent}>
-                              <h5>{notification.title}</h5>
-                              <p>{notification.message.substring(0, 80)}...</p>
-                              <span className={styles.notificationDate}>
-                                {formatDate(notification.createdAt)}
-                              </span>
+                    )}
+                  </button>
+
+                  {/* Notification Dropdown */}
+                  {showNotifications && (
+                    <div className={styles.notificationDropdown}>
+                      <div className={styles.notificationHeader}>
+                        <h4>Notifications</h4>
+                        <span className={styles.notificationCount}>
+                          {unreadCount} unread
+                        </span>
+                      </div>
+                      <div className={styles.notificationList}>
+                        {notifications.length > 0 ? (
+                          notifications.slice(0, 5).map((notification) => (
+                            <div
+                              key={notification._id}
+                              className={`${styles.notificationItem} ${
+                                !notification.seen ? styles.unread : ""
+                              }`}
+                              onClick={() =>
+                                markNotificationAsSeen(notification._id)
+                              }
+                            >
+                              <div className={styles.notificationContent}>
+                                <h5>{notification.title}</h5>
+                                <p>{notification.message.substring(0, 80)}...</p>
+                                <span className={styles.notificationDate}>
+                                  {formatDate(notification.createdAt)}
+                                </span>
+                              </div>
                             </div>
+                          ))
+                        ) : (
+                          <div className={styles.noNotifications}>
+                            <p>No notifications</p>
                           </div>
-                        ))
-                      ) : (
-                        <div className={styles.noNotifications}>
-                          <p>No notifications</p>
+                        )}
+                      </div>
+                      {notifications.length > 5 && (
+                        <div className={styles.notificationFooter}>
+                          <button
+                            onClick={() => {
+                              setShowNotifications(false);
+                              navigate("/dashboard");
+                            }}
+                            className={styles.viewAllButton}
+                          >
+                            View All Notifications
+                          </button>
                         </div>
                       )}
                     </div>
-                    {notifications.length > 5 && (
-                      <div className={styles.notificationFooter}>
-                        <button
-                          onClick={() => {
-                            setShowNotifications(false);
-                            navigate("/dashboard");
-                          }}
-                          className={styles.viewAllButton}
-                        >
-                          View All Notifications
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              {/* Profile Section */}
-              <div className={styles.profileSection}>
-                <div className={styles.profileCircle} onClick={toggleDropdown}>
-                  {getInitial(userName)}
+                  )}
                 </div>
-                {showDropdown && (
-                  <div className={styles.dropdown}>
-                    <button
-                      onClick={handleDashboardClick}
-                      className={styles.dropdownItem}
-                    >
-                      <FontAwesomeIcon icon={faUser} /> {t("nav.dashboard")}
-                    </button>
-                    <button
-                      onClick={handleLogout}
-                      className={styles.dropdownItem}
-                    >
-                      <FontAwesomeIcon icon={faSignOutAlt} /> {t("nav.logout")}
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
 
+                {/* Profile Section */}
+                <div className={styles.profileSection}>
+                  <div className={styles.profileCircle} onClick={toggleDropdown}>
+                    {getInitial(userName)}
+                  </div>
+                  {showDropdown && (
+                    <div className={styles.dropdown}>
+                      <button
+                        onClick={handleDashboardClick}
+                        className={styles.dropdownItem}
+                      >
+                        <FontAwesomeIcon icon={faUser} /> {t("nav.dashboard")}
+                      </button>
+                      <button
+                        onClick={handleLogout}
+                        className={styles.dropdownItem}
+                      >
+                        <FontAwesomeIcon icon={faSignOutAlt} /> {t("nav.logout")}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Mobile menu icon - visible on mobile */}
           <button
             className={styles.menu_icon}
-            aria-controls="primary-navigation"
+            aria-controls="mobile-menu"
             aria-expanded={menuOpen}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             onClick={() => setMenuOpen(!menuOpen)}
@@ -406,6 +416,183 @@ const Header = () => {
             <FontAwesomeIcon icon={menuOpen ? faTimes : faBars} />
           </button>
         </div>
+
+        {/* Mobile Menu Overlay - Fixed Structure */}
+        {menuOpen && (
+          <>
+            <div 
+              className={styles.mobileBackdrop}
+              onClick={() => setMenuOpen(false)}
+              aria-hidden="true"
+            />
+            <div className={styles.mobileMenuOverlay}>
+              <div className={styles.mobileMenuContent}>
+                {/* Mobile Menu Header */}
+                <div className={styles.mobileMenuHeader}>
+                  <LanguageSwitcher />
+                  <ThemeToggle />
+                </div>
+                
+                {/* Search Bar */}
+                <div className={styles.mobileSearchSection}>
+                  <SearchBar />
+                </div>
+                
+                {/* Navigation Links */}
+                <div className={styles.mobileNavLinks}>
+                  <NavLink
+                    to="/"
+                    end
+                    onClick={() => setMenuOpen(false)}
+                    className={({ isActive }) => (isActive ? styles.active : "")}
+                  >
+                    {t("nav.home") || "HOME"}
+                  </NavLink>
+                  <NavLink
+                    to="/services"
+                    onClick={() => setMenuOpen(false)}
+                    className={({ isActive }) => (isActive ? styles.active : "")}
+                  >
+                    {t("nav.services") || "SERVICES"}
+                  </NavLink>
+                  <NavLink
+                    to="/about"
+                    onClick={() => setMenuOpen(false)}
+                    className={({ isActive }) => (isActive ? styles.active : "")}
+                  >
+                    {t("nav.about") || "ABOUT"}
+                  </NavLink>
+                  <NavLink
+                    to="/news"
+                    onClick={() => setMenuOpen(false)}
+                    className={({ isActive }) => (isActive ? styles.active : "")}
+                  >
+                    {t("nav.news") || "NEWS"}
+                  </NavLink>
+                  <NavLink
+                    to="/contact"
+                    onClick={() => setMenuOpen(false)}
+                    className={({ isActive }) => (isActive ? styles.active : "")}
+                  >
+                    {t("nav.contact") || "CONTACT"}
+                  </NavLink>
+                </div>
+                
+                {/* User Section - Login or User Profile */}
+                <div className={styles.mobileUserSection}>
+                  {!userName ? (
+                    <NavLink to="/signin" onClick={() => setMenuOpen(false)}>
+                      <button className={styles.login}>
+                        {t("nav.login") || "LOGIN"}{" "}
+                        <FontAwesomeIcon icon={faRightToBracket} />
+                      </button>
+                    </NavLink>
+                  ) : (
+                    <div className={styles.mobileUserProfile}>
+                      {/* Notification Bell */}
+                      <div className={styles.notificationSection}>
+                        <button
+                          className={styles.notificationBell}
+                          onClick={toggleNotifications}
+                          title="Notifications"
+                        >
+                          <FontAwesomeIcon icon={faBell} />
+                          {unreadCount > 0 && (
+                            <span className={styles.notificationBadge}>
+                              {unreadCount > 99 ? "99+" : unreadCount}
+                            </span>
+                          )}
+                        </button>
+
+                        {/* Notification Dropdown - in mobile menu */}
+                        {showNotifications && (
+                          <div className={styles.notificationDropdown}>
+                            <div className={styles.notificationHeader}>
+                              <h4>Notifications</h4>
+                              <span className={styles.notificationCount}>
+                                {unreadCount} unread
+                              </span>
+                            </div>
+                            <div className={styles.notificationList}>
+                              {notifications.length > 0 ? (
+                                notifications.slice(0, 5).map((notification) => (
+                                  <div
+                                    key={notification._id}
+                                    className={`${styles.notificationItem} ${
+                                      !notification.seen ? styles.unread : ""
+                                    }`}
+                                    onClick={() =>
+                                      markNotificationAsSeen(notification._id)
+                                    }
+                                  >
+                                    <div className={styles.notificationContent}>
+                                      <h5>{notification.title}</h5>
+                                      <p>{notification.message.substring(0, 80)}...</p>
+                                      <span className={styles.notificationDate}>
+                                        {formatDate(notification.createdAt)}
+                                      </span>
+                                    </div>
+                                  </div>
+                                ))
+                              ) : (
+                                <div className={styles.noNotifications}>
+                                  <p>No notifications</p>
+                                </div>
+                              )}
+                            </div>
+                            {notifications.length > 5 && (
+                              <div className={styles.notificationFooter}>
+                                <button
+                                  onClick={() => {
+                                    setShowNotifications(false);
+                                    navigate("/dashboard");
+                                    setMenuOpen(false); // Close menu when going to dashboard
+                                  }}
+                                  className={styles.viewAllButton}
+                                >
+                                  View All Notifications
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Profile Section */}
+                      <div className={styles.profileSection}>
+                        <div className={styles.profileCircle} onClick={toggleDropdown}>
+                          {getInitial(userName)}
+                        </div>
+                        {showDropdown && (
+                          <div className={styles.dropdown}>
+                            <button
+                              onClick={() => {
+                                handleDashboardClick();
+                                setMenuOpen(false); // Close mobile menu
+                              }}
+                              className={styles.dropdownItem}
+                            >
+                              <FontAwesomeIcon icon={faUser} /> {t("nav.dashboard")}
+                            </button>
+                            <button
+                              onClick={() => {
+                                handleLogout();
+                                setMenuOpen(false); // Close mobile menu
+                              }}
+                              className={styles.dropdownItem}
+                            >
+                              <FontAwesomeIcon icon={faSignOutAlt} /> {t("nav.logout")}
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
       {/* Mobile Backdrop */}

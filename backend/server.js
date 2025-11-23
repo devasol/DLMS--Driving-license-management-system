@@ -129,94 +129,7 @@ const frontendDir = process.env.NODE_ENV === 'production'
 console.log(`📁 Frontend directory: ${frontendDir}`);
 console.log(`📁 Directory exists for static files: ${fs.existsSync(frontendDir)}`);
 
-// Only serve static files if the directory exists
-if (fs.existsSync(frontendDir)) {
-  // Serve static files from the frontend build directory BEFORE API routes
-  app.use(express.static(frontendDir, {
-    // Set correct MIME types for static assets
-    setHeaders: (res, filePath) => {
-      const ext = path.extname(filePath).toLowerCase();
-      if (ext === '.css') {
-        res.setHeader('Content-Type', 'text/css; charset=UTF-8');
-      } else if (ext === '.js') {
-        res.setHeader('Content-Type', 'application/javascript; charset=UTF-8');
-      } else if (ext === '.json') {
-        res.setHeader('Content-Type', 'application/json; charset=UTF-8');
-      } else if (ext === '.png') {
-        res.setHeader('Content-Type', 'image/png');
-      } else if (ext === '.jpg' || ext === '.jpeg') {
-        res.setHeader('Content-Type', 'image/jpeg');
-      } else if (ext === '.gif') {
-        res.setHeader('Content-Type', 'image/gif');
-      } else if (ext === '.svg') {
-        res.setHeader('Content-Type', 'image/svg+xml');
-      } else if (ext === '.ico') {
-        res.setHeader('Content-Type', 'image/x-icon');
-      }
-      console.log(`📁 Serving static file: ${filePath} with content-type: ${res.getHeader('Content-Type')}`);
-    }
-  }));
-
-  // Serve index.html for all other routes (for React Router) - this should be LAST
-  app.get('*', (req, res) => {
-    const indexPath = join(frontendDir, 'index.html');
-    console.log(`📁 Request for SPA fallback: ${req.originalUrl}, serving: ${indexPath}`);
-    res.sendFile(indexPath, (err) => {
-      if (err) {
-        console.error(`📁 Error sending index.html:`, err);
-        res.status(404).send('Page not found');
-      }
-    });
-  });
-} else {
-  console.warn(`⚠️ Frontend dist directory does not exist: ${frontendDir}`);
-  console.log(`⚠️ The frontend may not have been built yet. Please ensure the build step runs before the server starts.`);
-  
-  // Fallback: API-only routes when frontend is not available
-  app.get('*', (req, res) => {
-    // Only serve API routes or return an error for non-API routes
-    if (req.path.startsWith('/api/')) {
-      // Let API routes continue to their handlers
-      res.status(404).json({ error: 'API route not found' });
-    } else {
-      // For non-API routes, return a simple message
-      res.status(404).send(`
-        <h1>Frontend Not Available</h1>
-        <p>The frontend build directory does not exist at: ${frontendDir}</p>
-        <p>Please ensure the build process completes successfully.</p>
-        <p>Available API endpoint: <a href="/api">/api</a></p>
-      `);
-    }
-  });
-}
-
-// Optimized request logging (only in development)
-if (process.env.NODE_ENV !== "production") {
-  app.use((req, res, next) => {
-    // Only log non-static file requests
-    if (!req.url.startsWith("/uploads")) {
-      console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
-    }
-    next();
-  });
-}
-
-// Routes
-app.get("/api", (req, res) => {
-  res.json({ message: "API is running" });
-});
-
-// Health check endpoint
-app.get("/api/health", (req, res) => {
-  res.json({
-    status: "ok",
-    timestamp: new Date().toISOString(),
-    server: "main-server",
-    port: PORT,
-  });
-});
-
-// Mount API routes
+// Mount API routes BEFORE static file serving to prevent API requests from being caught by SPA fallback
 app.use("/api/auth", authRoutesAlt); // Mount main auth routes (includes forgot password)
 // app.use("/api/auth", authRoutes); // Commented out to avoid conflicts
 app.use("/api/admin", adminRoutes);
@@ -236,6 +149,21 @@ app.use("/api/support", supportRoutes);
 app.use("/api/examiner", examinerRoutes);
 app.use("/api/search", searchRoutes);
 app.use("/api/traffic-police", trafficPoliceRoutes);
+
+// Routes
+app.get("/api", (req, res) => {
+  res.json({ message: "API is running" });
+});
+
+// Health check endpoint
+app.get("/api/health", (req, res) => {
+  res.json({
+    status: "ok",
+    timestamp: new Date().toISOString(),
+    server: "main-server",
+    port: PORT,
+  });
+});
 
 // Database status route
 app.get("/api/db-status", async (req, res) => {
@@ -265,6 +193,87 @@ app.get("/api/db-status", async (req, res) => {
     });
   }
 });
+
+// Now serve static files if the directory exists (after API routes are mounted)
+if (fs.existsSync(frontendDir)) {
+  // Serve static files from the frontend build directory
+  app.use(express.static(frontendDir, {
+    // Set correct MIME types for static assets
+    setHeaders: (res, filePath) => {
+      const ext = path.extname(filePath).toLowerCase();
+      if (ext === '.css') {
+        res.setHeader('Content-Type', 'text/css; charset=UTF-8');
+      } else if (ext === '.js') {
+        res.setHeader('Content-Type', 'application/javascript; charset=UTF-8');
+      } else if (ext === '.json') {
+        res.setHeader('Content-Type', 'application/json; charset=UTF-8');
+      } else if (ext === '.png') {
+        res.setHeader('Content-Type', 'image/png');
+      } else if (ext === '.jpg' || ext === '.jpeg') {
+        res.setHeader('Content-Type', 'image/jpeg');
+      } else if (ext === '.gif') {
+        res.setHeader('Content-Type', 'image/gif');
+      } else if (ext === '.svg') {
+        res.setHeader('Content-Type', 'image/svg+xml');
+      } else if (ext === '.ico') {
+        res.setHeader('Content-Type', 'image/x-icon');
+      }
+      console.log(`📁 Serving static file: ${filePath} with content-type: ${res.getHeader('Content-Type')}`);
+    }
+  }));
+
+  // Serve index.html for all other routes (for React Router) - this should be LAST
+  app.get('*', (req, res) => {
+    // Only serve index.html if it's not an API request
+    if (req.path.startsWith('/api/')) {
+      // This shouldn't happen if routes are properly mounted, but as a fallback
+      res.status(404).json({ error: 'API endpoint not found' });
+      return;
+    }
+    
+    const indexPath = join(frontendDir, 'index.html');
+    console.log(`📁 Request for SPA fallback: ${req.originalUrl}, serving: ${indexPath}`);
+    res.sendFile(indexPath, (err) => {
+      if (err) {
+        console.error(`📁 Error sending index.html:`, err);
+        res.status(404).send('Page not found');
+      }
+    });
+  });
+} else {
+  console.warn(`⚠️ Frontend dist directory does not exist: ${frontendDir}`);
+  console.log(`⚠️ The frontend may not have been built yet. Please ensure the build step runs before the server starts.`);
+  
+  // Fallback: API-only routes when frontend is not available
+  app.get('*', (req, res) => {
+    // Only serve API routes or return an error for non-API routes
+    if (req.path.startsWith('/api/')) {
+      // Let API routes continue to their handlers (this shouldn't happen if routes are properly mounted above)
+      res.status(404).json({ error: 'API route not found' });
+    } else {
+      // For non-API routes, return a simple message
+      res.status(404).send(`
+        <h1>Frontend Not Available</h1>
+        <p>The frontend build directory does not exist at: ${frontendDir}</p>
+        <p>Please ensure the build process completes successfully.</p>
+        <p>Available API endpoint: <a href="/api">/api</a></p>
+      `);
+    }
+  });
+}
+
+// Optimized request logging (only in development)
+if (process.env.NODE_ENV !== "production") {
+  app.use((req, res, next) => {
+    // Only log non-static file requests
+    if (!req.url.startsWith("/uploads")) {
+      console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+    }
+    next();
+  });
+}
+
+
 
 // Auth routes are handled by the mounted auth route modules above
 

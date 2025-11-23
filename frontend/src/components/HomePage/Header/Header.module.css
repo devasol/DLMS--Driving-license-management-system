@@ -699,6 +699,19 @@
   border-color: #adb5bd !important;
 }
 
+/* Ensure desktop navigation is visible by default */
+.navigationDesktop {
+  display: block;
+}
+
+.links {
+  display: flex !important;
+  align-items: center;
+  gap: 2rem;
+  position: relative;
+  z-index: 2;
+}
+
 /* Dark Mode */
 [data-theme="dark"] .header_container {
   background: #1a1a1a;
@@ -732,7 +745,15 @@
 }
 
 [data-theme="dark"] .notificationBell {
-  color: #e0e0e0;
+  color: white;
+}
+
+[data-theme="dark"] .notificationBell:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .menu_icon {
+  color: white;
 }
 
 [data-theme="dark"] .notificationDropdown {
@@ -752,6 +773,38 @@
 [data-theme="dark"] .modal {
   background: #2d2d2d;
   color: #e0e0e0;
+}
+
+/* Additional dark mode header icon styling */
+[data-theme="dark"] .dropdownItem svg {
+  color: white;
+}
+
+[data-theme="dark"] .notificationItem {
+  color: white;
+}
+
+[data-theme="dark"] .notificationContent h5 {
+  color: white;
+}
+
+[data-theme="dark"] .notificationContent p {
+  color: #cccccc;
+}
+
+[data-theme="dark"] .notificationDate {
+  color: #aaaaaa;
+}
+
+[data-theme="dark"] .noNotifications {
+  color: #cccccc;
+}
+
+/* Ensure menu icon visibility in dark mode on small screens */
+@media (max-width: 480px) {
+  [data-theme="dark"] .menu_icon {
+    color: white;
+  }
 }
 
 /* Banner Responsive Design */
@@ -881,16 +934,264 @@
     gap: 0.5rem;
   }
 
-  .mobileBackdrop {
+
+}
+
+/* Mobile Menu Overlay */
+.mobileMenuOverlay {
+  position: fixed;
+  top: 80px; /* Account for header height */
+  right: 0;
+  width: 100%;
+  max-width: 400px; /* Set max width but allow to go edge to edge on mobile */
+  height: calc(100vh - 80px);
+  z-index: 99996;
+  display: flex;
+  animation: slideInMenu 0.3s ease-out;
+  pointer-events: none; /* Allow backdrop to handle clicks */
+  max-height: calc(100vh - 80px); /* Ensure it doesn't exceed available space */
+  overflow: hidden;
+}
+
+@keyframes slideInMenu {
+  from {
+    transform: translateX(100%);
+    opacity: 0.5;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.mobileMenuContent {
+  width: 100%;
+  height: 100%;
+  background: white;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 99996;
+  pointer-events: auto; /* Enable interactions within menu */
+  margin: 0; /* Remove any default margins */
+  border-radius: 0; /* Remove any border radius to align with edge */
+  border: none; /* Ensure no borders causing spacing */
+  max-width: 400px; /* Match the max width from the overlay */
+}
+
+.mobileMenuContent {
+  width: 100%;
+  height: 100%;
+  background: white;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 99996;
+  pointer-events: auto; /* Enable interactions within menu */
+  margin: 0; /* Remove any default margins */
+  border-radius: 0; /* Remove any border radius to align with edge */
+  border: none; /* Ensure no borders causing spacing */
+}
+
+[data-theme="dark"] .mobileMenuContent {
+  background: #2d2d2d;
+  color: white;
+}
+
+.mobileMenuHeader {
+  padding: 1.5rem;
+  display: flex;
+  justify-content: flex-start; /* Changed from space-between to flex-start */
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 1px solid #eee;
+  background: #f8f9fa;
+  flex-wrap: wrap; /* Allow wrapping if needed */
+}
+
+[data-theme="dark"] .mobileMenuHeader {
+  background: #3d3d3d;
+  border-bottom-color: #444;
+  color: white;
+}
+
+/* Ensure LanguageSwitcher and ThemeToggle are visible in mobile menu */
+.mobileMenuHeader > * {
+  flex-shrink: 0; /* Prevent components from shrinking too much */
+}
+
+.mobileMenuHeader .languageSwitcher,
+.mobileMenuHeader .themeToggle {
+  display: inline-flex;
+  align-items: center;
+}
+
+.mobileSearchSection {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #eee;
+  background: white;
+  width: 100%; /* Ensure full width */
+}
+
+[data-theme="dark"] .mobileSearchSection {
+  background: #2d2d2d;
+  border-bottom-color: #444;
+  color: white;
+}
+
+/* Ensure search bar is visible */
+.mobileSearchSection > * {
+  width: 100%;
+}
+
+.mobileNavLinks {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 0;
+  flex-grow: 1;
+  width: 100%; /* Ensure full width */
+}
+
+.mobileNavLinks a {
+  padding: 1rem 1.5rem;
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  font-size: 1.1rem;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background-color 0.3s ease;
+  display: block;
+  width: 100%;
+  text-align: left;
+}
+
+[data-theme="dark"] .mobileNavLinks a {
+  color: #e0e0e0;
+  border-bottom-color: #444;
+}
+
+.mobileNavLinks a:hover {
+  background: #f8f9fa;
+}
+
+[data-theme="dark"] .mobileNavLinks a:hover {
+  background: #3d3d3d;
+}
+
+.mobileNavLinks a.active {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+[data-theme="dark"] .mobileNavLinks a.active {
+  background: #1a2a3a;
+  color: #bbdefb;
+}
+
+.mobileUserSection {
+  padding: 1.5rem;
+  border-top: 1px solid #eee;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+[data-theme="dark"] .mobileUserSection {
+  background: #2d2d2d;
+  border-top-color: #444;
+  color: white;
+}
+
+.mobileUserProfile {
+  display: flex;
+  flex-direction: column; /* Stack elements vertically for better mobile layout */
+  align-items: flex-start; /* Align to the left */
+  gap: 1rem;
+  width: 100%;
+}
+
+/* Notification section styling in mobile menu */
+.mobileUserProfile .notificationSection {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%; /* Full width */
+}
+
+.mobileUserProfile .profileSection {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%; /* Full width */
+}
+
+.mobileUserProfile .login {
+  justify-content: center;
+  width: 100%;
+  margin: 0;
+}
+
+/* Ensure all user profile elements are properly aligned */
+.mobileUserProfile > * {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.navigationDesktop {
+  display: block;
+}
+
+/* Desktop components are visible by default */
+.navigationDesktop {
+  display: block;
+}
+
+.desktopComponents {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.desktopUserSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .navigationDesktop {
+    display: none;
+  }
+  
+  .desktopComponents {
+    display: none;
+  }
+  
+  .desktopUserSection {
+    display: none;
+  }
+  
+  .links {
+    display: none;
+  }
+  
+  .right_section {
+    justify-content: flex-end;
+  }
+  
+  .notificationDropdown {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.3);
-    z-index: 99990; /* below the dropdown */
-    pointer-events: auto; /* allow click outside to close */
-    cursor: pointer;
+    top: 80px;
+    right: 20px;
+    width: 300px;
+    z-index: 99997;
   }
 }
 
@@ -899,12 +1200,100 @@
     padding: 0 0.5rem;
   }
 
+  .logo_container img {
+    width: 36px;
+    height: 36px;
+  }
+  
   .logo_container span {
     display: none;
   }
 
+  .right_section {
+    /* Only the menu icon remains visible in the header */
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .desktopComponents {
+    display: none; /* Hide desktop components on mobile */
+  }
+  
+  .desktopUserSection {
+    display: none; /* Hide desktop user section on mobile */
+  }
+  
+  .menu_icon {
+    display: block !important; /* Ensure it's visible */
+    font-size: 1.5rem; /* Adjust size */
+    padding: 0.4rem; /* Maintain touch target size */
+  }
+  
+  /* Mobile menu specific adjustments */
+  .mobileMenuOverlay {
+    width: 100%; /* Use full width on very small screens */
+    max-width: 100%; /* Override max-width on small screens */
+  }
+  
+  .mobileMenuContent {
+    width: 100%; /* Full width on small screens */
+    max-width: 100%; /* Override max-width */
+  }
+  
+  /* Notification dropdown in mobile menu context */
   .notificationDropdown {
-    width: 280px;
-    right: -50px;
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 260px;
+    z-index: 99998;
+  }
+}
+
+/* Mobile backdrop for closing menu */
+.mobileBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 99995; /* below the mobile menu content */
+  pointer-events: auto;
+  cursor: pointer;
+  animation: fadeIn 0.3s ease-out;
+  margin: 0;
+  padding: 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Extra small screens (320px and below) */
+@media (max-width: 320px) {
+  .right_section {
+    min-width: auto; /* Don't enforce min-width */
+  }
+
+  .menu_icon {
+    display: block !important; /* Ensure it's visible */
+    font-size: 1.4rem; /* Slightly smaller for very small screens */
+    padding: 0.3rem; /* Maintain touch target size */
+  }
+  
+  .notificationDropdown {
+    width: 240px; /* Even smaller on very small screens */
+    right: 5px;
+  }
+  
+  .mobileMenuContent {
+    width: 95%;
   }
 }
