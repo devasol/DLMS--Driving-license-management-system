@@ -342,7 +342,7 @@ For support, please contact:
 
 - Special thanks to the open-source community
 - Inspired by modern driving license systems worldwide
-- Built with ❤️ for better user experience
+- Built by Dawit S. for better user experience
 
 ---
 
